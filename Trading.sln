@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32602.291
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading.Api", "Trading.Api\Trading.Api.csproj", "{24EEB515-1F35-4906-A895-1AC30AFCDE41}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24EEB515-1F35-4906-A895-1AC30AFCDE41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24EEB515-1F35-4906-A895-1AC30AFCDE41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24EEB515-1F35-4906-A895-1AC30AFCDE41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24EEB515-1F35-4906-A895-1AC30AFCDE41}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E0971C33-EDAE-4E0C-B7CE-102F7EA95B55}
+	EndGlobalSection
+EndGlobal
