@@ -11,6 +11,7 @@ namespace Trading.Api.Controllers
     [Route("test")]
     public class TestController : ControllerBase
     {
+        [HttpGet]
         public Task<IActionResult> TestMethod() 
         {
             return Task.FromResult<IActionResult>(Ok());
