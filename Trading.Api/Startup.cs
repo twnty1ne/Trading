@@ -10,6 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Trading.Exchange;
+using Trading.Exchange.Connections;
+using Trading.Infrastructure.Connections.Binance;
+using Trading.Infrastructure.Exchange.Authentification;
 
 namespace Trading.Api
 {
@@ -22,15 +26,16 @@ namespace Trading.Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddControllers();
+            services.AddTransient<IExchange, Trading.Exchange.Exchange>();
+            services.AddTransient<ICredentialsProvider, BinanceCredentialsProvider>();
+            services.AddTransient<IConnection, BinanceConnection>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

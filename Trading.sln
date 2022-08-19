@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.32602.291
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Api", "Trading.Api\Trading.Api.csproj", "{24EEB515-1F35-4906-A895-1AC30AFCDE41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading.Exchange", "Trading.Exchange\Trading.Exchange.csproj", "{2ACA3148-D10D-421D-921C-331533F18F57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Exchange", "Trading.Exchange\Trading.Exchange.csproj", "{2ACA3148-D10D-421D-921C-331533F18F57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading.Shared", "Trading.Shared\Trading.Shared.csproj", "{95CC69B3-D4F4-447B-8276-D66961F903A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading.Infrastructure", "Trading.Infrastructure\Trading.Infrastructure.csproj", "{C979EF9C-DA4F-4A44-95EB-5147A3672BF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{2ACA3148-D10D-421D-921C-331533F18F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ACA3148-D10D-421D-921C-331533F18F57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ACA3148-D10D-421D-921C-331533F18F57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95CC69B3-D4F4-447B-8276-D66961F903A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95CC69B3-D4F4-447B-8276-D66961F903A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95CC69B3-D4F4-447B-8276-D66961F903A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95CC69B3-D4F4-447B-8276-D66961F903A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C979EF9C-DA4F-4A44-95EB-5147A3672BF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C979EF9C-DA4F-4A44-95EB-5147A3672BF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C979EF9C-DA4F-4A44-95EB-5147A3672BF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C979EF9C-DA4F-4A44-95EB-5147A3672BF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
