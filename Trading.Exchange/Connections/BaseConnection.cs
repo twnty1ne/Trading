@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
 using Trading.Exchange.Markets.Instruments;
 using Trading.Exchange.Markets.Instruments.Candles;
 using Trading.Exchange.Markets.Instruments.Timeframes;
-using Trading.Infrastructure.Exchange.Authentification;
 
-namespace Trading.Infrastructure.Exchange.Connections
+namespace Trading.Exchange.Connections
 {
     public abstract class BaseConnection : IConnection
     {

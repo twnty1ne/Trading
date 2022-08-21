@@ -13,16 +13,16 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
 using Trading.Exchange.Markets.Instruments;
 using Trading.Exchange.Markets.Instruments.Candles;
 using Trading.Exchange.Markets.Instruments.Timeframes;
 using Trading.Exchange.Markets.Instruments.Timeframes.Extentions;
-using Trading.Infrastructure.Exchange.Authentification;
 using Trading.Infrastructure.Exchange.Connections;
 using Trading.Infrastructure.Exchange.Connections.Binance.Extentions;
 
-namespace Trading.Infrastructure.Connections.Binance
+namespace Trading.Connections.Binance
 {
     public sealed class BinanceConnection : BaseConnection
     {

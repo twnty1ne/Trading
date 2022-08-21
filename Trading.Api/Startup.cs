@@ -1,19 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Trading.Connections.Binance;
 using Trading.Exchange;
+using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
-using Trading.Infrastructure.Connections.Binance;
-using Trading.Infrastructure.Exchange.Authentification;
 
 namespace Trading.Api
 {
@@ -31,9 +24,8 @@ namespace Trading.Api
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddControllers();
-            services.AddTransient<IExchange, Trading.Exchange.Exchange>();
+            services.AddTransient<IExchange, Trading.Exchange.Exchange>().Configure<Options>(x => x.ConnectionType = ConnectionEnum.Binance);
             services.AddTransient<ICredentialsProvider, BinanceCredentialsProvider>();
-            services.AddTransient<IConnection, BinanceConnection>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

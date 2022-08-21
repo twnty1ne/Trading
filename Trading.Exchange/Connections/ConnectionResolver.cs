@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using Trading.Connections.Binance;
+using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
 using Trading.Shared.Resolvers;
-using Trading.Infrastructure.Connections.Binance;
-using Trading.Infrastructure.Exchange.Authentification;
 
-namespace Trading.Infrastructure.Exchange.Connections
+namespace Trading.Exchange.Connections
 {
-    internal class ConnectionReslover : IResolver<ConnectionEnum, IConnection>
+    internal class ConnectionResolver : IResolver<ConnectionEnum, IConnection>
     {
         private readonly IResolver<ConnectionEnum, IConnection> _resolver;
         private readonly ICredentialsProvider _credentialsProvider;
 
-        public ConnectionReslover(ICredentialsProvider credentialProvider)
+        public ConnectionResolver(ICredentialsProvider credentialProvider)
         {
             _resolver = new Resolver<ConnectionEnum, IConnection>(GenerateDictionary());
             _credentialsProvider = credentialProvider;

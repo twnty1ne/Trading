@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Trading.Exchange\Trading.Exchange.csproj" />
-    <ProjectReference Include="..\Trading.Infrastructure\Trading.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

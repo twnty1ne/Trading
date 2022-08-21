@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
 using Trading.Exchange.Markets;
 using Trading.Exchange.Markets.Instruments;
@@ -14,9 +15,9 @@ namespace Trading.Exchange
 
         private readonly IConnection _connection;
 
-        public Exchange(IConnection connection)
+        public Exchange(IOptions<Options> options, ICredentialsProvider credentialsProvider)
         {
-            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
+            _connection = new ConnectionResolver(credentialsProvider).Resolve(options.Value.ConnectionType);
             Market = new MarketRoot(_connection);
 
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Trading.Infrastructure.Exchange.Authentification
+namespace Trading.Exchange.Authentification
 {
     public class Credentials : ICredentials
     {

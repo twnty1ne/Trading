@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Trading.Exchange.Connections;
-using Trading.Infrastructure.Connections.Binance;
-using Trading.Infrastructure.Exchange.Authentification;
+﻿using Trading.Exchange.Authentification;
 
 namespace Trading.Api
 {
