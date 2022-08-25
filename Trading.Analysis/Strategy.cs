@@ -26,15 +26,17 @@ namespace Trading.Analysis
         protected abstract Predicate<IIndexedOhlcv> CreateSellRule();
         protected abstract Predicate<IIndexedOhlcv> CreateBuyRule();
 
-        public IReadOnlyCollection<Signal> BackTest(IEnumerable<ICandle> ic)
+        public IReadOnlyCollection<IEntry> BackTest(IEnumerable<ICandle> ic)
         {
             using var analyzeContext = new AnalyzeContext(ic.Select(x => new Candle(new DateTimeOffset(x.OpenTime), x.Open, x.High, x.Low, x.Close, x.Volume)));
-            var result1 = new List<Signal>();
-            var shortEntryCandles = new SimpleRuleExecutor(analyzeContext, SellRule).Execute();
-            var longEntryCandles = new SimpleRuleExecutor(analyzeContext, BuyRule).Execute();
+            //var shortEntryCandles = new SimpleRuleExecutor(analyzeContext, SellRule).Execute(ic.Count() - 200);
+            var longEntryCandles = new SimpleRuleExecutor(analyzeContext, BuyRule).Execute(ic.Count() - 200);
+            var result = new List<Entry>();
             var longEntries = SelectEntries(longEntryCandles, Position.Long);
-            var shortEntries = SelectEntries(shortEntryCandles, Position.Short);
-            return result1.AsReadOnly();
+            //var shortEntries = SelectEntries(shortEntryCandles, Position.Short);
+            result.AddRange(longEntries.SelectMany(x => x.AsEnumerable()));
+            //result.AddRange(shortEntries.SelectMany(x => x.AsEnumerable()));
+            return result.AsReadOnly();
         }
 
 
