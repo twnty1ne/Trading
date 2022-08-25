@@ -33,7 +33,7 @@ namespace Trading.Connections.Binance
         }
 
 
-        public async override Task<IReadOnlyCollection<Candle>> GetFuturesCandlesAsync(IInstrumentName name, TimeframeEnum timeframe)
+        public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, TimeframeEnum timeframe)
         {
             KlineInterval convertedTimeframe;
             var successfullyConverted = timeframe.TryConvertToBinanceTimeframe(out convertedTimeframe);
@@ -52,7 +52,8 @@ namespace Trading.Connections.Binance
                 lastResultItemsAmount = response.Data.Count();
                 lastEndDate = lastEndDate.AddTicks(-timeframeTicks * limit);
             }
-            return result.OrderBy(x => x.CloseTime).Select(x => new Candle(x.OpenPrice, x.ClosePrice, x.HighPrice, x.LowPrice, x.OpenTime, x.CloseTime)).ToList().AsReadOnly();
+            return result.OrderBy(x => x.CloseTime).Select(x => new Candle(x.OpenPrice, x.ClosePrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenTime, x.CloseTime)).ToList().AsReadOnly();
         }
+
     }
 } 

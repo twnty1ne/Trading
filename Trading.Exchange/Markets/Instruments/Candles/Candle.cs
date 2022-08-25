@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Trading.Exchange.Markets.Instruments.Candles
 {
-    public class Candle : ICandle
+    internal class Candle : ICandle
     {
-        public Candle(decimal open, decimal close, decimal high, decimal low, DateTime openTime, DateTime closeTime)
+        public Candle(decimal open, decimal close, decimal high, decimal low, decimal volume, DateTime openTime, DateTime closeTime)
         {
             Open = open;
             Close = close;
@@ -14,6 +14,7 @@ namespace Trading.Exchange.Markets.Instruments.Candles
             Low = low;
             OpenTime = openTime;
             CloseTime = closeTime;
+            Volume = volume;
         }
 
         public decimal Open { get; private set; }
@@ -27,5 +28,7 @@ namespace Trading.Exchange.Markets.Instruments.Candles
         public DateTime OpenTime { get; private set; }
 
         public DateTime CloseTime { get; private set; }
+
+        public decimal Volume { get; private set; }
     }
 }

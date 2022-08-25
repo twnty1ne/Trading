@@ -10,6 +10,7 @@ namespace Trading.Exchange.Markets.Instruments.Candles
         decimal Close { get; }
         decimal High { get; }
         decimal Low { get; }
+        decimal Volume { get; }
         DateTime OpenTime { get; }
         DateTime CloseTime { get; }
     }
