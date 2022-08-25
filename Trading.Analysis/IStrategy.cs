@@ -10,6 +10,6 @@ namespace Trading.Analysis
 {
     public interface IStrategy
     {
-        IReadOnlyCollection<Signal> BackTest(IEnumerable<ICandle> ic);
+        IReadOnlyCollection<IEntry> BackTest(IEnumerable<ICandle> ic);
     }
 }

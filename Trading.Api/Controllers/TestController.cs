@@ -1,13 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Trading.Analysis.Model;
 using Trading.Analysis.Strategies;
 using Trading.Exchange;
 using Trading.Exchange.Markets.Instruments;
 using Trading.Exchange.Markets.Instruments.Timeframes;
+using Trading.Shared.Files;
 
 namespace Trading.Api.Controllers
 {
@@ -42,7 +46,17 @@ namespace Trading.Api.Controllers
             var candles = instrument.GetTimeframe(TimeframeEnum.OneHour).GetCandles();
             var tradingStrategy = new CandleVolumeStrategy();
             var backtestResult = tradingStrategy.BackTest(candles);
+            SaveToFile(instrument.Name, backtestResult);
             return Ok(backtestResult);
+        }
+
+
+        private void SaveToFile(IInstrumentName name, IReadOnlyCollection<IEntry> entries) 
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "BacktestResults", $"{name.GetFullName()}_{DateTime.UtcNow.Ticks}.txt");
+            var jsonValue = JsonConvert.SerializeObject(entries, Formatting.Indented);
+            var file = new LocalFile(path, jsonValue);
+            file.SaveImmutable();
         }
     }
 }
