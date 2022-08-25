@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Trading.Analysis\Trading.Analysis.csproj" />
     <ProjectReference Include="..\Trading.Exchange\Trading.Exchange.csproj" />
   </ItemGroup>
 

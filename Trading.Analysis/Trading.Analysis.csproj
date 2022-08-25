@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Candlesticks\" />
+    <Folder Include="Statistics\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Trady.Analysis" Version="3.2.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Trading.Exchange\Trading.Exchange.csproj" />
+  </ItemGroup>
+
+</Project>
