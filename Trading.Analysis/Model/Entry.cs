@@ -35,17 +35,38 @@ namespace Trading.Analysis.Model
 
         private EntryState IsSucces(IIndexedOhlcv ic) 
         {
-            var nextCandle = ic.Next;
-            var allCandlesAfter = nextCandle.BackingList.Where(x => x.DateTime > nextCandle.DateTime).OrderBy(x => x.DateTime);
-            var hitTp = allCandlesAfter.FirstOrDefault(x => x.High >= TakeProfit);
-            var hitSl = allCandlesAfter.FirstOrDefault(x => x.Low <= StopLoss);
-            if (StopLoss > ic.Low) return EntryState.Skipped;
+
+            var hitTp = GetTakeProfitCandle(ic);
+            var hitSl = GetStopLossCandle(ic);
+            if (ShoulbBeSkipped(ic)) return EntryState.Skipped;
             if (hitTp != null && (hitSl is null || hitSl.DateTime > hitTp.DateTime)) return EntryState.HitTakeProfit;
             if (hitSl != null && (hitTp is null || hitSl.DateTime <= hitTp.DateTime)) return EntryState.HitStopLoss;
             return EntryState.InProgress;
 
         }
 
+
+        private IOhlcv GetTakeProfitCandle(IIndexedOhlcv ic) 
+        {
+            var nextCandle = ic.Next;
+            var allCandlesAfter = nextCandle.BackingList.Where(x => x.DateTime > nextCandle.DateTime).OrderBy(x => x.DateTime);
+            if(Position == Position.Long) return allCandlesAfter.FirstOrDefault(x => x.High >= TakeProfit);
+            return allCandlesAfter.FirstOrDefault(x => x.Low <= TakeProfit); ;
+        }
+
+        private IOhlcv GetStopLossCandle(IIndexedOhlcv ic)
+        {
+            var nextCandle = ic.Next;
+            var allCandlesAfter = nextCandle.BackingList.Where(x => x.DateTime > nextCandle.DateTime).OrderBy(x => x.DateTime);
+            if (Position == Position.Long) return allCandlesAfter.FirstOrDefault(x => x.Low <= StopLoss);
+            return allCandlesAfter.FirstOrDefault(x => x.High >= StopLoss);
+        }
+
+        private bool ShoulbBeSkipped(IIndexedOhlcv ic)
+        {
+            if(Position == Position.Long) return StopLoss > ic.Low;
+            return StopLoss < ic.High;
+        }
 
         private decimal CalculateStopLoss() 
         {
