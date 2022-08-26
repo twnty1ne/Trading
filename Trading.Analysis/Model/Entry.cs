@@ -7,9 +7,9 @@ using Trady.Core.Infrastructure;
 
 namespace Trading.Analysis.Model
 {
-    internal class Entry
+    internal class Entry : IEntry
     {
-        private readonly decimal _slTreshold = 0.004m;
+        private readonly decimal _slTreshold = 0.01m;
         private readonly decimal _mathExpectation = 2m;
 
         public Entry(IIndexedOhlcv ic, Position position)
@@ -39,7 +39,7 @@ namespace Trading.Analysis.Model
             var allCandlesAfter = nextCandle.BackingList.Where(x => x.DateTime > nextCandle.DateTime).OrderBy(x => x.DateTime);
             var hitTp = allCandlesAfter.FirstOrDefault(x => x.High >= TakeProfit);
             var hitSl = allCandlesAfter.FirstOrDefault(x => x.Low <= StopLoss);
-            if (StopLoss > ic.Low) return EntryState.Skiped;
+            if (StopLoss > ic.Low) return EntryState.Skipped;
             if (hitTp != null && (hitSl is null || hitSl.DateTime > hitTp.DateTime)) return EntryState.HitTakeProfit;
             if (hitSl != null && (hitTp is null || hitSl.DateTime <= hitTp.DateTime)) return EntryState.HitStopLoss;
             return EntryState.InProgress;

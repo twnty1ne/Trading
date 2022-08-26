@@ -33,7 +33,7 @@ namespace Trading.Connections.Binance
         }
 
 
-        public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, TimeframeEnum timeframe)
+        public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
         {
             KlineInterval convertedTimeframe;
             var successfullyConverted = timeframe.TryConvertToBinanceTimeframe(out convertedTimeframe);

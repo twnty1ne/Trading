@@ -24,6 +24,6 @@ namespace Trading.Exchange.Connections
             Credentials = _credentialsProvider.GetCredentials();
         }
 
-        public abstract Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, TimeframeEnum timeframe);
+        public abstract Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe);
     }
 }

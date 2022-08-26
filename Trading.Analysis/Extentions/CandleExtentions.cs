@@ -19,10 +19,7 @@ namespace Trading.Analysis.Extentions
 
         public static bool IsBreakingLowestVolume(this IIndexedOhlcv ic, int period)
         {
-            var lowestVolume2 = new LowestVolume(ic.BackingList, 4);
-            var lowestVolume = new LowestVolume(ic.BackingList, 3);
-            var value = lowestVolume.Diff(ic.Index).Tick.IsNegative();
-            var value2 = lowestVolume2.Diff(ic.Index).Tick.IsNegative();
+            var lowestVolume = new LowestVolume(ic.BackingList, period);
             return lowestVolume.Diff(ic.Index).Tick.IsNegative();
         }
 
