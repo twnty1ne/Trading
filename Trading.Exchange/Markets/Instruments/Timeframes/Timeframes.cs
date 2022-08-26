@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Trading.Exchange.Markets.Instruments.Timeframes
 {
-    public enum TimeframeEnum
+    public enum Timeframes
     {
         OneDay = 1,
         FourHours = 2,

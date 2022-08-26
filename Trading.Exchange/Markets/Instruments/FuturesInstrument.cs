@@ -18,7 +18,7 @@ namespace Trading.Exchange.Markets.Instruments
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
         }
 
-        public ITimeframe GetTimeframe(TimeframeEnum type)
+        public ITimeframe GetTimeframe(Timeframes.Timeframes type)
         {
             return new Timeframe(Name, _connection, type);
         }

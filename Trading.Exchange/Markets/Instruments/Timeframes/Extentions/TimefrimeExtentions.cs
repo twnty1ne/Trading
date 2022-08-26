@@ -8,13 +8,13 @@ namespace Trading.Exchange.Markets.Instruments.Timeframes.Extentions
 {
     public static class TimefrimeExtentions
     {
-        public static TimeSpan GetTimeframeTimeSpan(this TimeframeEnum timeframe) 
+        public static TimeSpan GetTimeframeTimeSpan(this Timeframes timeframe) 
         {
-            var dictionary = new Dictionary<TimeframeEnum, double>
+            var dictionary = new Dictionary<Timeframes, double>
             {
-                { TimeframeEnum.OneHour, 60.00 },
-                { TimeframeEnum.FourHours, 240.00 },
-                { TimeframeEnum.OneDay, 1440.00 }
+                { Timeframes.OneHour, 60.00 },
+                { Timeframes.FourHours, 240.00 },
+                { Timeframes.OneDay, 1440.00 }
             };
             return TimeSpan.FromMinutes(dictionary.GetValueOrDefault(timeframe));
         }

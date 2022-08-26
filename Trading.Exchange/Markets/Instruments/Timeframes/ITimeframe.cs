@@ -8,7 +8,7 @@ namespace Trading.Exchange.Markets.Instruments.Timeframes
     public interface ITimeframe
     {
         IInstrumentName InstrumentName { get; }
-        TimeframeEnum Type { get; }
+        Timeframes Type { get; }
         TimeSpan Span { get; }
         IReadOnlyCollection<ICandle> GetCandles();
     }

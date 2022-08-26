@@ -9,7 +9,7 @@ namespace Trading.Analysis.Model
 {
     internal class Entry : IEntry
     {
-        private readonly decimal _slTreshold = 0.004m;
+        private readonly decimal _slTreshold = 0.01m;
         private readonly decimal _mathExpectation = 2m;
 
         public Entry(IIndexedOhlcv ic, Position position)
