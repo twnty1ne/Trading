@@ -9,7 +9,7 @@ namespace Trading.Exchange.Markets.Instruments
     public interface IInstrument
     {
         IInstrumentName Name { get; }
-        ITimeframe GetTimeframe(TimeframeEnum type);
+        ITimeframe GetTimeframe(Timeframes.Timeframes type);
         
     }
 }

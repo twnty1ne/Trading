@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Trading.Analysis.Model;
+using Trading.Analysis.Statistics;
 using Trading.Analysis.Strategies;
 using Trading.Exchange;
 using Trading.Exchange.Markets.Instruments;
@@ -30,7 +31,7 @@ namespace Trading.Api.Controllers
         public Task<IActionResult> TestMethod() 
         {
             var instrument = _exchange.Market.FuturesUsdt.GetInstrument(new InstrumentName("ETH", "USDT"));
-            var candels = instrument.GetTimeframe(TimeframeEnum.OneHour).GetCandles();
+            var candels = instrument.GetTimeframe(Timeframes.OneHour).GetCandles();
             var averageClose = candels.Average(x => x.Close);
             var averageHigh = candels.Average(x => x.High);
             var averageLow = candels.Average(x => x.Low);
@@ -43,11 +44,21 @@ namespace Trading.Api.Controllers
         public IActionResult TestMethod1()
         {
             var instrument = _exchange.Market.FuturesUsdt.GetInstrument(new InstrumentName("XRP", "USDT"));
-            var candles = instrument.GetTimeframe(TimeframeEnum.OneHour).GetCandles();
+            var candles = instrument.GetTimeframe(Timeframes.OneHour).GetCandles();
             var tradingStrategy = new CandleVolumeStrategy();
             var backtestResult = tradingStrategy.BackTest(candles);
             SaveToFile(instrument.Name, backtestResult);
             return Ok(backtestResult);
+        }
+
+
+        [HttpGet("3")]
+        public IActionResult TestMethod3()
+        {
+            var instrument = _exchange.Market.FuturesUsdt.GetInstrument(new InstrumentName("LTC", "USDT"));
+            var candles = instrument.GetTimeframe(Timeframes.FourHours).GetCandles();
+            var statistics = new CandleVolumeStrategy().GetEntriesStatistics(candles);
+            return Ok(statistics.GetValue());
         }
 
 

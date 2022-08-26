@@ -12,10 +12,10 @@ namespace Trading.Exchange.Markets.Instruments.Timeframes
         private readonly IConnection _connection;
 
         public IInstrumentName InstrumentName { get; }
-        public TimeframeEnum Type { get; }
+        public Timeframes Type { get; }
         public TimeSpan Span  { get => Type.GetTimeframeTimeSpan(); }
 
-        public Timeframe(IInstrumentName instrumentName, IConnection connection, TimeframeEnum timeframe)
+        public Timeframe(IInstrumentName instrumentName, IConnection connection, Timeframes timeframe)
         {
             InstrumentName = instrumentName ?? throw new ArgumentNullException(nameof(instrumentName));                     
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));

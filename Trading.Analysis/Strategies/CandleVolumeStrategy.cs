@@ -16,7 +16,7 @@ namespace Trading.Analysis.Strategies
         {
             return Rule
                 .Create(x => x.IsDojiBar())
-                .And(x => x.IsBreakingLowestVolume(4))
+                .And(x => x.IsBreakingLowestVolume(3))
                 .And(x => x.IsBreakingLowestLow(2));
         }
 
@@ -24,7 +24,7 @@ namespace Trading.Analysis.Strategies
         {
             return Rule
                 .Create(x => x.IsDojiBar())
-                .And(x => x.IsBreakingLowestVolume(4))
+                .And(x => x.IsBreakingLowestVolume(3))
                 .And(x => x.IsBreakingHighestHigh(2));
         }
 
