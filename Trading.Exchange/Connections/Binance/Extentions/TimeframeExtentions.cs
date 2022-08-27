@@ -16,7 +16,8 @@ namespace Trading.Exchange.Connections.Binance.Extentions
             {
                 { Timeframes.OneHour, () => KlineInterval.OneHour},
                 { Timeframes.FourHours, () => KlineInterval.FourHour},
-                { Timeframes.OneDay, () => KlineInterval.OneDay}
+                { Timeframes.OneDay, () => KlineInterval.OneDay},
+                { Timeframes.ThirtyMinutes, () => KlineInterval.ThirtyMinutes }
             };
             var resolver = new Resolver<Timeframes, KlineInterval>(dictionary);
             return resolver.TryResolve(timeframe, out binanceTimeframe);
