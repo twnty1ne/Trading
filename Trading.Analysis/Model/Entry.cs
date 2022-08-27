@@ -9,20 +9,18 @@ namespace Trading.Analysis.Model
 {
     internal class Entry : IEntry
     {
-        private readonly decimal _slTreshold = 0.01m;
+        private readonly decimal _slTreshold = 0.004m;
         private readonly decimal _mathExpectation = 2m;
 
         public Entry(IIndexedOhlcv ic, Position position)
         {
-            
-            Price = ic.Open;
+            Position = position;
+            Price = ic.Next.Open;
+            Date = ic.Next.DateTime;
+            Index = ic.Index;
             StopLoss = CalculateStopLoss();
             TakeProfit = CalculateTakeProfit();
-            Date = ic.Next.DateTime;
             State = IsSucces(ic);
-            Index = ic.Index;
-            Position = position;
-
         }
 
         public decimal TakeProfit { get; private set; }
@@ -42,7 +40,6 @@ namespace Trading.Analysis.Model
             if (hitTp != null && (hitSl is null || hitSl.DateTime > hitTp.DateTime)) return EntryState.HitTakeProfit;
             if (hitSl != null && (hitTp is null || hitSl.DateTime <= hitTp.DateTime)) return EntryState.HitStopLoss;
             return EntryState.InProgress;
-
         }
 
 
@@ -64,6 +61,10 @@ namespace Trading.Analysis.Model
 
         private bool ShoulbBeSkipped(IIndexedOhlcv ic)
         {
+            if (Date.UtcDateTime == new DateTime(2022, 08, 21, 16, 0, 0, 0, DateTimeKind.Utc))
+            {
+                var i = 0;
+            }
             if(Position == Position.Long) return StopLoss > ic.Low;
             return StopLoss < ic.High;
         }

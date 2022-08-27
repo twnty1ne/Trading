@@ -11,16 +11,17 @@ namespace Trading.Analysis.Statistics
     {
         private IEnumerable<IEntry> _entries;
 
-        public StrategyEntriesStatistics(IEnumerable<IEntry> entries)
+        public StrategyEntriesStatistics(IEnumerable<IEntry> entries) 
         {
             _entries = entries ?? throw new ArgumentNullException(nameof(entries));
         }
 
         public StrategiesEntriesResult GetValue()
         {
-            
+
             return new StrategiesEntriesResult
             {
+                Entries = _entries.OrderBy(x => x.Date),
                 AmountOfEntries = _entries.Count(),
                 AmountOfProfitEntries = _entries.Where(x => x.State == EntryState.HitTakeProfit).Count(),
                 AmountOfLossEntries = _entries.Where(x => x.State == EntryState.HitStopLoss).Count(),

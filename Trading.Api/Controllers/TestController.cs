@@ -56,7 +56,7 @@ namespace Trading.Api.Controllers
         public IActionResult TestMethod3()
         {
             var instrument = _exchange.Market.FuturesUsdt.GetInstrument(new InstrumentName("LTC", "USDT"));
-            var candles = instrument.GetTimeframe(Timeframes.FourHours).GetCandles();
+            var candles = instrument.GetTimeframe(Timeframes.OneHour).GetCandles();
             var statistics = new CandleVolumeStrategy().GetEntriesStatistics(candles);
             return Ok(statistics.GetValue());
         }
