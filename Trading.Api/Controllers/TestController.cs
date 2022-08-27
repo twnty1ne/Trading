@@ -45,10 +45,8 @@ namespace Trading.Api.Controllers
         {
             var instrument = _exchange.Market.FuturesUsdt.GetInstrument(new InstrumentName("XRP", "USDT"));
             var candles = instrument.GetTimeframe(Timeframes.OneHour).GetCandles();
-            var tradingStrategy = new CandleVolumeStrategy();
-            var backtestResult = tradingStrategy.BackTest(candles);
-            SaveToFile(instrument.Name, backtestResult);
-            return Ok(backtestResult);
+            var tradingStrategy = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt);
+            return Ok();
         }
 
 
@@ -57,7 +55,7 @@ namespace Trading.Api.Controllers
         {
             var instrument = _exchange.Market.FuturesUsdt.GetInstrument(new InstrumentName("LTC", "USDT"));
             var candles = instrument.GetTimeframe(Timeframes.OneHour).GetCandles();
-            var statistics = new CandleVolumeStrategy().GetEntriesStatistics(candles);
+            var statistics = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt).GetEntriesStatistics();
             return Ok(statistics.GetValue());
         }
 
