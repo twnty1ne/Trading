@@ -52,15 +52,6 @@ namespace Trading.Api.Controllers
         }
 
 
-        [HttpGet("3")]
-        public IActionResult TestMethod3()
-        {
-            var instrument = _exchange.Market.FuturesUsdt.GetInstrument(new InstrumentName("LTC", "USDT"));
-            var candles = instrument.GetTimeframe(Timeframes.OneHour).GetCandles();
-            var statistics = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt).GetEntriesStatistics();
-            return Ok(statistics.GetValue());
-        }
-
         [HttpGet("4")]
         public IActionResult TestMethod4()
         {
@@ -68,6 +59,7 @@ namespace Trading.Api.Controllers
             {
                 StrategyMetrics.WinLossRatio
             };
+
             var entries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt).BackTest();
             var analytics = new StrategyAnalytics(entries, metrics);
             return Ok(analytics.GetResults());

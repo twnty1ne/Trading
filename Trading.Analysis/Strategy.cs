@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Trading.Analysis.Model;
 using Trady.Analysis;
 using Trady.Core.Infrastructure;
-using Trading.Exchange.Markets.Instruments.Candles;
 using Trady.Core;
-using Newtonsoft.Json;
-using System.Collections.ObjectModel;
-using Trading.Analysis.Statistics;
-using Trading.Analysis.Statistics.Results;
 using Trading.Exchange.Markets;
 using Trading.Exchange.Markets.Instruments;
 using Trading.Exchange.Markets.Instruments.Timeframes;
@@ -39,10 +33,6 @@ namespace Trading.Analysis
         protected abstract Predicate<IIndexedOhlcv> CreateSellRule();
         protected abstract Predicate<IIndexedOhlcv> CreateBuyRule();
 
-        public IStatistics<StrategiesEntriesResult> GetEntriesStatistics()
-        {
-            return new StrategyEntriesStatistics(BackTest());
-        }
 
         public IReadOnlyCollection<IEntry> BackTest()
         {
