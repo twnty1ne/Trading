@@ -44,7 +44,7 @@ namespace Trading.Analysis
             return new StrategyEntriesStatistics(BackTest());
         }
 
-        private IReadOnlyCollection<IEntry> BackTest()
+        public IReadOnlyCollection<IEntry> BackTest()
         {
             var instruments = _supportedInstruments.Select(x => _market.GetInstrument(x));
             return instruments.SelectMany(x => BackTest(x)).ToList().AsReadOnly();

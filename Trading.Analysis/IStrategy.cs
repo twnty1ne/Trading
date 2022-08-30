@@ -12,7 +12,7 @@ namespace Trading.Analysis
 {
     public interface IStrategy
     {
-        //IReadOnlyCollection<IEntry> BackTest();
+        IReadOnlyCollection<IEntry> BackTest();
         IStatistics<StrategiesEntriesResult> GetEntriesStatistics();
     }
 }

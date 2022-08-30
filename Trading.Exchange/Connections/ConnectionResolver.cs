@@ -16,7 +16,6 @@ namespace Trading.Exchange.Connections
         {
             _resolver = new Resolver<ConnectionEnum, IConnection>(GenerateDictionary());
             _credentialsProvider = credentialProvider;
-
         }
 
         public IConnection Resolve(ConnectionEnum item)
