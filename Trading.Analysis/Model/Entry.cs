@@ -61,10 +61,6 @@ namespace Trading.Analysis.Model
 
         private bool ShoulbBeSkipped(IIndexedOhlcv ic)
         {
-            if (Date.UtcDateTime == new DateTime(2022, 08, 21, 16, 0, 0, 0, DateTimeKind.Utc))
-            {
-                var i = 0;
-            }
             if(Position == Position.Long) return StopLoss > ic.Low;
             return StopLoss < ic.High;
         }

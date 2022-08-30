@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,12 +6,15 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Trading.Analysis.Model;
-using Trading.Analysis.Statistics;
 using Trading.Analysis.Strategies;
 using Trading.Exchange;
 using Trading.Exchange.Markets.Instruments;
 using Trading.Exchange.Markets.Instruments.Timeframes;
 using Trading.Shared.Files;
+using Trading.Analytics.Core.Metrics;
+using Trading.Analytics.Core;
+using Trading.Analysis.Analytics;
+using Trading.Analysis.Analytics.Metrics;
 
 namespace Trading.Api.Controllers
 {
@@ -59,6 +61,17 @@ namespace Trading.Api.Controllers
             return Ok(statistics.GetValue());
         }
 
+        [HttpGet("4")]
+        public IActionResult TestMethod4()
+        {
+            var metrics = new List<StrategyMetrics>
+            {
+                StrategyMetrics.WinLossRatio
+            };
+            var entries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt).BackTest();
+            var analytics = new StrategyAnalytics(entries, metrics);
+            return Ok(analytics.GetResults());
+        }
 
         private void SaveToFile(IInstrumentName name, IReadOnlyCollection<IEntry> entries) 
         {
