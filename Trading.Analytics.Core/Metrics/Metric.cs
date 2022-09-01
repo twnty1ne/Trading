@@ -7,17 +7,18 @@ namespace Trading.Analytics.Core.Metrics
     public class Metric<T, R> : IMetric<T, R> where R : Enum
     {
         private readonly Func<IEnumerable<T>, decimal> _selector;
-        private readonly R _type;
 
         public Metric(Func<IEnumerable<T>, decimal> selector, R type)
         {
             _selector = selector ?? throw new ArgumentNullException(nameof(selector));
-            _type = type;
+            Type = type;
         }
+
+        public R Type { get; private set; }
 
         public IMetricResult<R> GetResult(IEnumerable<T> selection)
         {
-            return new MetricResult<R>(_type, _selector.Invoke(selection));
+            return new MetricResult<R>(Type, _selector.Invoke(selection));
         }
     }
 }

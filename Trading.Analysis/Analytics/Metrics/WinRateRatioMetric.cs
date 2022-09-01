@@ -8,7 +8,7 @@ using Trading.Analytics.Core.Metrics;
 
 namespace Trading.Analysis.Analytics.Metrics
 {
-    internal class WinRateRatioMetric : IMetric<IEntry, StrategyMetrics>
+    public class WinRateRatioMetric : IMetric<IEntry, StrategyMetrics>
     {
         private readonly IMetric<IEntry, StrategyMetrics> _metric;
 

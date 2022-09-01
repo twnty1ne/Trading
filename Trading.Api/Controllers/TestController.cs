@@ -15,6 +15,7 @@ using Trading.Analytics.Core.Metrics;
 using Trading.Analytics.Core;
 using Trading.Analysis.Analytics;
 using Trading.Analysis.Analytics.Metrics;
+using Trading.Analytics.Core.SplitTesting;
 
 namespace Trading.Api.Controllers
 {
@@ -45,9 +46,10 @@ namespace Trading.Api.Controllers
         [HttpGet("1")]
         public IActionResult TestMethod1()
         {
-            var instrument = _exchange.Market.FuturesUsdt.GetInstrument(new InstrumentName("XRP", "USDT"));
-            var candles = instrument.GetTimeframe(Timeframes.OneHour).GetCandles();
-            var tradingStrategy = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt);
+            //var instrument = _exchange.Market.FuturesUsdt.GetInstrument(new InstrumentName("XRP", "USDT"));
+            //var candles = instrument.GetTimeframe(Timeframes.OneHour).GetCandles();
+            //var tradingStrategy = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt);
+            //return Ok();
             return Ok();
         }
 
@@ -55,14 +57,30 @@ namespace Trading.Api.Controllers
         [HttpGet("4")]
         public IActionResult TestMethod4()
         {
+            //var metrics = new List<StrategyMetrics>
+            //{
+            //    StrategyMetrics.WinLossRatio
+            //};
+
+            //var entries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt).BackTest();
+            //var analytics = new StrategyAnalytics(entries, metrics);
+            //return Ok(analytics.GetResults());
+            return Ok();
+        }
+
+
+        [HttpGet("5")]
+        public IActionResult TestMethod5()
+        {
             var metrics = new List<StrategyMetrics>
             {
                 StrategyMetrics.WinLossRatio
             };
 
-            var entries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt).BackTest();
-            var analytics = new StrategyAnalytics(entries, metrics);
-            return Ok(analytics.GetResults());
+            var leftEntries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt, 2m, 0.004m).BackTest();
+            var rightEntries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt, 3m, 0.01m).BackTest();
+            var ABTest = new SplitTest<IEntry, StrategyMetrics>(new List<IMetric<IEntry, StrategyMetrics>> { new WinRateRatioMetric() }, leftEntries, rightEntries);
+            return Ok(ABTest.GetDifference());
         }
 
         private void SaveToFile(IInstrumentName name, IReadOnlyCollection<IEntry> entries) 

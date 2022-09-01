@@ -2,25 +2,17 @@
 using Binance.Net.Enums;
 using Binance.Net.Interfaces;
 using Binance.Net.Interfaces.Clients;
-using CryptoExchange.Net.Authentication;
-using Newtonsoft.Json;
-using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
+using Trading.Exchange.Connections.Binance.Extentions;
 using Trading.Exchange.Markets.Instruments;
 using Trading.Exchange.Markets.Instruments.Candles;
 using Trading.Exchange.Markets.Instruments.Timeframes;
 using Trading.Exchange.Markets.Instruments.Timeframes.Extentions;
-using Trading.Infrastructure.Exchange.Connections;
-using Trading.Infrastructure.Exchange.Connections.Binance.Extentions;
 
 namespace Trading.Connections.Binance
 {
