@@ -9,11 +9,13 @@ namespace Trading.Analysis.Model
 {
     internal class Entry : IEntry
     {
-        private readonly decimal _slTreshold = 0.004m;
-        private readonly decimal _mathExpectation = 2m;
+        private readonly decimal _slTreshold;
+        private readonly decimal _mathExpectation;
 
-        public Entry(IIndexedOhlcv ic, Position position)
+        public Entry(IIndexedOhlcv ic, Position position, decimal mathExpectation, decimal slTreshold)
         {
+            _mathExpectation = mathExpectation;
+            _slTreshold = slTreshold;
             Position = position;
             Price = ic.Next.Open;
             Date = ic.Next.DateTime;

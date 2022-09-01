@@ -14,7 +14,7 @@ namespace Trading.Analysis.Strategies
 {
     public class CandleVolumeStrategy : Strategy
     {
-        public CandleVolumeStrategy(IMarket<IFuturesInstrument> market) : base(market)
+        public CandleVolumeStrategy(IMarket<IFuturesInstrument> market, decimal mathExpectation, decimal slTreshold) : base(market, mathExpectation, slTreshold)
         {
         }
 

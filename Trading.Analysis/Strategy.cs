@@ -16,18 +16,22 @@ namespace Trading.Analysis
         private readonly IMarket<IFuturesInstrument> _market;
         private readonly IReadOnlyCollection<Timeframes> _supportedTimeFrames;
         private readonly IReadOnlyCollection<IInstrumentName> _supportedInstruments;
+        private readonly decimal _slTreshold;
+        private readonly decimal _mathExpectation;
 
         protected readonly Predicate<IIndexedOhlcv> BuyRule;
         protected readonly Predicate<IIndexedOhlcv> SellRule;
-       
 
-        protected Strategy(IMarket<IFuturesInstrument> market)
+
+        protected Strategy(IMarket<IFuturesInstrument> market, decimal mathExpectation, decimal slTreshold)
         {
             BuyRule = CreateBuyRule();
             SellRule = CreateSellRule();
             _supportedInstruments = CreateSupportedInstrumentsList();
             _supportedTimeFrames = CreateSupportedTimeframesList();
             _market = market ?? throw new ArgumentNullException(nameof(market));
+            _mathExpectation = mathExpectation;
+            _slTreshold = slTreshold;
         }
 
         protected abstract Predicate<IIndexedOhlcv> CreateSellRule();
@@ -51,11 +55,11 @@ namespace Trading.Analysis
         {
             var candles = timeframe.GetCandles();
             using var analyzeContext = new AnalyzeContext(candles.Select(x => new Candle(new DateTimeOffset(x.OpenTime), x.Open, x.High, x.Low, x.Close, x.Volume)));
-            var shortEntryCandles = new SimpleRuleExecutor(analyzeContext, SellRule).Execute(candles.Count() - 2000);
-            var longEntryCandles = new SimpleRuleExecutor(analyzeContext, BuyRule).Execute(candles.Count() - 2000);
+            var shortEntryCandles = new SimpleRuleExecutor(analyzeContext, SellRule).Execute(candles.Count() - 200);
+            var longEntryCandles = new SimpleRuleExecutor(analyzeContext, BuyRule).Execute(candles.Count() - 200);
             var result = new List<Entry>();
-            var longEntries = SelectEntries(longEntryCandles, Position.Long);
-            var shortEntries = SelectEntries(shortEntryCandles, Position.Short);
+            var longEntries = SelectEntries(longEntryCandles.Where(x => x.Next != null), Position.Long);
+            var shortEntries = SelectEntries(shortEntryCandles.Where(x => x.Next != null), Position.Short);
             result.AddRange(longEntries.SelectMany(x => x.AsEnumerable()));
             result.AddRange(shortEntries.SelectMany(x => x.AsEnumerable()));
             return result.AsReadOnly();
@@ -63,7 +67,7 @@ namespace Trading.Analysis
 
         private IEnumerable<IGrouping<EntryState, Entry>> SelectEntries(IEnumerable<IIndexedOhlcv> ic, Position position)
         {
-            var entries = ic.Select(x => new Entry(x, position)).ToList();
+            var entries = ic.Select(x => new Entry(x, position, _mathExpectation, _slTreshold)).ToList();
             return entries.GroupBy(x => x.State);
         }
 
@@ -72,9 +76,9 @@ namespace Trading.Analysis
             return new List<IInstrumentName>
             {
                 new InstrumentName("XRP", "USDT"),
-                new InstrumentName("LTC", "USDT"),
-                new InstrumentName("ETH", "USDT"),
-                new InstrumentName("ETC", "USDT")
+                //new InstrumentName("LTC", "USDT"),
+                //new InstrumentName("ETH", "USDT"),
+                //new InstrumentName("ETC", "USDT")
             };
         }
 
@@ -82,9 +86,9 @@ namespace Trading.Analysis
         {
             return new List<Timeframes>
             {
-                Timeframes.FourHours,
+                //Timeframes.FourHours,
                 Timeframes.OneHour,
-                Timeframes.ThirtyMinutes
+                //Timeframes.ThirtyMinutes
             };
         }
 
