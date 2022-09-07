@@ -8,6 +8,6 @@ namespace Trading.Analytics.Core
     public interface IAnalytics<T, R> where R : Enum
     {
         IEnumerable<IMetricResult<R>> GetResults();
-        IReadOnlyCollection<MetricDifference<R>> Differentiate(IAnalytics<T, R> anotherAnalitics);
+        IReadOnlyCollection<MetricDifference_T<R>> Differentiate(IAnalytics<T, R> anotherAnalitics);
     }
 }
