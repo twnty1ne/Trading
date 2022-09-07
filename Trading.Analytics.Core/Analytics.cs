@@ -8,20 +8,20 @@ namespace Trading.Analytics.Core
 {
     public class Analytics<T, R> : IAnalytics<T, R> where R : Enum
     {
-        private readonly IReadOnlyCollection<T> _selection;
+        private readonly ISelection<T> _selection;
         private readonly IReadOnlyCollection<IMetric<T, R>> _metrics;
 
-        public Analytics(IReadOnlyCollection<T> selection, IReadOnlyCollection<IMetric<T, R>> metrics)
+        public Analytics(ISelection<T> selection, IReadOnlyCollection<IMetric<T, R>> metrics)
         {
             _selection = selection ?? throw new ArgumentNullException(nameof(selection));
             _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
         }
 
-        public IReadOnlyCollection<MetricDifference<R>> Differentiate(IAnalytics<T, R> anotherAnalitics)
+        public IReadOnlyCollection<MetricDifference_T<R>> Differentiate(IAnalytics<T, R> anotherAnalitics)
         {
             var result1 = anotherAnalitics.GetResults();
             var result2 = GetResults();
-            return result1.Select(x => new MetricDifference<R>(x, result2.FirstOrDefault(y => y.Type.Equals(x.Type)))).ToList().AsReadOnly();
+            return result1.Select(x => new MetricDifference_T<R>(x, result2.FirstOrDefault(y => y.Type.Equals(x.Type)))).ToList().AsReadOnly();
         }
 
         public IEnumerable<IMetricResult<R>> GetResults()

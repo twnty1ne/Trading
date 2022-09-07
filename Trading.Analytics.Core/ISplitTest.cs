@@ -5,8 +5,11 @@ using Trading.Analytics.Core.Metrics;
 
 namespace Trading.Analytics.Core
 {
-    public interface ISplitTest<T, R> where R : Enum
+    public interface ISplitTest<T, R, TParameter> 
+        where R : Enum
+        where TParameter : Enum
     {
-        IReadOnlyCollection<MetricDifference<R>> GetDifference();
+        SplitTestResult<T, R, TParameter> GetDifference();
+        ISelection<TParameter, T> GetOptimal();
     }
 }

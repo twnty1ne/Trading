@@ -30,7 +30,8 @@ namespace Trading.Analysis.Analytics.Metrics
         {
             return new Dictionary<StrategyMetrics, Func<IMetric<IEntry, StrategyMetrics>>>
             {
-                { StrategyMetrics.WinLossRatio, () => new WinRateRatioMetric()}
+                { StrategyMetrics.WinLossRatio, () => new WinRateRatioMetric() },
+                { StrategyMetrics.TotalNumberOfEntries, () => new TotalNumberOfEntriesMetric()}
             };
 
         }

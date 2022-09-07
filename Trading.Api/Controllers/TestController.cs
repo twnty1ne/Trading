@@ -79,8 +79,76 @@ namespace Trading.Api.Controllers
 
             var leftEntries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt, 2m, 0.004m).BackTest();
             var rightEntries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt, 3m, 0.01m).BackTest();
-            var ABTest = new SplitTest<IEntry, StrategyMetrics>(new List<IMetric<IEntry, StrategyMetrics>> { new WinRateRatioMetric() }, leftEntries, rightEntries);
-            return Ok(ABTest.GetDifference());
+            var splitTest = new SplitTest<IEntry, StrategyMetrics, EntryParameters>(new List<IEstimationParameter<IEntry, StrategyMetrics>> 
+            { 
+                new EstimationParameter<IEntry, StrategyMetrics>(new WinRateRatioMetric(), Importance.ExtraHigh, EstimationWays.HigherTheBetter, 0m, 1m),
+                new EstimationParameter<IEntry, StrategyMetrics>(new TotalNumberOfEntriesMetric(), Importance.ExtraHigh, EstimationWays.HigherTheBetter, 0m, 1000m),
+            }, 
+                new Selection<EntryParameters, IEntry>(new List<IParameter<EntryParameters, decimal>> 
+                {
+                    new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.004m),
+                    new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 2m)
+                }, 
+                leftEntries),
+                new Selection<EntryParameters, IEntry>(new List<IParameter<EntryParameters, decimal>>
+                {
+                    new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.01m),
+                    new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 3m)
+                },
+                rightEntries)
+
+            );;
+            return Ok(splitTest.GetDifference());
+        }
+
+
+        [HttpGet("6")]
+        public IActionResult TestMethod6()
+        {
+            var metrics = new List<StrategyMetrics>
+            {
+                StrategyMetrics.WinLossRatio
+            };
+
+            var leftEntries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt, 2m, 0.004m).BackTest();
+            var splitTest = new CompositeSplitTest<IEntry, StrategyMetrics, EntryParameters>(new List<IEstimationParameter<IEntry, StrategyMetrics>>
+            {
+                new EstimationParameter<IEntry, StrategyMetrics>(new WinRateRatioMetric(), Importance.ExtraHigh, EstimationWays.HigherTheBetter, 0m, 1m),
+                new EstimationParameter<IEntry, StrategyMetrics>(new TotalNumberOfEntriesMetric(), Importance.Low, EstimationWays.HigherTheBetter, 0m, 1000m),
+                new EstimationParameter<IEntry, StrategyMetrics>(new Metric<IEntry, StrategyMetrics>(x
+                => x.Data.Average(x => x.StopLoss), StrategyMetrics.AverageStopLoss), Importance.ExtraLow, EstimationWays.HigherTheBetter, 0m, 1000m)
+            },
+            new List<ISelection<EntryParameters, IEntry>>
+            {
+                new Selection<EntryParameters, IEntry>(new List<IParameter<EntryParameters, decimal>>
+                {
+                    new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.004m),
+                    new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 2m)
+                },
+                leftEntries),
+                new Selection<EntryParameters, IEntry>(new List<IParameter<EntryParameters, decimal>>
+                {
+                    new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.06m),
+                    new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 7m)
+                },
+                leftEntries.Where(x => x.State != EntryState.HitTakeProfit).ToList()),
+                new Selection<EntryParameters, IEntry>(new List<IParameter<EntryParameters, decimal>>
+                {
+                    new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.003m),
+                    new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 8m)
+                },
+                leftEntries.Where(x => x.State != EntryState.HitStopLoss).ToList()),
+                new Selection<EntryParameters, IEntry>(new List<IParameter<EntryParameters, decimal>>
+                {
+                    new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.08m),
+                    new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 3m)
+                },
+                leftEntries.Where(x => x.State != EntryState.Skipped).ToList())
+            }
+
+
+            );
+            return Ok(splitTest.GetOptimal());
         }
 
         private void SaveToFile(IInstrumentName name, IReadOnlyCollection<IEntry> entries) 
