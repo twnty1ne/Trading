@@ -17,7 +17,9 @@ namespace Trading.Analysis.Analytics.Metrics
             _metric = CreateMetric();
         }
 
-        public IMetricResult<StrategyMetrics> GetResult(IEnumerable<IEntry> selection)
+        public StrategyMetrics Type  { get => _metric.Type; }
+
+        public IMetricResult<StrategyMetrics> GetResult(ISelection<IEntry> selection)
         {
             return _metric.GetResult(selection);
         }
@@ -27,12 +29,12 @@ namespace Trading.Analysis.Analytics.Metrics
             return new Metric<IEntry, StrategyMetrics>(CreateSelector(), StrategyMetrics.WinLossRatio);
         }
 
-        private Func<IEnumerable<IEntry>, decimal> CreateSelector() 
+        private Func<ISelection<IEntry>, decimal> CreateSelector() 
         {
             return x =>
             {
-                var amountOfWinEntries = Convert.ToDecimal(x.Where(x => x.State == EntryState.HitTakeProfit).Count());
-                var amountOfLossEntries = Convert.ToDecimal(x.Where(x => x.State == EntryState.HitStopLoss).Count());
+                var amountOfWinEntries = Convert.ToDecimal(x.Data.Where(x => x.State == EntryState.HitTakeProfit).Count());
+                var amountOfLossEntries = Convert.ToDecimal(x.Data.Where(x => x.State == EntryState.HitStopLoss).Count());
                 if (amountOfWinEntries == 0) return decimal.Zero;
                 if (amountOfLossEntries == 0) return 1m;
                 return amountOfWinEntries / (amountOfLossEntries + amountOfWinEntries); 

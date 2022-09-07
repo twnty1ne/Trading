@@ -4,18 +4,24 @@ using System.Text;
 
 namespace Trading.Analytics.Core.Metrics
 {
-    public class MetricDifference<R> where R : Enum
+    internal class MetricDifference<T, R> : IMetric<T, R> where R : Enum
     {
-        public MetricDifference(IMetricResult<R> leftMetric, IMetricResult<R> rightMetric)
+        private readonly ISelection<T> _innerSelection;
+        private readonly IMetric<T, R> _innerMetric;
+
+        public MetricDifference(ISelection<T> selection, IMetric<T, R> innerMetric)
         {
-            LeftMetric = leftMetric ?? throw new ArgumentNullException(nameof(leftMetric));
-            RightMetric = rightMetric ?? throw new ArgumentNullException(nameof(rightMetric));
+            _innerSelection = selection ?? throw new ArgumentNullException(nameof(selection));
+            _innerMetric = innerMetric ?? throw new ArgumentNullException(nameof(innerMetric));
         }
 
-        public IMetricResult<R> LeftMetric { get; private set; }
-        public IMetricResult<R> RightMetric { get; private set; }
+        public R Type { get => _innerMetric.Type; }
 
-        public decimal LeftFromRightDifference { get => LeftMetric.Value - RightMetric.Value; }
-        public decimal RightFromLeftFromRightDifference { get => RightMetric.Value - LeftMetric.Value; }
+        public IMetricResult<R> GetResult(ISelection<T> selection)
+        {
+            var innerSelectionResult = _innerMetric.GetResult(_innerSelection);
+            var outterSelectionResult = _innerMetric.GetResult(selection);
+            return new MetricResult<R>(_innerMetric.Type, outterSelectionResult.Value - innerSelectionResult.Value);
+        }
     }
 }

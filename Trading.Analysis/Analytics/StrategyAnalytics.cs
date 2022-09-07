@@ -13,12 +13,12 @@ namespace Trading.Analysis.Analytics
     {
         private readonly IAnalytics<IEntry, StrategyMetrics> _analytics;
 
-        public StrategyAnalytics(IReadOnlyCollection<IEntry> selection, IEnumerable<StrategyMetrics> metrics)
+        public StrategyAnalytics(ISelection<IEntry> selection, IEnumerable<StrategyMetrics> metrics)
         {
             _analytics = new Analytics<IEntry, StrategyMetrics>(selection, metrics.Select(x => new MetricsResolver().Resolve(x)).ToList().AsReadOnly());
         }
 
-        public IReadOnlyCollection<MetricDifference<StrategyMetrics>> Differentiate(IAnalytics<IEntry, StrategyMetrics> anotherAnalitics)
+        public IReadOnlyCollection<MetricDifference_T<StrategyMetrics>> Differentiate(IAnalytics<IEntry, StrategyMetrics> anotherAnalitics)
         {
             return _analytics.Differentiate(anotherAnalitics);
         }
