@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Shared", "Trading.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Analysis", "Trading.Analysis\Trading.Analysis.csproj", "{3F5C1F3F-302B-44BA-A5AB-76831A9F561E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading.Analytics.Core", "Trading.Analytics.Core\Trading.Analytics.Core.csproj", "{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Researching.Core", "Trading.Analytics.Core\Trading.Researching.Core.csproj", "{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

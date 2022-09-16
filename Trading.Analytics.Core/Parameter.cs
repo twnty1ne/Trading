@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Trading.Analytics.Core
+namespace Trading.Researching.Core
 {
     public class Parameter<TType, TValue> : IParameter<TType, TValue> where TType : Enum
     {
