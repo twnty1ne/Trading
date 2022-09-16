@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Trading.Analytics.Core\Trading.Analytics.Core.csproj" />
+    <ProjectReference Include="..\Trading.Analytics.Core\Trading.Researching.Core.csproj" />
     <ProjectReference Include="..\Trading.Exchange\Trading.Exchange.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Trading.Analytics.Core
+namespace Trading.Researching.Core
 {
     public interface IParameter<TType, TValue> where TType : Enum
     {

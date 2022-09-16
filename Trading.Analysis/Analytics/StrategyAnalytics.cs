@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using Trading.Analysis.Analytics.Metrics;
 using Trading.Analysis.Model;
-using Trading.Analytics.Core;
-using Trading.Analytics.Core.Metrics;
+using Trading.Researching.Core;
+using Trading.Researching.Core.Analytics.Metrics;
 
 namespace Trading.Analysis.Analytics
 {
@@ -16,11 +16,6 @@ namespace Trading.Analysis.Analytics
         public StrategyAnalytics(ISelection<IEntry> selection, IEnumerable<StrategyMetrics> metrics)
         {
             _analytics = new Analytics<IEntry, StrategyMetrics>(selection, metrics.Select(x => new MetricsResolver().Resolve(x)).ToList().AsReadOnly());
-        }
-
-        public IReadOnlyCollection<MetricDifference_T<StrategyMetrics>> Differentiate(IAnalytics<IEntry, StrategyMetrics> anotherAnalitics)
-        {
-            return _analytics.Differentiate(anotherAnalitics);
         }
 
         public IEnumerable<IMetricResult<StrategyMetrics>> GetResults()

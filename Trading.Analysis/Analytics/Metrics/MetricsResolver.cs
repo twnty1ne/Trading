@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Trading.Analysis.Model;
-using Trading.Analytics.Core;
+using Trading.Researching.Core;
+using Trading.Researching.Core.Analytics.Metrics;
 using Trading.Shared.Resolvers;
 
 namespace Trading.Analysis.Analytics.Metrics

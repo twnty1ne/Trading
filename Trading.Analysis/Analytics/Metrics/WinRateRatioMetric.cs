@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Trading.Analysis.Model;
-using Trading.Analytics.Core;
-using Trading.Analytics.Core.Metrics;
+using Trading.Researching.Core;
+using Trading.Researching.Core.Analytics.Metrics;
 
 namespace Trading.Analysis.Analytics.Metrics
 {

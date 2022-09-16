@@ -1,8 +1,8 @@
 ﻿using System;
 using Trading.Analysis.Model;
-using Trading.Analytics.Core;
-using Trading.Analytics.Core.Metrics;
+using Trading.Researching.Core;
 using System.Linq;
+using Trading.Researching.Core.Analytics.Metrics;
 
 namespace Trading.Analysis.Analytics.Metrics
 {
