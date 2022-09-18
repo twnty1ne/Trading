@@ -14,7 +14,8 @@ namespace Trading.Exchange.Markets.Instruments.Timeframes.Extentions
             {
                 { Timeframes.OneHour, 60.00 },
                 { Timeframes.FourHours, 240.00 },
-                { Timeframes.OneDay, 1440.00 }
+                { Timeframes.OneDay, 1440.00 },
+                { Timeframes.ThirtyMinutes, 30 }
             };
             return TimeSpan.FromMinutes(dictionary.GetValueOrDefault(timeframe));
         }

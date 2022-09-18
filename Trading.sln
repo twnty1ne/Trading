@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Exchange", "Trading
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Shared", "Trading.Shared\Trading.Shared.csproj", "{95CC69B3-D4F4-447B-8276-D66961F903A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading.Analysis", "Trading.Analysis\Trading.Analysis.csproj", "{3F5C1F3F-302B-44BA-A5AB-76831A9F561E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Analysis", "Trading.Analysis\Trading.Analysis.csproj", "{3F5C1F3F-302B-44BA-A5AB-76831A9F561E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Researching.Core", "Trading.Analytics.Core\Trading.Researching.Core.csproj", "{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3F5C1F3F-302B-44BA-A5AB-76831A9F561E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F5C1F3F-302B-44BA-A5AB-76831A9F561E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F5C1F3F-302B-44BA-A5AB-76831A9F561E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

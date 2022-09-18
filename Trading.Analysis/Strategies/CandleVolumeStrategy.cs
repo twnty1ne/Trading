@@ -6,12 +6,18 @@ using Trady.Analysis.Candlestick;
 using Trady.Core.Infrastructure;
 using Trading.Analysis.Extentions;
 using Trady.Analysis.Extension;
-using Trady.Analysis.Backtest; 
+using Trady.Analysis.Backtest;
+using Trading.Exchange.Markets;
+using Trading.Exchange.Markets.Instruments;
 
 namespace Trading.Analysis.Strategies
 {
     public class CandleVolumeStrategy : Strategy
     {
+        public CandleVolumeStrategy(IMarket<IFuturesInstrument> market, decimal mathExpectation, decimal slTreshold) : base(market, mathExpectation, slTreshold)
+        {
+        }
+
         protected override Predicate<IIndexedOhlcv> CreateBuyRule()
         {
             return Rule

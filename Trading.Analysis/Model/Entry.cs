@@ -9,20 +9,20 @@ namespace Trading.Analysis.Model
 {
     internal class Entry : IEntry
     {
-        private readonly decimal _slTreshold = 0.01m;
-        private readonly decimal _mathExpectation = 2m;
+        private readonly decimal _slTreshold;
+        private readonly decimal _mathExpectation;
 
-        public Entry(IIndexedOhlcv ic, Position position)
+        public Entry(IIndexedOhlcv ic, Position position, decimal mathExpectation, decimal slTreshold)
         {
-            
-            Price = ic.Open;
+            _mathExpectation = mathExpectation;
+            _slTreshold = slTreshold;
+            Position = position;
+            Price = ic.Next.Open;
+            Date = ic.Next.DateTime;
+            Index = ic.Index;
             StopLoss = CalculateStopLoss();
             TakeProfit = CalculateTakeProfit();
-            Date = ic.Next.DateTime;
             State = IsSucces(ic);
-            Index = ic.Index;
-            Position = position;
-
         }
 
         public decimal TakeProfit { get; private set; }
@@ -35,17 +35,37 @@ namespace Trading.Analysis.Model
 
         private EntryState IsSucces(IIndexedOhlcv ic) 
         {
-            var nextCandle = ic.Next;
-            var allCandlesAfter = nextCandle.BackingList.Where(x => x.DateTime > nextCandle.DateTime).OrderBy(x => x.DateTime);
-            var hitTp = allCandlesAfter.FirstOrDefault(x => x.High >= TakeProfit);
-            var hitSl = allCandlesAfter.FirstOrDefault(x => x.Low <= StopLoss);
-            if (StopLoss > ic.Low) return EntryState.Skipped;
+
+            var hitTp = GetTakeProfitCandle(ic);
+            var hitSl = GetStopLossCandle(ic);
+            if (ShoulbBeSkipped(ic)) return EntryState.Skipped;
             if (hitTp != null && (hitSl is null || hitSl.DateTime > hitTp.DateTime)) return EntryState.HitTakeProfit;
             if (hitSl != null && (hitTp is null || hitSl.DateTime <= hitTp.DateTime)) return EntryState.HitStopLoss;
             return EntryState.InProgress;
-
         }
 
+
+        private IOhlcv GetTakeProfitCandle(IIndexedOhlcv ic) 
+        {
+            var nextCandle = ic.Next;
+            var allCandlesAfter = nextCandle.BackingList.Where(x => x.DateTime > nextCandle.DateTime).OrderBy(x => x.DateTime);
+            if(Position == Position.Long) return allCandlesAfter.FirstOrDefault(x => x.High >= TakeProfit);
+            return allCandlesAfter.FirstOrDefault(x => x.Low <= TakeProfit); ;
+        }
+
+        private IOhlcv GetStopLossCandle(IIndexedOhlcv ic)
+        {
+            var nextCandle = ic.Next;
+            var allCandlesAfter = nextCandle.BackingList.Where(x => x.DateTime > nextCandle.DateTime).OrderBy(x => x.DateTime);
+            if (Position == Position.Long) return allCandlesAfter.FirstOrDefault(x => x.Low <= StopLoss);
+            return allCandlesAfter.FirstOrDefault(x => x.High >= StopLoss);
+        }
+
+        private bool ShoulbBeSkipped(IIndexedOhlcv ic)
+        {
+            if(Position == Position.Long) return StopLoss > ic.Low;
+            return StopLoss < ic.High;
+        }
 
         private decimal CalculateStopLoss() 
         {
