@@ -7,6 +7,8 @@ namespace Trading.Exchange.Markets.Instruments.Timeframes
 {
     public interface ITimeframe
     {
+        event EventHandler<IReadOnlyCollection<ICandle>> OnCandleClosed;
+
         IInstrumentName InstrumentName { get; }
         Timeframes Type { get; }
         TimeSpan Span { get; }
