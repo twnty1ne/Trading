@@ -1,23 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using Trading.Analysis.Analytics;
-using Trading.Analysis.Analytics.Metrics;
-using Trading.Analysis.Model;
-using Trading.Analysis.Strategies;
+using Telegram.Bot;
+using Telegram.Bot.Types;
+using Trading.Bot;
 using Trading.Exchange;
 using Trading.Exchange.Markets.Instruments;
 using Trading.Exchange.Markets.Instruments.Timeframes;
-using Trading.Researching.Core;
-using Trading.Researching.Core.Analytics;
-using Trading.Researching.Core.DecisionMaking;
-using Trading.Researching.Core.DecisionMaking.Agorithms.AnalyticHierarchyProcess.Building;
-using Trading.Researching.Core.DecisionMaking.Building;
-using Trading.Shared.Files;
 
 namespace Trading.Api.Controllers
 {
@@ -26,10 +18,12 @@ namespace Trading.Api.Controllers
     public class TestController : ControllerBase
     {
         private readonly IExchange _exchange;
+        private readonly IBot _bot;
 
-        public TestController(IExchange exchange)
+        public TestController(IExchange exchange, IBot bot)
         {
             _exchange = exchange;
+            _bot = bot;
         }
 
         [HttpGet]
@@ -157,49 +151,71 @@ namespace Trading.Api.Controllers
         [HttpGet("7")]
         public IActionResult TestMethod7()
         {
-            var leftEntries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt, 2m, 0.004m).BackTest();
-            var builder = new DecisionMakingBuilder<IEntry, StrategyMetrics, EntryParameters>();
-            var dm = builder
-                .AnalyticHierarchyProcess()
-                .Criterias()
-                .HasCriteria(new WinRateRatioMetric(), 0, 1)
-                .HigherTheBetter()
-                .WithImportanceLevel(Importance.ExtraHigh)
-                .HasCriteria(new TotalNumberOfEntriesMetric(), 0, 100)
-                .HigherTheBetter()
-                .WithImportanceLevel(Importance.High)
-                .Alternatives()
-                .HasAlternative(leftEntries)
-                .WithParameters(new List<IParameter<EntryParameters, decimal>> 
-                {
-                    new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.007m),
-                    new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 3m)
-                })
-                .HasAlternative(leftEntries.Where(x => x.State == EntryState.HitStopLoss).ToList())
-                .WithParameters(new List<IParameter<EntryParameters, decimal>>
-                {
-                    new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.003m),
-                    new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 3m)
-                })
-                .HasAlternative(leftEntries.Where(x => x.State == EntryState.HitTakeProfit).ToList())
-                .WithParameters(new List<IParameter<EntryParameters, decimal>>
-                {
-                    new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.007m),
-                    new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 2m)
-                })
-                .LastOne()
-                .Build();
-            var dec = dm.Decide();
+            //var leftEntries = new CandleVolumeStrategy(_exchange.Market.FuturesUsdt, 2m, 0.004m).BackTest();
+            //var builder = new DecisionMakingBuilder<IEntry, StrategyMetrics, EntryParameters>();
+            //var dm = builder
+            //    .AnalyticHierarchyProcess()
+            //    .Criterias()
+            //    .HasCriteria(new WinRateRatioMetric(), 0, 1)
+            //    .HigherTheBetter()
+            //    .WithImportanceLevel(Importance.ExtraHigh)
+            //    .HasCriteria(new TotalNumberOfEntriesMetric(), 0, 100)
+            //    .HigherTheBetter()
+            //    .WithImportanceLevel(Importance.High)
+            //    .Alternatives()
+            //    .HasAlternative(leftEntries)
+            //    .WithParameters(new List<IParameter<EntryParameters, decimal>> 
+            //    {
+            //        new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.007m),
+            //        new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 3m)
+            //    })
+            //    .HasAlternative(leftEntries.Where(x => x.State == EntryState.HitStopLoss).ToList())
+            //    .WithParameters(new List<IParameter<EntryParameters, decimal>>
+            //    {
+            //        new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.003m),
+            //        new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 3m)
+            //    })
+            //    .HasAlternative(leftEntries.Where(x => x.State == EntryState.HitTakeProfit).ToList())
+            //    .WithParameters(new List<IParameter<EntryParameters, decimal>>
+            //    {
+            //        new Parameter<EntryParameters, decimal>(EntryParameters.StopLossTreshold, 0.007m),
+            //        new Parameter<EntryParameters, decimal>(EntryParameters.RiskRescue, 2m)
+            //    })
+            //    .LastOne()
+            //    .Build();
+            //var dec = dm.Decide();
             return Ok();  
         }
 
 
-        private void SaveToFile(IInstrumentName name, IReadOnlyCollection<IEntry> entries) 
+        [HttpGet("8")]
+        public IActionResult TestMethod8()
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "BacktestResults", $"{name.GetFullName()}_{DateTime.UtcNow.Ticks}.txt");
-            var jsonValue = JsonConvert.SerializeObject(entries, Formatting.Indented);
-            var file = new LocalFile(path, jsonValue);
-            file.SaveImmutable();
+            _bot.Session.OnStopped += (x, y) => Debug.WriteLine(JsonConvert.SerializeObject(y, Formatting.Indented));
+            _bot.Session.Start();
+            return Ok();
+        }
+
+
+        [HttpGet("9")]
+        public IActionResult TestMethod9()
+        {
+            var sb = new StringBuilder()
+                .AppendLine("Instrument: XRPUSDT")
+                .AppendLine("Side: Short")
+                .AppendLine("SL: 0,4355352")
+                .AppendLine("TP: 0,4268592")
+                .AppendLine("Price: 0,4338");
+            var bot = new TelegramBotClient("5730777041:AAEB8X_UIbVFIkI5JaX1MBKcN_JMQg6-FWY").SendTextMessageAsync(new ChatId(-1001636388029), sb.ToString()).GetAwaiter().GetResult();
+            return Ok(bot);
+        }
+
+
+        [HttpGet("10")]
+        public IActionResult TestMethod10()
+        {
+            _bot.Session.Stop();
+            return Ok();
         }
     }
 }

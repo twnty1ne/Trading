@@ -11,5 +11,6 @@ namespace Trading.Exchange.Connections
     public interface IConnection
     {
         Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe);
+        IInstrumentSocketConnection GetInstrumentSocketConnection(IInstrumentName name);
     }
 }

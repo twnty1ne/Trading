@@ -4,10 +4,12 @@ using Binance.Net.Interfaces;
 using Binance.Net.Interfaces.Clients;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
+using Trading.Exchange.Connections.Binance;
 using Trading.Exchange.Connections.Binance.Extentions;
 using Trading.Exchange.Markets.Instruments;
 using Trading.Exchange.Markets.Instruments.Candles;
@@ -19,11 +21,11 @@ namespace Trading.Connections.Binance
     public sealed class BinanceConnection : BaseConnection
     {
         private readonly IBinanceClient _client = new BinanceClient();
+        private readonly IBinanceSocketClient _socketClient = new BinanceSocketClient();
 
         public BinanceConnection(ICredentialsProvider credentialProvider) : base(credentialProvider, ConnectionEnum.Binance)
         {
         }
-
 
         public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
         {
@@ -47,5 +49,9 @@ namespace Trading.Connections.Binance
             return result.OrderBy(x => x.CloseTime).Select(x => new Candle(x.OpenPrice, x.ClosePrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenTime, x.CloseTime)).ToList().AsReadOnly();
         }
 
+        public override IInstrumentSocketConnection GetInstrumentSocketConnection(IInstrumentName name) 
+        {
+            return new BinanceInstrumentSocketConnection(name, _socketClient);
+        }
     }
 } 
