@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Analysis", "Trading
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading.Researching.Core", "Trading.Analytics.Core\Trading.Researching.Core.csproj", "{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading.Bot", "Trading.Bot\Trading.Bot.csproj", "{7D85C552-CDD0-4536-8C60-8810CA05CB50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F78DE63-7B4A-4F2C-ADC7-7029D713594F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D85C552-CDD0-4536-8C60-8810CA05CB50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D85C552-CDD0-4536-8C60-8810CA05CB50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D85C552-CDD0-4536-8C60-8810CA05CB50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D85C552-CDD0-4536-8C60-8810CA05CB50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

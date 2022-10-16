@@ -9,6 +9,7 @@ namespace Trading.Exchange.Markets.Instruments.Timeframes
         OneDay = 1,
         FourHours = 2,
         OneHour = 3,
-        ThirtyMinutes = 4
+        ThirtyMinutes = 4,
+        FiveMinutes = 5
     }
 }

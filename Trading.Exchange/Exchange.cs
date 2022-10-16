@@ -11,15 +11,14 @@ namespace Trading.Exchange
 {
     public class Exchange : IExchange
     {
-        public IMarket Market { get; private set; }
-
         private readonly IConnection _connection;
 
         public Exchange(IOptions<Options> options, ICredentialsProvider credentialsProvider)
         {
             _connection = new ConnectionResolver(credentialsProvider).Resolve(options.Value.ConnectionType);
-            Market = new MarketRoot(_connection);
-
+            Market = new Market(_connection);
         }
+
+        public IMarket Market { get; }
     }
 }

@@ -23,7 +23,7 @@ namespace Trading.Exchange.Connections
             _credentialsProvider = credentialProvider ?? throw new ArgumentNullException(nameof(credentialProvider));
             Credentials = _credentialsProvider.GetCredentials();
         }
-
         public abstract Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe);
+        public abstract IInstrumentSocketConnection GetInstrumentSocketConnection(IInstrumentName name);
     }
 }

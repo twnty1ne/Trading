@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Trading.Analysis\Trading.Analysis.csproj" />
     <ProjectReference Include="..\Trading.Analytics.Core\Trading.Researching.Core.csproj" />
+    <ProjectReference Include="..\Trading.Bot\Trading.Bot.csproj" />
     <ProjectReference Include="..\Trading.Exchange\Trading.Exchange.csproj" />
   </ItemGroup>
 
@@ -14,6 +15,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />
+    <PackageReference Include="Telegram.Bot" Version="18.0.0" />
   </ItemGroup>
 
   <ItemGroup>
