@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Trading.Bot.Strategies;
 
-namespace Trading.Bot.Sessions.RealTime
+namespace Trading.Bot.Sessions.Realtime
 {
-    internal class RealTimeTradingSession : ITradingSession
+    internal class RealtimeTradingSession : ITradingSession
     {
-        public RealTimeTradingSession()
+        public RealtimeTradingSession()
         {
         }
 

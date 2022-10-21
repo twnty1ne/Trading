@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using Trading.Bot.Strategies;
 using Trading.Exchange;
 
-namespace Trading.Bot.Sessions.ForwardTest
+namespace Trading.Bot.Sessions.Forwardtest
 {
-    internal class ForwardTestSession : ITradingSession
+    internal class ForwardtestSession : ITradingSession
     {
         private readonly ITradingSession _session;
 
-        public ForwardTestSession(IExchange exchange, Strategies.Strategies strategy)
+        public ForwardtestSession(IExchange exchange, Strategies.Strategies strategy)
         {
             _ = exchange ?? throw new ArgumentNullException(nameof(exchange));
-            _session = new TradingSession(new ForwardTestSessionAbstractFactory(exchange, strategy));
+            _session = new TradingSession(new ForwardtestSessionAbstractFactory(exchange, strategy));
         }
 
         public event EventHandler<IReadOnlyCollection<ISignal>> OnStopped;

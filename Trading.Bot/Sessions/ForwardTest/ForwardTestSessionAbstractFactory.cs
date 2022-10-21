@@ -6,15 +6,15 @@ using Trading.Exchange.Markets;
 using Trading.Exchange.Markets.Instruments;
 using Trading.Shared.Resolvers;
 
-namespace Trading.Bot.Sessions.ForwardTest
+namespace Trading.Bot.Sessions.Forwardtest
 {
-    internal class ForwardTestSessionAbstractFactory : ISessionAbstractFactory
+    internal class ForwardtestSessionAbstractFactory : ISessionAbstractFactory
     {
         private readonly IExchange _exchange;
         private readonly Strategies.Strategies _strategy;
         private readonly IResolver<Strategies.Strategies, IStrategy> _strategyResolver;
 
-        public ForwardTestSessionAbstractFactory(IExchange exchange, Strategies.Strategies strategy)
+        public ForwardtestSessionAbstractFactory(IExchange exchange, Strategies.Strategies strategy)
         {
             _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
             _strategy = strategy;

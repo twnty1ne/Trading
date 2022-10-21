@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Sessions\ForwardTest\AdvisingSession.cs~RFb267e.TMP" />
+    <None Remove="Sessions\Forwardtest\AdvisingSession.cs~RFb267e.TMP" />
   </ItemGroup>
 
   <ItemGroup>

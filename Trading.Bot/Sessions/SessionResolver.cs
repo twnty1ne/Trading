@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Trading.Bot.Sessions.BackTest;
-using Trading.Bot.Sessions.ForwardTest;
-using Trading.Bot.Sessions.RealTime;
-using Trading.Bot.Strategies;
+using Trading.Bot.Sessions.Backtest;
+using Trading.Bot.Sessions.Forwardtest;
+using Trading.Bot.Sessions.Realtime;
 using Trading.Exchange;
 using Trading.Shared.Resolvers;
 
@@ -35,9 +34,9 @@ namespace Trading.Bot.Sessions
         {
             return new Dictionary<Sessions, Func<ITradingSession>>
             {
-                { Sessions.ForwardTest, () => new ForwardTestSession(_exchange, _strategy) },
-                { Sessions.BackTest, () => new BackTestSession() },
-                { Sessions.RealTimeTrading, () => new RealTimeTradingSession() } 
+                { Sessions.ForwardTest, () => new ForwardtestSession(_exchange, _strategy) },
+                { Sessions.BackTest, () => new BacktestSession() },
+                { Sessions.RealTimeTrading, () => new RealtimeTradingSession() } 
             };
 
         }
