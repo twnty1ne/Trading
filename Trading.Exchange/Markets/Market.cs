@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using Trading.Exchange.Connections;
-using Trading.Exchange.Markets.Instruments;
+﻿using Trading.Exchange.Connections;
+using Trading.Exchange.Markets.Core;
+using Trading.Exchange.Markets.Core.Instruments;
+using Trading.Exchange.Markets.HistorySimulation;
+using Trading.Exchange.Markets.Realtime;
 
 namespace Trading.Exchange.Markets
 {
     internal class Market : IMarket
     {
-        public IMarket<IFuturesInstrument> FuturesUsdt { get; private set; }
+        public IMarket<IFuturesInstrument> RealtimeFuturesUsdt { get; }
+
+        public IMarket<IFuturesInstrument> HistorySimulationFuturesUsdt { get; }
 
         public Market(IConnection connection)
         {
-            FuturesUsdt = new FuturesUsdtMarket(connection);
+            HistorySimulationFuturesUsdt = new HistorySimulationFuturesUsdtMarket(connection);
+            RealtimeFuturesUsdt = new RealtimeFuturesUsdtMarket(connection);
         }
-        
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Trading.Analysis.Extentions;
-using Trading.Exchange.Markets.Instruments;
-using Trading.Exchange.Markets.Instruments.Positions;
-using Trading.Exchange.Markets.Instruments.Timeframes;
+using Trading.Exchange.Markets.Core.Instruments;
+using Trading.Exchange.Markets.Core.Instruments.Positions;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trady.Analysis;
 using Trady.Analysis.Extension;
 using Trady.Core.Infrastructure;
@@ -43,7 +42,7 @@ namespace Trading.Bot.Strategies.CandleVolume
         {
             get => new List<Timeframes>
             {
-                Timeframes.FiveMinutes,
+                Timeframes.OneHour,
             };
         }
     }

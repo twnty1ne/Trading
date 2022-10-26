@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Trading.Bot;
 using Trading.Exchange;
-using Trading.Exchange.Markets.Instruments;
-using Trading.Exchange.Markets.Instruments.Timeframes;
 
 namespace Trading.Api.Controllers
 {
@@ -24,18 +20,6 @@ namespace Trading.Api.Controllers
         {
             _exchange = exchange;
             _bot = bot;
-        }
-
-        [HttpGet]
-        public Task<IActionResult> TestMethod() 
-        {
-            var instrument = _exchange.Market.FuturesUsdt.GetInstrument(new InstrumentName("ETH", "USDT"));
-            var candels = instrument.GetTimeframe(Timeframes.OneHour).GetCandles();
-            var averageClose = candels.Average(x => x.Close);
-            var averageHigh = candels.Average(x => x.High);
-            var averageLow = candels.Average(x => x.Low);
-            var name = instrument.Name.BaseCurrencyName;
-            return Task.FromResult<IActionResult>(Ok());
         }
 
 

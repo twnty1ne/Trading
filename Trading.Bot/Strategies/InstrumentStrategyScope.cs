@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Trading.Exchange.Markets.Instruments;
-using Trading.Exchange.Markets.Instruments.Timeframes;
 using Trady.Core.Infrastructure;
-using Trading.Exchange.Markets.Instruments.Candles;
 using Trady.Core;
 using Trady.Analysis;
-using Trading.Exchange.Markets.Instruments.Positions;
+using Trading.Exchange.Markets.Core.Instruments.Positions;
+using Trading.Exchange.Markets.Core.Instruments;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes;
+using Trading.Exchange.Markets.Core.Instruments.Candles;
 
 namespace Trading.Bot.Strategies
 {

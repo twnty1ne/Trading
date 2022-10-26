@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using Trading.Bot.Strategies;
-using Trading.Exchange.Markets;
-using Trading.Exchange.Markets.Instruments;
+using Trading.Exchange.Markets.Core;
+using Trading.Exchange.Markets.Core.Instruments;
 
 namespace Trading.Bot.Sessions
 {

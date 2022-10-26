@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Trading.Bot.Strategies.CandleVolume;
-using Trading.Exchange.Markets;
-using Trading.Exchange.Markets.Instruments;
+using Trading.Exchange.Markets.Core;
+using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Shared.Resolvers;
 
 namespace Trading.Bot.Strategies

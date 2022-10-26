@@ -14,7 +14,7 @@ namespace Trading.Analysis.Extentions
     {
         public static bool IsDojiBar(this IIndexedOhlcv indexedCandle) 
         {
-            return new Doji(indexedCandle.BackingList, 0.2m)[indexedCandle.Index].Tick;
+            return new Doji(indexedCandle.BackingList)[indexedCandle.Index].Tick;
         }
 
         public static bool IsBreakingLowestVolume(this IIndexedOhlcv ic, int period)

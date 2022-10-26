@@ -1,28 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using Trading.Exchange.Connections;
-using System.Linq;
-using Trading.Exchange.Markets.Instruments.Candles;
-using Trading.Exchange.Markets.Instruments.Timeframes;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Shared.Resolvers;
-using Trading.Exchange.Markets.Instruments.Positions;
 
-namespace Trading.Exchange.Markets.Instruments
+namespace Trading.Exchange.Markets.Core.Instruments
 {
     internal class FuturesInstrument : IFuturesInstrument
     {
         private readonly IConnection _connection;
-        private readonly IInstrumentSocketConnection _socketConnection;
+        private readonly IInstrumentStream _stream;
         private readonly IResolver<Timeframes.Timeframes, ITimeframe> _resolver;
 
-        public FuturesInstrument(IInstrumentName name, IConnection connection)
+        public FuturesInstrument(IInstrumentName name, IInstrumentStream stream, IConnection connection)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
+            _stream = stream ?? throw new ArgumentNullException(nameof(stream));
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
-            _socketConnection = _connection.GetInstrumentSocketConnection(name);
-            _resolver = new TimeframeResolver(Name, _socketConnection, _connection);
+            _resolver = new TimeframeResolver(name, _stream, _connection);
         }
 
         public IInstrumentName Name { get; }
@@ -31,6 +25,5 @@ namespace Trading.Exchange.Markets.Instruments
         {
             return _resolver.Resolve(type);
         }
-
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
 using Trading.Bot.Strategies;
-using Trading.Bot.Strategies.CandleVolume;
 using Trading.Exchange;
-using Trading.Exchange.Markets;
-using Trading.Exchange.Markets.Instruments;
+using Trading.Exchange.Markets.Core;
+using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Shared.Resolvers;
 
 namespace Trading.Bot.Sessions.Forwardtest
@@ -23,7 +22,7 @@ namespace Trading.Bot.Sessions.Forwardtest
 
         public IStrategy Strategy { get => _strategyResolver.Resolve(_strategy); } 
 
-        public IMarket<IFuturesInstrument> Market { get => _exchange.Market.FuturesUsdt; }
+        public IMarket<IFuturesInstrument> Market { get => _exchange.Market.RealtimeFuturesUsdt; }
 
         public Action<ISignal> SignalFiredHandler { get => (x) => { }; }
     }

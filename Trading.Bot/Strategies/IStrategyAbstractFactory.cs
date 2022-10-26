@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using Trading.Exchange.Markets.Instruments;
-using Trading.Exchange.Markets.Instruments.Positions;
-using Trading.Exchange.Markets.Instruments.Timeframes;
+using Trading.Exchange.Markets.Core.Instruments;
+using Trading.Exchange.Markets.Core.Instruments.Positions;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trady.Core.Infrastructure;
 
 namespace Trading.Bot.Strategies

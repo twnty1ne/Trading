@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Trading.Exchange.Markets.Instruments.Timeframes
+namespace Trading.Exchange.Markets.Core.Instruments.Timeframes
 {
     public enum Timeframes
     {
