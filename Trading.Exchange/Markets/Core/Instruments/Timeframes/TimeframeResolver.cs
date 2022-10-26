@@ -6,17 +6,17 @@ using Trading.Exchange.Connections;
 using Trading.Shared.Resolvers;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Trading.Exchange.Markets.Instruments.Timeframes
+namespace Trading.Exchange.Markets.Core.Instruments.Timeframes
 {
     internal class TimeframeResolver : IResolver<Timeframes, ITimeframe>
     {
         private readonly IInstrumentName _instrumentName;
-        private readonly IInstrumentSocketConnection _socketConnection;
+        private readonly IInstrumentStream _socketConnection;
         private readonly IMemoryCache _timeframes;
         private readonly IResolver<Timeframes, ITimeframe> _resolver;
         private readonly IConnection _connection;
 
-        public TimeframeResolver(IInstrumentName instrumentName, IInstrumentSocketConnection socketConnection, IConnection connection)
+        public TimeframeResolver(IInstrumentName instrumentName, IInstrumentStream socketConnection, IConnection connection)
         {
             _instrumentName = instrumentName ?? throw new ArgumentNullException(nameof(instrumentName));
             _socketConnection = socketConnection ?? throw new ArgumentNullException(nameof(socketConnection));
@@ -50,7 +50,7 @@ namespace Trading.Exchange.Markets.Instruments.Timeframes
 
         private ITimeframe GetOrCreate(Timeframes timeframe) 
         {
-            return _timeframes.GetOrCreate(timeframe, x => new Timeframe(_instrumentName, _connection, _socketConnection, timeframe));
+            return _timeframes.GetOrCreate(timeframe, x => new Timeframe(_instrumentName, _socketConnection, timeframe));
         }
     }
 }

@@ -1,10 +1,7 @@
-﻿using Binance.Net.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using Trading.Exchange.Markets.Instruments.Timeframes;
 
-namespace Trading.Exchange.Markets.Instruments.Timeframes.Extentions
+namespace Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions
 {
     public static class TimefrimeExtentions
     {

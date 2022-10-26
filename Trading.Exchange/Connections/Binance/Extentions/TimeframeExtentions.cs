@@ -1,8 +1,7 @@
 ﻿using Binance.Net.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Trading.Exchange.Markets.Instruments.Timeframes;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Shared.Resolvers;
 
 namespace Trading.Exchange.Connections.Binance.Extentions

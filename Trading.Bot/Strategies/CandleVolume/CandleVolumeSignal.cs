@@ -1,6 +1,6 @@
 ﻿using System;
-using Trading.Exchange.Markets.Instruments;
-using Trading.Exchange.Markets.Instruments.Positions;
+using Trading.Exchange.Markets.Core.Instruments;
+using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trady.Core.Infrastructure;
 
 namespace Trading.Bot.Strategies.CandleVolume
@@ -24,7 +24,7 @@ namespace Trading.Bot.Strategies.CandleVolume
 
         public decimal StopLoss { get => _signal.StopLoss; }
 
-        public DateTimeOffset Date { get => _signal.Date; }
+        public DateTimeOffset Date { get => _signal.Date.UtcDateTime; }
 
         public PositionSides Side { get => _signal.Side; }
     }

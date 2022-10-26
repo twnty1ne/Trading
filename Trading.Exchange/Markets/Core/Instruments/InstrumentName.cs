@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Trading.Exchange.Markets.Instruments
+namespace Trading.Exchange.Markets.Core.Instruments
 {
     public class InstrumentName : IInstrumentName
     {

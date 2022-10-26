@@ -1,6 +1,6 @@
 ﻿using System;
-using Trading.Exchange.Markets.Instruments;
-using Trading.Exchange.Markets.Instruments.Positions;
+using Trading.Exchange.Markets.Core.Instruments;
+using Trading.Exchange.Markets.Core.Instruments.Positions;
 
 namespace Trading.Bot.Strategies
 {

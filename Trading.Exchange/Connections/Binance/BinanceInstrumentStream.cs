@@ -1,21 +1,21 @@
 ﻿using Binance.Net.Enums;
 using Binance.Net.Interfaces.Clients;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Trading.Exchange.Markets.Instruments;
-using Trading.Exchange.Markets.Instruments.Timeframes;
+using Trading.Exchange.Markets.Core.Instruments;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 
 namespace Trading.Exchange.Connections.Binance
 {
-    internal class BinanceInstrumentSocketConnection : IInstrumentSocketConnection
+    internal class BinanceInstrumentStream : IInstrumentStream
     {
         private readonly IBinanceSocketClient _client;
         private readonly IInstrumentName _name;
+        private readonly IConnection _connection;
 
-        public BinanceInstrumentSocketConnection(IInstrumentName name, IBinanceSocketClient client)
+        public BinanceInstrumentStream(IConnection connection, IInstrumentName name, IBinanceSocketClient client)
         {
+            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
             _name = name ?? throw new ArgumentNullException(nameof(name));
             _client = client ?? throw new ArgumentNullException(nameof(client));
             ListenCandleUpdates().Wait();
@@ -23,9 +23,9 @@ namespace Trading.Exchange.Connections.Binance
 
         public event EventHandler<decimal> OnPriceUpdated;
 
-        public ITimeframeSocketConnection GetTimeframeSocketConnection(Timeframes timeframe)
+        public ITimeframeStream GetTimeframeStream(Timeframes timeframe)
         {
-            return new BinanceTimeframeSocketConnection(_client, _name, timeframe);
+            return new BinanceTimeframeStream(_connection, _client, _name, timeframe);
         }
 
         private async Task ListenCandleUpdates()
@@ -35,7 +35,5 @@ namespace Trading.Exchange.Connections.Binance
                 OnPriceUpdated?.Invoke(this, x.Data.Data.ClosePrice);
             });
         }
-
-
     }
 }

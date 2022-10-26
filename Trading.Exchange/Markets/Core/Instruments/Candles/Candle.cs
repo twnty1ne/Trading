@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Trading.Exchange.Markets.Instruments.Candles
+namespace Trading.Exchange.Markets.Core.Instruments.Candles
 {
     internal class Candle : ICandle
     {

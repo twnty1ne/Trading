@@ -1,4 +1,4 @@
-﻿using Trading.Exchange.Markets.Instruments.Positions;
+﻿using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trady.Core.Infrastructure;
 
 namespace Trading.Bot.Strategies

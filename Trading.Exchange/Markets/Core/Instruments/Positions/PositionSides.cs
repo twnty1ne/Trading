@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Trading.Exchange.Markets.Instruments.Positions
+namespace Trading.Exchange.Markets.Core.Instruments.Positions
 {
     public enum PositionSides
     {
