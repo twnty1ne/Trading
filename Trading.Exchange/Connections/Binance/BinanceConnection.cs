@@ -10,6 +10,7 @@ using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
 using Trading.Exchange.Connections.Binance;
 using Trading.Exchange.Connections.Binance.Extentions;
+using Trading.Exchange.Connections.Ticker;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
@@ -48,9 +49,9 @@ namespace Trading.Connections.Binance
             return result.OrderBy(x => x.CloseTime).Select(x => new Candle(x.OpenPrice, x.ClosePrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenTime, x.CloseTime)).ToList().AsReadOnly();
         }
 
-        public override IInstrumentStream GetHistoryInstrumentStream(IInstrumentName name)
+        public override IInstrumentStream GetHistoryInstrumentStream(IInstrumentName name, IMarketTicker ticker)
         {
-            return new BinanceHistoryInstrumentStream(this, name, _socketClient);
+            return new BinanceHistoryInstrumentStream(this, name, _socketClient, ticker);
         }
 
         public override IInstrumentStream GetInstrumentStream(IInstrumentName name) 

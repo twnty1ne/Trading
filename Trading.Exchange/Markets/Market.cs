@@ -10,7 +10,7 @@ namespace Trading.Exchange.Markets
     {
         public IMarket<IFuturesInstrument> RealtimeFuturesUsdt { get; }
 
-        public IMarket<IFuturesInstrument> HistorySimulationFuturesUsdt { get; }
+        public HistorySimulationFuturesUsdtMarket HistorySimulationFuturesUsdt { get; }
 
         public Market(IConnection connection)
         {

@@ -15,6 +15,8 @@ namespace Trading.Bot.Sessions
         private readonly Action<ISignal> _signalFiredHandler;
         private readonly StateMachine<SessionStates, SessionTriggers> _stateMachine;
 
+        public DateTime Date { get; private set; }
+
         public TradingSession(ISessionAbstractFactory factory)
         {
             _ = factory ?? throw new ArgumentNullException(nameof(factory));
@@ -52,6 +54,7 @@ namespace Trading.Bot.Sessions
 
         private void HandleStarded() 
         {
+            Date = DateTime.UtcNow;
             _strategy.OnSignalFired += HandleSignalFired;
         }
 

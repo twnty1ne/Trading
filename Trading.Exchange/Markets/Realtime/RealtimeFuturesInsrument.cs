@@ -15,13 +15,21 @@ namespace Trading.Exchange.Markets.Realtime
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
             _ = name ?? throw new ArgumentNullException(nameof(name));
             _instrument = new FuturesInstrument(name, _connection.GetInstrumentStream(name), _connection);
+            _instrument.OnPriceUpdated += HandlePriceUpdated;
         }
 
         public IInstrumentName Name { get => _instrument.Name; }
 
+        public event EventHandler<IPriceTick> OnPriceUpdated;
+
         public ITimeframe GetTimeframe(Timeframes type)
         {
             return _instrument.GetTimeframe(type);
+        }
+
+        private void HandlePriceUpdated(object sender, IPriceTick tick)
+        {
+            OnPriceUpdated?.Invoke(sender, tick);
         }
     }
 }

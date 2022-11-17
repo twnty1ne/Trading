@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Trading.Exchange.Authentification;
+using Trading.Exchange.Connections.Ticker;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
@@ -19,7 +20,9 @@ namespace Trading.Exchange.Connections
             Credentials = _credentialsProvider.GetCredentials();
         }
         public abstract Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe);
-        public abstract IInstrumentStream GetHistoryInstrumentStream(IInstrumentName name);
+
+        public abstract IInstrumentStream GetHistoryInstrumentStream(IInstrumentName name, IMarketTicker ticker);
+
         public abstract IInstrumentStream GetInstrumentStream(IInstrumentName name);
     }
 }

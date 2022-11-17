@@ -9,11 +9,12 @@ namespace Trading.Exchange.Markets.Core
         private readonly IMemoryCache _instruments;
         private readonly Func<IInstrumentName, IFuturesInstrument> _factory;
 
-        public FuturesUsdtMarket(Func<IInstrumentName, IFuturesInstrument> factory)
+        internal FuturesUsdtMarket(Func<IInstrumentName, IFuturesInstrument> factory)
         {
             _factory = factory ?? throw new ArgumentNullException(nameof(factory));
             _instruments = new MemoryCache(new MemoryCacheOptions());
         }
+
 
         public IFuturesInstrument GetInstrument(IInstrumentName name)
         {

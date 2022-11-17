@@ -9,6 +9,7 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Include="RestSharp" Version="108.0.1" />
+    <PackageReference Include="stateless" Version="5.11.0" />
   </ItemGroup>
 
   <ItemGroup>
