@@ -35,7 +35,7 @@ namespace Trading.Bot.Sessions
             return new Dictionary<Sessions, Func<ITradingSession>>
             {
                 { Sessions.ForwardTest, () => new ForwardtestSession(_exchange, _strategy) },
-                { Sessions.BackTest, () => new BacktestSession() },
+                { Sessions.BackTest, () => new BacktestSession(_exchange, _strategy) },
                 { Sessions.RealTimeTrading, () => new RealtimeTradingSession() } 
             };
 

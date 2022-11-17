@@ -21,7 +21,7 @@ namespace Trading.Exchange.Connections.Binance
             ListenCandleUpdates().Wait();
         }
 
-        public event EventHandler<decimal> OnPriceUpdated;
+        public event EventHandler<IPriceTick> OnPriceUpdated;
 
         public ITimeframeStream GetTimeframeStream(Timeframes timeframe)
         {
@@ -32,7 +32,7 @@ namespace Trading.Exchange.Connections.Binance
         {
             var sub = await _client.UsdFuturesStreams.SubscribeToKlineUpdatesAsync(_name.GetFullName(), KlineInterval.OneMinute, x =>
             {
-                OnPriceUpdated?.Invoke(this, x.Data.Data.ClosePrice);
+                OnPriceUpdated?.Invoke(this, new PriceTick(x.Data.Data.ClosePrice, DateTime.UtcNow));
             });
         }
     }

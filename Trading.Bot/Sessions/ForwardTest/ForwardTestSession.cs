@@ -15,6 +15,8 @@ namespace Trading.Bot.Sessions.Forwardtest
             _session = new TradingSession(new ForwardtestSessionAbstractFactory(exchange, strategy));
         }
 
+        public DateTime Date => throw new NotImplementedException();
+
         public event EventHandler<IReadOnlyCollection<ISignal>> OnStopped;
 
         public void Start()

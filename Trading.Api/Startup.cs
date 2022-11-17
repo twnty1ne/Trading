@@ -30,7 +30,7 @@ namespace Trading.Api
             services.AddSingleton<IExchange, Exchange.Exchange>().Configure<Exchange.Options>(x => x.ConnectionType = ConnectionEnum.Binance);
             services.AddSingleton<IBot, Bot.Bot>().Configure<Bot.Options>(x => 
             {
-                x.Session = Sessions.ForwardTest;
+                x.Session = Sessions.BackTest;
                 x.Strategy = Strategies.CandleVolume;
             });
             services.AddTransient<ICredentialsProvider, BinanceCredentialsProvider>();

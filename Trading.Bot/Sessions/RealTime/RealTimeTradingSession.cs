@@ -10,6 +10,8 @@ namespace Trading.Bot.Sessions.Realtime
         {
         }
 
+        public DateTime Date => throw new NotImplementedException();
+
         public event EventHandler<IReadOnlyCollection<ISignal>> OnStopped;
 
         public void Start()

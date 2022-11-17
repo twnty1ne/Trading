@@ -6,7 +6,8 @@ namespace Trading.Bot.Sessions
 {
     public interface ITradingSession
     {
-        public event EventHandler<IReadOnlyCollection<ISignal>> OnStopped;
+        event EventHandler<IReadOnlyCollection<ISignal>> OnStopped;
+        DateTime Date { get; }
         void Start();
         void Stop();
     }
