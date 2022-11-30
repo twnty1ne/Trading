@@ -37,7 +37,7 @@ namespace Trading.Bot
             }
         }
 
-        private void HandleSessionStopped(object sender, IReadOnlyCollection<ISignal> result) 
+        private void HandleSessionStopped(object sender, ISessionBuffer result) 
         {
             Session = _resolver.Resolve(_options.Value.Session);
         }

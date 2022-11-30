@@ -23,7 +23,8 @@ namespace Trading.Bot.Sessions.Backtest
             
         }
 
-        public event EventHandler<IReadOnlyCollection<ISignal>> OnStopped;
+        public event EventHandler<ISessionBuffer> OnStopped;
+
 
         public DateTime Date { get => _session.Date; }
 
@@ -43,7 +44,7 @@ namespace Trading.Bot.Sessions.Backtest
             OnStopped = null;
         }
 
-        private void HandleStopped(object sender, IReadOnlyCollection<ISignal> result)
+        private void HandleStopped(object sender, ISessionBuffer result)
         {
             OnStopped?.Invoke(this, result);
         }
