@@ -13,7 +13,8 @@ namespace Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions
                 { Timeframes.FourHours, 240.00d },
                 { Timeframes.OneDay, 1440.00d },
                 { Timeframes.ThirtyMinutes, 30.00d },
-                { Timeframes.FiveMinutes, 5.00d }
+                { Timeframes.FiveMinutes, 5.00d },
+                { Timeframes.OneMinute, 1.00d }
             };
             return TimeSpan.FromMinutes(dictionary.GetValueOrDefault(timeframe));
         }

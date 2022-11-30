@@ -15,13 +15,17 @@ namespace Trading.Exchange.Markets.HistorySimulation
         private readonly IConnection _connection;
         private readonly IMarket<IFuturesInstrument> _market;
         private readonly IMarketTicker _ticker;
+        private readonly VirtualBalance _balance;
 
         internal HistorySimulationFuturesUsdtMarket(IConnection connection)
         {
             _ticker = new MarketTicker();
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
-            _market = new FuturesUsdtMarket(x => new HistorySimulationFuturesInstrument(x, _connection, _ticker));
+            _balance = new VirtualBalance(500m);
+            _market = new FuturesUsdtMarket(x => new HistorySimulationFuturesInstrument(x, _connection, _ticker, _balance));
         }
+
+        public IBalance Balance { get => _balance; }
 
         public IFuturesInstrument GetInstrument(IInstrumentName name)
         {

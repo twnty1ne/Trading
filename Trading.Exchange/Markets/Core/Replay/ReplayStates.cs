@@ -8,6 +8,5 @@ namespace Trading.Exchange.Markets.Core.Replay
     {
         WaitingForStart = 1,
         Started = 2
-
     }
 }

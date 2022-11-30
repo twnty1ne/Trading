@@ -19,6 +19,8 @@ namespace Trading.Exchange.Markets.Realtime
 
         public IMarketTicker Ticker { get; }
 
+        public IBalance Balance => throw new NotImplementedException();
+
         public IFuturesInstrument GetInstrument(IInstrumentName name)
         {
             return _market.GetInstrument(name);

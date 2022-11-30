@@ -9,13 +9,14 @@ namespace Trading.Bot.Strategies
     {
         private readonly (decimal EntryPrice, decimal StopLoss, decimal TakeProfit) _riskManagment;
 
-        public Signal(IIndexedOhlcv ic, PositionSides side, IInstrumentName instrumentName, IRiskManagment riskManagment)
+        public Signal(IIndexedOhlcv ic, PositionSides side, IInstrumentName instrumentName, IRiskManagment riskManagment, decimal riskPercent)
         {
             InstrumentName = instrumentName;
             Side = side;
             Date = ic.DateTime;
             Index = ic.Index;
             _riskManagment = riskManagment.Calculate(ic, side);
+            RiskPercent = riskPercent;
         }
 
         public decimal TakeProfit { get => _riskManagment.TakeProfit; }
@@ -25,5 +26,6 @@ namespace Trading.Bot.Strategies
         public DateTimeOffset Date { get; }
         public PositionSides Side { get; }
         public IInstrumentName InstrumentName { get; }
+        public decimal RiskPercent { get; }
     }
 }

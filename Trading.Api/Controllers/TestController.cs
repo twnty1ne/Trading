@@ -175,7 +175,10 @@ namespace Trading.Api.Controllers
         [HttpGet("8")]
         public IActionResult TestMethod8()
         {
-            _bot.Session.OnStopped += (x, y) => Debug.WriteLine(JsonConvert.SerializeObject(y, Formatting.Indented));
+            _bot.Session.OnStopped += (x, y) =>
+            {
+                Debug.WriteLine(JsonConvert.SerializeObject(y, Formatting.Indented));
+            };
             _bot.Session.Start();
             return Ok();
         }

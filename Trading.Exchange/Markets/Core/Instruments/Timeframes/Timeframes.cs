@@ -10,6 +10,7 @@ namespace Trading.Exchange.Markets.Core.Instruments.Timeframes
         FourHours = 2,
         OneHour = 3,
         ThirtyMinutes = 4,
-        FiveMinutes = 5
+        FiveMinutes = 5,
+        OneMinute = 6
     }
 }

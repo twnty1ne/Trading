@@ -7,11 +7,12 @@ namespace Trading.Bot.Strategies
     public interface ISignal
     {
         IInstrumentName InstrumentName { get; }
-        public decimal TakeProfit { get; }
-        public int Index { get; }
-        public decimal Price { get; }
-        public decimal StopLoss { get; }
-        public DateTimeOffset Date { get; }
-        public PositionSides Side { get; }
+        decimal TakeProfit { get; }
+        int Index { get; }
+        decimal Price { get; }
+        decimal StopLoss { get; }
+        DateTimeOffset Date { get; }
+        PositionSides Side { get; }
+        decimal RiskPercent { get; }
     }
 }
