@@ -14,9 +14,8 @@ namespace Trading.Exchange.Connections
 
         public ConnectionResolver(ICredentialsProvider credentialProvider)
         {
+            _credentialsProvider = credentialProvider ?? throw new ArgumentNullException(nameof(credentialProvider));
             _resolver = new Resolver<ConnectionEnum, IConnection>(GenerateDictionary());
-            _credentialsProvider = credentialProvider;
-
         }
 
         public IConnection Resolve(ConnectionEnum item)
