@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System;
 using Trading.Exchange.Markets.Core.Instruments;
+using Trading.Exchange.Markets.HistorySimulation;
 
 namespace Trading.Exchange.Markets.Core
 {
@@ -15,6 +16,7 @@ namespace Trading.Exchange.Markets.Core
             _instruments = new MemoryCache(new MemoryCacheOptions());
         }
 
+        public IBalance Balance => throw new NotImplementedException();
 
         public IFuturesInstrument GetInstrument(IInstrumentName name)
         {

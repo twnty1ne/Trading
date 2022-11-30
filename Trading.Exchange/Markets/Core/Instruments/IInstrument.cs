@@ -7,6 +7,7 @@ namespace Trading.Exchange.Markets.Core.Instruments
     {
         event EventHandler<IPriceTick> OnPriceUpdated;
         IInstrumentName Name { get; }
+        decimal Price { get; }
         ITimeframe GetTimeframe(Timeframes.Timeframes type);
         
     }

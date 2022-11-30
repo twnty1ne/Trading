@@ -1,9 +1,12 @@
 ﻿using Stateless;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Trading.Bot.Strategies;
 using Trading.Exchange.Markets.Core;
 using Trading.Exchange.Markets.Core.Instruments;
+using Trading.Exchange.Markets.Core.Instruments.Positions;
 
 namespace Trading.Bot.Sessions
 {
@@ -65,9 +68,19 @@ namespace Trading.Bot.Sessions
             OnStopped = null;
         }
 
+        private void HandlePositionOpened(object sender, IPosition position) 
+        {
+            _buffer.Add(position);
+        }
+
         private void HandleSignalFired(object sender, ISignal signal) 
         {
             _signalFiredHandler?.Invoke(signal);
+            var instrument = _market.GetInstrument(signal.InstrumentName);
+            if (!_buffer.Signals.Any(x => x.InstrumentName == signal.InstrumentName)) instrument.OnPositionOpened += HandlePositionOpened;
+            var price = instrument.Price;
+            var volume = (_market.Balance.NetVolume * signal.RiskPercent) / Math.Abs(price - signal.StopLoss);
+            instrument.SetPositionEntry(signal.Side, 30, signal.StopLoss, signal.TakeProfit, volume);
             _buffer.Add(signal);
         }
     }

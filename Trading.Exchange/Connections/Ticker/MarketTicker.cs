@@ -1,5 +1,6 @@
 ﻿using Stateless;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 
@@ -11,7 +12,7 @@ namespace Trading.Exchange.Connections.Ticker
 
         private DateTime _startDate;
         private long _accumalutedTicks;
-        private long _spanForTick = TimeSpan.FromSeconds(300).Ticks;
+        private long _spanForTick = TimeSpan.FromSeconds(100).Ticks;
         private EventHandler<IMarketTick> _onTick;
         private Timer _timer;
         private object _lock = new object();
@@ -20,7 +21,7 @@ namespace Trading.Exchange.Connections.Ticker
 
         public MarketTicker()
         {
-            _timer = new Timer(0.000001d);
+            _timer = new Timer(TimeSpan.FromTicks(1).TotalMilliseconds);
 
             _stateMachine = new StateMachine<TickerStates, TickerTriggers>(TickerStates.WaitingForStart);
             _startTrigger = _stateMachine.SetTriggerParameters<DateTime>(TickerTriggers.Start);
@@ -64,7 +65,6 @@ namespace Trading.Exchange.Connections.Ticker
             _stateMachine.Fire(TickerTriggers.Reset);
         }
 
-
         private void HandleStarded(DateTime date)
         {
             _startDate = new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
@@ -84,8 +84,8 @@ namespace Trading.Exchange.Connections.Ticker
         {
             lock (_lock)
             {
-                var tickDate = new DateTime(_startDate.Ticks + (_accumalutedTicks * _spanForTick));
-                _onTick.Invoke(this, new MarketTick(tickDate));
+                var tickDate = _startDate.AddTicks(_accumalutedTicks * _spanForTick);
+                _onTick?.Invoke(this, new MarketTick(tickDate));
                 _accumalutedTicks++;
             }
         }

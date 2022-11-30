@@ -37,7 +37,7 @@ namespace Trading.Connections.Binance
             var lastResultItemsAmount = 0;
             var lastEndDate = DateTime.UtcNow;
             var timeframeTicks = timeframe.GetTimeframeTimeSpan().Ticks;
-            while (lastResultItemsAmount == 0 || lastResultItemsAmount == limit)
+            while (lastResultItemsAmount == 0 || lastResultItemsAmount == limit && lastEndDate > new DateTime(2022, 11, 01))
             {
                 var response = await _client.UsdFuturesApi.ExchangeData
                     .GetKlinesAsync($"{name.BaseCurrencyName}{name.QuoteCurrencyName}", convertedTimeframe, limit: limit, endTime: lastEndDate);

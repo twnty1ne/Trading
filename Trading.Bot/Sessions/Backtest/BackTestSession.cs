@@ -19,7 +19,7 @@ namespace Trading.Bot.Sessions.Backtest
             _ = exchange ?? throw new ArgumentNullException(nameof(exchange));
             _factory = new BacktestSessionAbstractFactory(exchange, strategy);
             _session = new TradingSession(_factory);
-            _replay = _factory.Market.GetReplay(new DateTime(2022, 11, 14), DateTime.UtcNow);
+            _replay = _factory.Market.GetReplay(new DateTime(2022, 11, 15), DateTime.UtcNow);
             
         }
 
@@ -29,10 +29,10 @@ namespace Trading.Bot.Sessions.Backtest
 
         public void Start()
         {
-            _session.Start();
-            _replay.Start();
             _session.OnStopped += HandleStopped;
             _replay.OnDone += HandleReplayDone;
+            _session.Start();
+            _replay.Start();
         }
 
         public void Stop()
