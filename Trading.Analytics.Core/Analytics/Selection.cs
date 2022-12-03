@@ -18,5 +18,17 @@ namespace Trading.Researching.Core.Analytics
         public IReadOnlyCollection<TSelection> Data { get; private set; }
     }
 
+    public class Selection<TSelection> : ISelection<TSelection>
+    {
+        public Selection(IReadOnlyCollection<TSelection> data)
+        {
+            Data = data ?? throw new ArgumentNullException(nameof(data));
+        }
+
+        public IReadOnlyCollection<TSelection> Data { get; private set; }
+    }
+
+
+
 
 }

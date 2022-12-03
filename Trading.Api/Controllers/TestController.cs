@@ -177,6 +177,7 @@ namespace Trading.Api.Controllers
         {
             _bot.Session.OnStopped += (x, y) =>
             {
+                var t = y.Analytics.GetResults();
                 Debug.WriteLine(JsonConvert.SerializeObject(y, Formatting.Indented));
             };
             _bot.Session.Start();

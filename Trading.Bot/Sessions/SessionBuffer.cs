@@ -1,8 +1,12 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Trading.Bot.Sessions.Analytics;
+using Trading.Bot.Sessions.Analytics.Metrics;
 using Trading.Bot.Strategies;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
+using Trading.Researching.Core;
+using Trading.Researching.Core.Analytics;
 
 namespace Trading.Bot.Sessions
 {
@@ -14,6 +18,8 @@ namespace Trading.Bot.Sessions
 
         public IReadOnlyCollection<IPosition> Positions { get => _positions.ToList(); }
 
+        public IAnalytics<IPosition, SessionMetrics> Analytics { get => CreateAnalytics(); }
+
         public void Add(ISignal signal)
         {
             _entries.Add(signal);
@@ -23,5 +29,13 @@ namespace Trading.Bot.Sessions
         {
             _positions.Add(position);
         }
+
+        private IAnalytics<IPosition, SessionMetrics> CreateAnalytics()
+        {
+            var selection = new Selection<IPosition>(_positions);
+            var metrics = new List<SessionMetrics> { SessionMetrics.TotalNumberOfPositions, SessionMetrics.WinLossRatio };
+            return new StrategyAnalytics(selection, metrics);
+        }
+
     }
 }

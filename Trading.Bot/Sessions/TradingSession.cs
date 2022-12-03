@@ -43,7 +43,7 @@ namespace Trading.Bot.Sessions
                 .OnEntry(() => HandleStopped());
         }
 
-        public event EventHandler<IReadOnlyCollection<ISignal>> OnStopped;
+        public event EventHandler<ISessionBuffer> OnStopped;
 
         public void Start()
         {
@@ -63,7 +63,7 @@ namespace Trading.Bot.Sessions
 
         private void HandleStopped()
         {
-            OnStopped?.Invoke(this, _buffer.Signals);
+            OnStopped?.Invoke(this, _buffer);
             _strategy.OnSignalFired -= HandleSignalFired;
             OnStopped = null;
         }
