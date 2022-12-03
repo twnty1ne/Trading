@@ -18,23 +18,23 @@ namespace Trading.Bot.Strategies.CandleVolume
         {
             get => Rule
                 .Create(x => x.IsDojiBar())
-                .And(x => x.IsBreakingLowestVolume(3))
-                .And(x => x.IsBreakingHighestHigh(2));
+                .And(x => x.IsBreakingLowestVolume(2))
+                .And(x => x.IsBreakingHighestHigh(1));
         }
 
         public Predicate<IIndexedOhlcv> BuyRule
         {
             get => Rule
                 .Create(x => x.IsDojiBar())
-                .And(x => x.IsBreakingLowestVolume(3))
-                .And(x => x.IsBreakingLowestLow(2));
+                .And(x => x.IsBreakingLowestVolume(2))
+                .And(x => x.IsBreakingLowestLow(1));
         }
 
         public IReadOnlyCollection<IInstrumentName> SupportedInstruments
         {
             get => new List<IInstrumentName>
             {
-                new InstrumentName("XRP", "USDT"),
+                new InstrumentName("ETH", "USDT"),
             };
         }
 

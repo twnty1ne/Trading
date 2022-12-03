@@ -28,17 +28,23 @@ namespace Trading.Exchange.Connections.Binance
         }
 
         public event EventHandler<IReadOnlyCollection<ICandle>> OnCandleClosed;
+        public event EventHandler<ICandle> OnCandleOpened;
 
         private void HandleNewTick(object sender, IMarketTick tick) 
         {
-            if (_candleBuffer.Any(x => x.CloseTime.Ticks + TimeSpan.FromMilliseconds(1).Ticks == tick.Date.Ticks))
-            {
+            if (_candleBuffer.Any(x => x.CloseTime.Ticks + TimeSpan.FromMilliseconds(1).Ticks == tick.Date.Ticks)) 
+            { 
                 var closedCandle = _candleBuffer.First(x => x.CloseTime.Ticks + TimeSpan.FromMilliseconds(1).Ticks == tick.Date.Ticks);
                 var closedCandlesCopy = new List<ICandle>(_closedCandles);
                 closedCandlesCopy.Add(closedCandle);
                 _closedCandles = closedCandlesCopy;
                 OnCandleClosed?.Invoke(this, _closedCandles);
             }
+            if (_candleBuffer.Any(x => x.OpenTime == tick.Date)) 
+            {
+                OnCandleOpened?.Invoke(this, _candleBuffer.First(x => x.OpenTime == tick.Date));
+            } 
         }
     }
 }
+//
