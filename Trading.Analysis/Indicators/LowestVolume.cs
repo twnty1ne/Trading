@@ -7,7 +7,7 @@ using Trady.Core.Infrastructure;
 
 namespace Trading.Analysis.Indicators
 {
-    public class LowestVolume: Lowest<IOhlcv, AnalyzableTick<decimal?>>
+    public class LowestVolume : Lowest<IOhlcv, AnalyzableTick<decimal?>>
     {
         public LowestVolume(IEnumerable<IOhlcv> inputs, int periodCount)
             : base(inputs, i => i.Volume, periodCount)

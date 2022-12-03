@@ -7,5 +7,6 @@ namespace Trading.Exchange.Connections
     public interface ITimeframeStream
     {
         event EventHandler<IReadOnlyCollection<ICandle>> OnCandleClosed;
+        event EventHandler<ICandle> OnCandleOpened;
     }
 }

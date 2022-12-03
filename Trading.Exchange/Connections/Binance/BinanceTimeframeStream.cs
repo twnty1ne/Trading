@@ -28,6 +28,7 @@ namespace Trading.Exchange.Connections.Binance
         }
 
         public event EventHandler<IReadOnlyCollection<ICandle>> OnCandleClosed;
+        public event EventHandler<ICandle> OnCandleOpened;
 
         private async Task ListenCandleUpdates()
         {
