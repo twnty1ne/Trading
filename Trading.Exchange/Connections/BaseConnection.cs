@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Binance.Net.Clients;
+using Binance.Net.Interfaces.Clients;
+using CryptoExchange.Net.Authentication;
+using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Trading.Exchange.Authentification;
-using Trading.Exchange.Connections.Ticker;
-using Trading.Exchange.Markets.Core.Instruments;
-using Trading.Exchange.Markets.Core.Instruments.Candles;
-using Trading.Exchange.Markets.Core.Instruments.Timeframes;
+using Trading.Exchange.Connections;
+using Trading.Exchange.Markets.Instruments;
+using Trading.Exchange.Markets.Instruments.Candles;
+using Trading.Exchange.Markets.Instruments.Timeframes;
 
 namespace Trading.Exchange.Connections
 {
@@ -19,10 +23,7 @@ namespace Trading.Exchange.Connections
             _credentialsProvider = credentialProvider ?? throw new ArgumentNullException(nameof(credentialProvider));
             Credentials = _credentialsProvider.GetCredentials();
         }
-        public abstract Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe);
 
-        public abstract IInstrumentStream GetHistoryInstrumentStream(IInstrumentName name, IMarketTicker ticker);
-
-        public abstract IInstrumentStream GetInstrumentStream(IInstrumentName name);
+        public abstract Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, TimeframeEnum timeframe);
     }
 }

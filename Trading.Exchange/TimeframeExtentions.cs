@@ -5,7 +5,7 @@ using System.Text;
 using Trading.Exchange.Markets.Instruments.Timeframes;
 using Trading.Shared.Resolvers;
 
-namespace Trading.Exchange.Connections.Binance.Extentions
+namespace Trading.Infrastructure.Exchange.Connections.Binance.Extentions
 {
     internal static class TimeframeExtentions
     {

@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Trading.Bot;
-using Trading.Bot.Sessions;
-using Trading.Bot.Strategies;
 using Trading.Connections.Binance;
 using Trading.Exchange;
 using Trading.Exchange.Authentification;
@@ -27,12 +24,7 @@ namespace Trading.Api
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddControllers();
-            services.AddSingleton<IExchange, Exchange.Exchange>().Configure<Exchange.Options>(x => x.ConnectionType = ConnectionEnum.Binance);
-            services.AddSingleton<IBot, Bot.Bot>().Configure<Bot.Options>(x => 
-            {
-                x.Session = Sessions.BackTest;
-                x.Strategy = Strategies.CandleVolume;
-            });
+            services.AddTransient<IExchange, Trading.Exchange.Exchange>().Configure<Options>(x => x.ConnectionType = ConnectionEnum.Binance);
             services.AddTransient<ICredentialsProvider, BinanceCredentialsProvider>();
         }
 

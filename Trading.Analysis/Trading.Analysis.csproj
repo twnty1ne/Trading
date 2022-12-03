@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Candlesticks\" />
+    <Folder Include="Statistics\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -13,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Trading.Analytics.Core\Trading.Researching.Core.csproj" />
     <ProjectReference Include="..\Trading.Exchange\Trading.Exchange.csproj" />
   </ItemGroup>
 

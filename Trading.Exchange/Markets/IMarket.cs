@@ -1,12 +1,17 @@
-﻿using Trading.Exchange.Markets.Core;
-using Trading.Exchange.Markets.Core.Instruments;
-using Trading.Exchange.Markets.HistorySimulation;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Trading.Exchange.Markets.Instruments;
 
 namespace Trading.Exchange.Markets
 {
+    public interface IMarket<T> where T : IInstrument
+    {
+        T GetInstrument(IInstrumentName name);
+    }
+
     public interface IMarket
     {
-        IMarket<IFuturesInstrument> RealtimeFuturesUsdt { get; }
-        HistorySimulationFuturesUsdtMarket HistorySimulationFuturesUsdt { get; }
+        IMarket<IFuturesInstrument> FuturesUsdt { get; }
     }
 }
