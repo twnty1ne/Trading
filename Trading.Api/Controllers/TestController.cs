@@ -1,10 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Diagnostics;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Text;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.InputFiles;
+using Trading.Api.Extentions;
 using Trading.Bot;
+using Trading.Bot.Sessions;
 using Trading.Exchange;
 
 namespace Trading.Api.Controllers
@@ -168,7 +174,7 @@ namespace Trading.Api.Controllers
             //    .LastOne()
             //    .Build();
             //var dec = dm.Decide();
-            return Ok();  
+            return Ok();
         }
 
 
@@ -178,7 +184,8 @@ namespace Trading.Api.Controllers
             _bot.Session.OnStopped += (x, y) =>
             {
                 var t = y.Analytics.GetResults();
-                Debug.WriteLine(JsonConvert.SerializeObject(y, Formatting.Indented));
+                var bot = new TelegramBotClient("5823136779:AAG8v93PWDUb8anIfC0vBPv1_-2oKmu0-aE");
+                bot.SendDocumentAsync(new ChatId(-1001850248953), y.AsInputOnlineFile()).GetAwaiter().GetResult();
             };
             _bot.Session.Start();
             return Ok();
@@ -194,7 +201,7 @@ namespace Trading.Api.Controllers
                 .AppendLine("SL: 0,4355352")
                 .AppendLine("TP: 0,4268592")
                 .AppendLine("Price: 0,4338");
-            var bot = new TelegramBotClient("5730777041:AAEB8X_UIbVFIkI5JaX1MBKcN_JMQg6-FWY").SendTextMessageAsync(new ChatId(-1001636388029), sb.ToString()).GetAwaiter().GetResult();
+            var bot = new TelegramBotClient("5730777041:AAEB8X_UIbVFIkI5JaX1MBKcN_JMQg6-FWY").SendDocumentAsync(new ChatId(-1001636388029), sb.ToString()).GetAwaiter().GetResult();
             return Ok(bot);
         }
 

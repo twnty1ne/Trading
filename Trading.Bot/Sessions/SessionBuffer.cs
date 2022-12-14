@@ -16,7 +16,7 @@ namespace Trading.Bot.Sessions
         private readonly ConcurrentBag<IPosition> _positions = new ConcurrentBag<IPosition>(new List<IPosition>());
         public IReadOnlyCollection<ISignal> Signals { get => _entries.ToList(); }
 
-        public IReadOnlyCollection<IPosition> Positions { get => _positions.ToList(); }
+        public IReadOnlyCollection<IPosition> Positions { get => _positions.OrderBy(x => x.EntryDate).ToList(); }
 
         public IAnalytics<IPosition, SessionMetrics> Analytics { get => CreateAnalytics(); }
 
@@ -33,7 +33,7 @@ namespace Trading.Bot.Sessions
         private IAnalytics<IPosition, SessionMetrics> CreateAnalytics()
         {
             var selection = new Selection<IPosition>(_positions);
-            var metrics = new List<SessionMetrics> { SessionMetrics.TotalNumberOfPositions, SessionMetrics.WinLossRatio };
+            var metrics = new List<SessionMetrics> { SessionMetrics.TotalNumberOfPositions, SessionMetrics.WinLossRatio, SessionMetrics.TotalPnL };
             return new StrategyAnalytics(selection, metrics);
         }
 

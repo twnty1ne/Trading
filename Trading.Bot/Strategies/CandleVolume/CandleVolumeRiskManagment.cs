@@ -6,7 +6,7 @@ namespace Trading.Bot.Strategies.CandleVolume
 {
     internal class CandleVolumeRiskManagment : IRiskManagment
     {
-        private readonly decimal _riskRescue = 4m;
+        private readonly decimal _riskRescue = 3m;
 
         public (decimal Price, decimal StopLoss, decimal TakeProfit) Calculate(IIndexedOhlcv ic, PositionSides side)
         {

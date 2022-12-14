@@ -30,7 +30,8 @@ namespace Trading.Bot.Sessions.Analytics.Metrics
             return new Dictionary<SessionMetrics, Func<IMetric<IPosition, SessionMetrics>>>
             {
                 { SessionMetrics.WinLossRatio, () => new WinLossRatioMetric() },
-                { SessionMetrics.TotalNumberOfPositions, () => new TotalNumberOfPositionsMetric() }
+                { SessionMetrics.TotalNumberOfPositions, () => new TotalNumberOfPositionsMetric() },
+                { SessionMetrics.TotalPnL, () => new TotalPnLMetric() }
             };
 
         }
