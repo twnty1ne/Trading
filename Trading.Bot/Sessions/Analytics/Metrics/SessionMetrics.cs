@@ -8,5 +8,6 @@ namespace Trading.Bot.Sessions.Analytics.Metrics
     {
         WinLossRatio = 1,
         TotalNumberOfPositions = 2,
+        TotalPnL = 3
     }
 }
