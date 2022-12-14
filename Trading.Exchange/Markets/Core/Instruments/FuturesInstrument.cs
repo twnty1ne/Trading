@@ -11,6 +11,7 @@ namespace Trading.Exchange.Markets.Core.Instruments
         private readonly IConnection _connection;
         private readonly IInstrumentStream _stream;
         private readonly IResolver<Timeframes.Timeframes, ITimeframe> _resolver;
+        private DateTime _currentDate;
 
         public FuturesInstrument(IInstrumentName name, IInstrumentStream stream, IConnection connection)
         {
@@ -28,6 +29,7 @@ namespace Trading.Exchange.Markets.Core.Instruments
 
         public decimal Price { get; private set; }
 
+
         public ITimeframe GetTimeframe(Timeframes.Timeframes type)
         {
             return _resolver.Resolve(type);
@@ -35,11 +37,12 @@ namespace Trading.Exchange.Markets.Core.Instruments
 
         public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size)
         {
-           OnPositionOpened?.Invoke(this, new VirtualPosition(takeProfit, Price, stopLoss, Name, _stream, side, leverage, size));
+           OnPositionOpened?.Invoke(this, new VirtualPosition(takeProfit, Price, stopLoss, Name, _stream, side, leverage, size, _currentDate));
         }
 
         private void HandlePriceUpdated(object sender, IPriceTick tick)
         {
+            _currentDate = tick.DateTime;
             Price = tick.Price;
             OnPriceUpdated?.Invoke(this, tick);
         }

@@ -16,10 +16,11 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
 
 
         public VirtualPosition(decimal takeProfit, decimal entryPrice, decimal stopLoss, IInstrumentName instrumentName, IInstrumentStream stream, PositionSides side, 
-            int leverage, decimal size)
+            int leverage, decimal size, DateTime entryDate)
         {
             TakeProfit = takeProfit;
             EntryPrice = entryPrice;
+            EntryDate = entryDate;
             CurrentPrice = entryPrice;
             StopLoss = stopLoss;
             _stream = stream;
@@ -62,7 +63,7 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
         public decimal UnrealizedPnL { get => (CurrentPrice - EntryPrice) * _unRealizedVolume * (int)Side; }
         public decimal RealizedPnl { get => ((_realizedVolume.price * _realizedVolume.volume) - (_realizedVolume.volume * EntryPrice)) * (int)Side; }
         public decimal ROE { get => RealizedPnl / InitialMargin; }
-        public DateTime EntryDate { get; } = DateTime.UtcNow;
+        public DateTime EntryDate { get; }
 
         public event EventHandler OnClosed;
 
