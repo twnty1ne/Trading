@@ -46,9 +46,9 @@ namespace Trading.Exchange.Markets.HistorySimulation
             OnPositionOpened?.Invoke(sender, position);
         }
 
-        public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size)
+        public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size, Guid id)
         {
-            _instrument.SetPositionEntry(side, leverage, stopLoss, takeProfit, size);
+            _instrument.SetPositionEntry(side, leverage, stopLoss, takeProfit, size, id);
         }
     }
 }

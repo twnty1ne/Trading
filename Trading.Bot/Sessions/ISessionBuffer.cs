@@ -14,5 +14,8 @@ namespace Trading.Bot.Sessions
 
         IReadOnlyCollection<IPosition> Positions { get; }
         void Add(IPosition position);
+
+        IReadOnlyCollection<ITrade> Trades { get; }
+        void Add(ITrade position);
     }
 }

@@ -9,10 +9,22 @@
     <ProjectReference Include="..\Trading.Analytics.Core\Trading.Researching.Core.csproj" />
     <ProjectReference Include="..\Trading.Bot\Trading.Bot.csproj" />
     <ProjectReference Include="..\Trading.Exchange\Trading.Exchange.csproj" />
+    <ProjectReference Include="..\Trading.Report.Core\Trading.Report.Core.csproj" />
+    <ProjectReference Include="..\Trading.Report.DAL\Trading.Report.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="6.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />

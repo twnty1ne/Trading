@@ -12,14 +12,15 @@ namespace Trading.Bot.Strategies.CandleVolume
 {
     internal class CandleVolumeAbstractFactory : IStrategyAbstractFactory
     {
-        public Func<IIndexedOhlcv, PositionSides, IInstrumentName, ISignal> SignalSelector { get => (x, y, z) => new CandleVolumeSignal(x, y, z); }
+        public Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> SignalSelector { get => (x, y, z, t, p) => new CandleVolumeSignal(x, y, z, t, p); }
 
         public Predicate<IIndexedOhlcv> SellRule 
         {
             get => Rule
                 .Create(x => x.IsDojiBar())
                 .And(x => x.IsBreakingLowestVolume(2))
-                .And(x => x.IsBreakingHighestHigh(1));
+                .And(x => x.IsBreakingHighestHigh(1))
+                .And(x => !x.IsBreakingLowestLow(1));
         }
 
         public Predicate<IIndexedOhlcv> BuyRule
@@ -27,7 +28,8 @@ namespace Trading.Bot.Strategies.CandleVolume
             get => Rule
                 .Create(x => x.IsDojiBar())
                 .And(x => x.IsBreakingLowestVolume(2))
-                .And(x => x.IsBreakingLowestLow(1));
+                .And(x => x.IsBreakingLowestLow(1))
+                .And(x => !x.IsBreakingHighestHigh(1));
         }
 
         public IReadOnlyCollection<IInstrumentName> SupportedInstruments
@@ -45,5 +47,7 @@ namespace Trading.Bot.Strategies.CandleVolume
                 Timeframes.OneHour,
             };
         }
+
+        public Strategies Strategy { get => Strategies.CandleVolume; }
     }
 }

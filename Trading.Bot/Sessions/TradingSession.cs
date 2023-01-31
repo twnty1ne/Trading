@@ -71,6 +71,7 @@ namespace Trading.Bot.Sessions
         private void HandlePositionOpened(object sender, IPosition position) 
         {
             _buffer.Add(position);
+            _buffer.Add(new Trade(position, _buffer.Signals.First(x => x.Id == position.Id)));
         }
 
         private void HandleSignalFired(object sender, ISignal signal) 
@@ -80,8 +81,8 @@ namespace Trading.Bot.Sessions
             if (!_buffer.Signals.Any(x => x.InstrumentName == signal.InstrumentName)) instrument.OnPositionOpened += HandlePositionOpened;
             var price = instrument.Price;
             var volume = (_market.Balance.NetVolume * signal.RiskPercent) / Math.Abs(price - signal.StopLoss);
-            instrument.SetPositionEntry(signal.Side, 30, signal.StopLoss, signal.TakeProfit, volume);
             _buffer.Add(signal);
+            instrument.SetPositionEntry(signal.Side, 30, signal.StopLoss, signal.TakeProfit, volume, signal.Id);
         }
     }
 }

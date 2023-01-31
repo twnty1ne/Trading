@@ -35,16 +35,17 @@ namespace Trading.Exchange.Markets.Core.Instruments
             return _resolver.Resolve(type);
         } 
 
-        public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size)
-        {
-           OnPositionOpened?.Invoke(this, new VirtualPosition(takeProfit, Price, stopLoss, Name, _stream, side, leverage, size, _currentDate));
-        }
 
         private void HandlePriceUpdated(object sender, IPriceTick tick)
         {
             _currentDate = tick.DateTime;
             Price = tick.Price;
             OnPriceUpdated?.Invoke(this, tick);
+        }
+
+        public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size, Guid id)
+        {
+            OnPositionOpened?.Invoke(this, new VirtualPosition(takeProfit, Price, stopLoss, Name, _stream, side, leverage, size, _currentDate, id));
         }
     }
 }

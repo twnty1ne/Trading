@@ -10,6 +10,8 @@ using Trading.Connections.Binance;
 using Trading.Exchange;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
+using Trading.Report.Core;
+using Trading.Report.DAL;
 
 namespace Trading.Api
 {
@@ -34,6 +36,12 @@ namespace Trading.Api
                 x.Strategy = Strategies.CandleVolume;
             });
             services.AddTransient<ICredentialsProvider, BinanceCredentialsProvider>();
+            services.AddDbContext<SessionContext>(ServiceLifetime.Scoped);
+            services.AddTransient<IRepository<Session>, SessionRepository>();
+            services.AddTransient<IRepository<Instrument>, InstrumentRepository>();
+            services.AddTransient<IRepository<Strategy>, StrategyRepository>();
+            services.AddTransient<IRepository<Timeframe>, TimeframeRepository>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -43,7 +51,6 @@ namespace Trading.Api
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
-
                 app.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
