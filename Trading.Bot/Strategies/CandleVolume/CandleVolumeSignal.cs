@@ -1,6 +1,7 @@
 ﻿using System;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trady.Core.Infrastructure;
 
 namespace Trading.Bot.Strategies.CandleVolume
@@ -9,9 +10,9 @@ namespace Trading.Bot.Strategies.CandleVolume
     {
         private readonly ISignal _signal;
 
-        public CandleVolumeSignal(IIndexedOhlcv ic, PositionSides position, IInstrumentName instrumentName)
+        public CandleVolumeSignal(IIndexedOhlcv ic, PositionSides position, IInstrumentName instrumentName, Timeframes timeframe, Strategies strategy)
         {
-            _signal = new Signal(ic, position, instrumentName, new CandleVolumeRiskManagment(), 0.03m);
+            _signal = new Signal(ic, position, instrumentName, new CandleVolumeRiskManagment(), 0.03m, timeframe, strategy);
         }
 
         public IInstrumentName InstrumentName { get => _signal.InstrumentName; }
@@ -29,5 +30,11 @@ namespace Trading.Bot.Strategies.CandleVolume
         public PositionSides Side { get => _signal.Side; }
 
         public decimal RiskPercent { get => _signal.RiskPercent; }
+
+        public Timeframes Timeframe { get => _signal.Timeframe; }
+
+        public Strategies Strategy { get => _signal.Strategy; }
+
+        public Guid Id { get => _signal.Id; }
     }
 }

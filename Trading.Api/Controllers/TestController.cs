@@ -1,17 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
-using System.Drawing;
-using System.IO;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 using System.Text;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.InputFiles;
-using Trading.Api.Extentions;
+using Trading.Report.DAL;
 using Trading.Bot;
-using Trading.Bot.Sessions;
 using Trading.Exchange;
+using Trading.Report.Core;
 
 namespace Trading.Api.Controllers
 {
@@ -21,13 +18,14 @@ namespace Trading.Api.Controllers
     {
         private readonly IExchange _exchange;
         private readonly IBot _bot;
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public TestController(IExchange exchange, IBot bot)
+        public TestController(IExchange exchange, IBot bot, IServiceScopeFactory scopeFactory)
         {
-            _exchange = exchange;
-            _bot = bot;
+            _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
+            _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+            _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
         }
-
 
         [HttpGet("1")]
         public IActionResult TestMethod1()
@@ -181,11 +179,48 @@ namespace Trading.Api.Controllers
         [HttpGet("8")]
         public IActionResult TestMethod8()
         {
+            
             _bot.Session.OnStopped += (x, y) =>
             {
-                var t = y.Analytics.GetResults();
-                var bot = new TelegramBotClient("5823136779:AAG8v93PWDUb8anIfC0vBPv1_-2oKmu0-aE");
-                bot.SendDocumentAsync(new ChatId(-1001850248953), y.AsInputOnlineFile()).GetAwaiter().GetResult();
+                using (var scope = _scopeFactory.CreateScope())
+                {
+                    var instrumentRepository = scope.ServiceProvider.GetService<IRepository<Instrument>>();
+                    var sessionRepository = scope.ServiceProvider.GetService<IRepository<Session>>();
+                    var timeframeRepository = scope.ServiceProvider.GetService<IRepository<Timeframe>>();
+                    var strategyRepository = scope.ServiceProvider.GetService<IRepository<Strategy>>();
+                    var instruments = instrumentRepository.GetAll();
+                    var strategies = strategyRepository.GetAll();
+                    var timeframes = timeframeRepository.GetAll();
+                    var session = new Session();
+                    session.Trades = y.Trades.Select(x => new Trade
+                    {
+                        StrategyId = strategies.First(y => y.Type == x.Strategy).Id,
+                        TimeframeId = timeframes.First(y => y.Type == x.Timeframe).Id,
+                        Position = new Position 
+                        {
+                            IMR = x.Position.IMR,
+                            TakeProfit = x.Position.TakeProfit,
+                            Side = x.Position.Side,
+                            Leverage = x.Position.Leverage,
+                            State = x.Position.State,
+                            ROE = x.Position.ROE,
+                            RealizedPnl = x.Position.RealizedPnl,
+                            Size = x.Position.Size,
+                            EntryPrice = x.Position.EntryPrice,
+                            InitialMargin = x.Position.InitialMargin,
+                            StopLoss = x.Position.StopLoss,
+                            EntryDate = x.Position.EntryDate,
+                            InstrumentId = instruments.First(y => y.Name == x.Position.InstrumentName.GetFullName()).Id,
+                            EntryDateTicks = x.Position.EntryDate.Ticks,
+                            EntryDateStringValue = x.Position.EntryDate.ToString("G"),
+                        },
+                        
+                    }).ToList();
+
+                    sessionRepository.Add(session);
+                    sessionRepository.SaveChanges();
+                }
+                
             };
             _bot.Session.Start();
             return Ok();
@@ -207,9 +242,17 @@ namespace Trading.Api.Controllers
 
 
         [HttpGet("10")]
-        public IActionResult TestMethod10()
+        public IActionResult TestMethod10(int array)
         {
             _bot.Session.Stop();
+            return Ok();
+        }
+
+
+        [HttpGet("11")]
+        public IActionResult TestMethod11(int index)
+        {
+            
             return Ok();
         }
     }

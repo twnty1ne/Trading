@@ -48,5 +48,7 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
         public decimal StopLoss => throw new NotImplementedException();
 
         public DateTime EntryDate => throw new NotImplementedException();
+
+        public Guid Id => throw new NotImplementedException();
     }
 }

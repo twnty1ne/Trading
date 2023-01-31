@@ -7,6 +7,7 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
     public interface IPosition
     {
         event EventHandler OnClosed;
+        Guid Id { get; }
         decimal TakeProfit { get; }
         DateTime EntryDate { get; }
         decimal EntryPrice { get; }

@@ -31,9 +31,9 @@ namespace Trading.Exchange.Markets.Realtime
             return _instrument.GetTimeframe(type);
         }
 
-        public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size)
+        public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size, Guid id)
         {
-            _instrument.SetPositionEntry(side, leverage, stopLoss, takeProfit, size);
+            _instrument.SetPositionEntry(side, leverage, stopLoss, takeProfit, size, id);
         }
 
         private void HandlePriceUpdated(object sender, IPriceTick tick)

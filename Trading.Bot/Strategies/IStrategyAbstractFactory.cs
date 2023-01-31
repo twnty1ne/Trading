@@ -9,10 +9,11 @@ namespace Trading.Bot.Strategies
 {
     internal interface IStrategyAbstractFactory
     {
-        Func<IIndexedOhlcv, PositionSides, IInstrumentName, ISignal> SignalSelector { get; }
+        Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> SignalSelector { get; }
         Predicate<IIndexedOhlcv> SellRule { get; }
         Predicate<IIndexedOhlcv> BuyRule { get; }
         IReadOnlyCollection<IInstrumentName> SupportedInstruments { get; }
         IReadOnlyCollection<Timeframes> SupportedTimeframes { get; }
+        Strategies Strategy { get; }
     }
 }

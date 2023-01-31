@@ -17,7 +17,8 @@ namespace Trading.Bot.Strategies
         private readonly IReadOnlyCollection<IInstrumentStrategyScope> _instrumentStrategyScopes;
         private readonly IReadOnlyCollection<Timeframes> _supportedTimeFrames;
         private readonly IReadOnlyCollection<IInstrumentName> _supportedInstruments;
-        private readonly Func<IIndexedOhlcv, PositionSides, IInstrumentName, ISignal> _signalSelector;
+        private readonly Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> _signalSelector;
+        private readonly Strategies _strategy;
 
         internal Strategy(IStrategyAbstractFactory factory, IMarket<IFuturesInstrument> market)
         {
@@ -28,6 +29,7 @@ namespace Trading.Bot.Strategies
             _supportedInstruments = factory.SupportedInstruments;
             _supportedTimeFrames = factory.SupportedTimeframes;
             _signalSelector = factory.SignalSelector;
+            _strategy = factory.Strategy;
             _instrumentStrategyScopes = CreateScopes();
             Init();
         }
@@ -37,7 +39,7 @@ namespace Trading.Bot.Strategies
         private IReadOnlyCollection<IInstrumentStrategyScope> CreateScopes()
         {
             return _supportedInstruments
-                .Select(x => new InstrumentStrategyScope(_market.GetInstrument(x), _supportedTimeFrames, _buyRule, _sellRule, _signalSelector))
+                .Select(x => new InstrumentStrategyScope(_market.GetInstrument(x), _supportedTimeFrames, _buyRule, _sellRule, _signalSelector, _strategy))
                 .ToList();
         }
 
