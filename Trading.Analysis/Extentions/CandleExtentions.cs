@@ -16,6 +16,7 @@ namespace Trading.Analysis.Extentions
         public static bool IsDojiBar(this IIndexedOhlcv indexedCandle) 
         {
             return new Candlesticks.Doji(indexedCandle.BackingList)[indexedCandle.Index].Tick;
+            
         }
 
         public static bool IsBreakingLowestVolume(this IIndexedOhlcv ic, int period)
@@ -27,7 +28,6 @@ namespace Trading.Analysis.Extentions
         public static bool IsUptrend(this IIndexedOhlcv ic, int period) 
         {
             var upTrend = new UpTrend(ic.BackingList, period);
-            var value = (bool)upTrend[ic.Index].Tick;
             return (bool)upTrend[ic.Index].Tick;
         }
 
