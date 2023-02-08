@@ -27,6 +27,7 @@ namespace Trading.Api.Controllers
             _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
         }
 
+
         [HttpGet("1")]
         public IActionResult TestMethod1()
         {
@@ -248,12 +249,5 @@ namespace Trading.Api.Controllers
             return Ok();
         }
 
-
-        [HttpGet("11")]
-        public IActionResult TestMethod11(int index)
-        {
-            
-            return Ok();
-        }
     }
 }
