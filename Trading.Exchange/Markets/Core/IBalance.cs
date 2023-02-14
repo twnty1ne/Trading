@@ -7,7 +7,8 @@ namespace Trading.Exchange.Markets.Core
     public interface IBalance
     {
         decimal NetVolume { get; }
-        decimal GetPercent(decimal percent);
+        decimal CurrentVolume { get; }
+        decimal GetNetVolumePercent(decimal percent);
 
     }
 }

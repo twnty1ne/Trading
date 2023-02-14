@@ -42,12 +42,19 @@ namespace Trading.Exchange.Markets.HistorySimulation
 
         private void HandlePositionOpened(object sender, IPosition position)
         {
-            position.OnClosed += (x, y) => _balance.Update(position.RealizedPnl);
+            position.OnClosed += (x, y) => 
+            {
+                _balance.Release(position.InitialMargin);
+                _balance.Update(position.RealizedPnl);
+
+            };
             OnPositionOpened?.Invoke(sender, position);
         }
 
         public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size, Guid id)
         {
+            var v = size * Price / leverage;
+            _balance.Allocate(v);
             _instrument.SetPositionEntry(side, leverage, stopLoss, takeProfit, size, id);
         }
     }
