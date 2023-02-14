@@ -12,7 +12,7 @@ namespace Trading.Bot.Strategies.CandleVolume
 
         public CandleVolumeSignal(IIndexedOhlcv ic, PositionSides position, IInstrumentName instrumentName, Timeframes timeframe, Strategies strategy)
         {
-            _signal = new Signal(ic, position, instrumentName, new CandleVolumeRiskManagment(), 0.03m, timeframe, strategy);
+            _signal = new Signal(ic, position, instrumentName, new CandleVolumeRiskManagment(), 0.01m, timeframe, strategy);
         }
 
         public IInstrumentName InstrumentName { get => _signal.InstrumentName; }

@@ -7,5 +7,7 @@ namespace Trading.Exchange.Markets.HistorySimulation
     internal interface IVirtualBalance
     {
         void Update(decimal value);
+        void Allocate(decimal volume);
+        
     }
 }
