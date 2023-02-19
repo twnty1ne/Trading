@@ -36,7 +36,7 @@ namespace Trading.Bot.Sessions
             {
                 { Sessions.ForwardTest, () => new ForwardtestSession(_exchange, _strategy) },
                 { Sessions.BackTest, () => new BacktestSession(_exchange, _strategy) },
-                { Sessions.RealTimeTrading, () => new RealtimeTradingSession() } 
+                { Sessions.RealTimeTrading, () => new RealtimeSession() } 
             };
 
         }

@@ -4,9 +4,9 @@ using Trading.Bot.Strategies;
 
 namespace Trading.Bot.Sessions.Realtime
 {
-    internal class RealtimeTradingSession : ITradingSession
+    internal class RealtimeSession : ITradingSession
     {
-        public RealtimeTradingSession()
+        public RealtimeSession()
         {
         }
 
