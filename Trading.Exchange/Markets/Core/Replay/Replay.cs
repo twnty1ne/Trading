@@ -27,22 +27,21 @@ namespace Trading.Exchange.Markets.Core.Replay
                 .OnEntryFrom(ReplayTriggers.Stop, HandleStop)
                 .Ignore(ReplayTriggers.Stop)
                 .Permit(ReplayTriggers.Start, ReplayStates.Started);
-                
+
 
             _stateMachine
                 .Configure(ReplayStates.Started)
                 .OnEntry(HandleStarted)
                 .Permit(ReplayTriggers.Stop, ReplayStates.WaitingForStart);
-       
         }
 
         public event EventHandler OnStarted;
         public event EventHandler OnDone;
-        
+
 
         public void Start()
         {
-            _stateMachine.Fire(ReplayTriggers.Start);  
+            _stateMachine.Fire(ReplayTriggers.Start);
         }
 
         public void Stop()
@@ -50,14 +49,14 @@ namespace Trading.Exchange.Markets.Core.Replay
             _stateMachine.Fire(ReplayTriggers.Stop);
         }
 
-        private void HandleStarted() 
+        private void HandleStarted()
         {
-            _ticker.Start(_from);
             _ticker.OnTick += HandleTick;
+            _ticker.Start(_from);
             OnStarted?.Invoke(this, EventArgs.Empty);
         }
 
-        private void HandleStop() 
+        private void HandleStop()
         {
             _ticker.OnTick -= HandleTick;
             _ticker.Reset();
@@ -65,7 +64,7 @@ namespace Trading.Exchange.Markets.Core.Replay
             OnDone = null;
         }
 
-        private void HandleTick(object sender, IMarketTick tick) 
+        private void HandleTick(object sender, IMarketTick tick)
         {
             if (tick.Date >= _to)
             {
