@@ -2,27 +2,28 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace Trading.Exchange.Connections.Ticker
 {
-    internal class MarketTicker : IMarketTicker
+    public class MarketTicker : IMarketTicker
     {
         private readonly StateMachine<TickerStates, TickerTriggers> _stateMachine;
+        private readonly StateMachine<TickerStates, TickerTriggers>.TriggerWithParameters<DateTime> _startTrigger;
 
         private DateTime _startDate;
+        private Task _task = new Task(() => throw new Exception());
         private long _accumalutedTicks;
         private long _spanForTick = TimeSpan.FromSeconds(100).Ticks;
         private EventHandler<IMarketTick> _onTick;
-        private Timer _timer;
         private object _lock = new object();
-        private readonly StateMachine<TickerStates, TickerTriggers>.TriggerWithParameters<DateTime> _startTrigger;
-        
+        private CancellationTokenSource _tokenSource;
 
         public MarketTicker()
         {
-            _timer = new Timer(TimeSpan.FromTicks(1).TotalMilliseconds);
-
+            _tokenSource = new CancellationTokenSource();
             _stateMachine = new StateMachine<TickerStates, TickerTriggers>(TickerStates.WaitingForStart);
             _startTrigger = _stateMachine.SetTriggerParameters<DateTime>(TickerTriggers.Start);
 
@@ -35,21 +36,18 @@ namespace Trading.Exchange.Connections.Ticker
                 .Configure(TickerStates.Started)
                 .OnEntryFrom(_startTrigger, HandleStarded)
                 .Permit(TickerTriggers.Reset, TickerStates.WaitingForStart);
-
-            
-
         }
 
         public event EventHandler OnStopped;
         public event EventHandler OnReset;
 
-        public event EventHandler<IMarketTick> OnTick 
+        public event EventHandler<IMarketTick> OnTick
         {
-            add 
+            add
             {
-                if(_onTick is null || !_onTick.GetInvocationList().Contains(value)) _onTick += value;
+                if (_onTick is null || !_onTick.GetInvocationList().Contains(value)) _onTick += value;
             }
-            remove 
+            remove
             {
                 _onTick -= value;
             }
@@ -68,25 +66,33 @@ namespace Trading.Exchange.Connections.Ticker
         private void HandleStarded(DateTime date)
         {
             _startDate = new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
-            _timer.Elapsed += HandleTimerElapsed;
-            _timer.Start();
+            var ticks = (DateTime.UtcNow - _startDate).Ticks / _spanForTick + 1;
+            _task = Task.Run(() =>
+            {
+                while (ticks >= _accumalutedTicks && !_tokenSource.IsCancellationRequested)
+                {
+                    lock (_lock)
+                    {
+                        var tickDate = _startDate.AddTicks(_accumalutedTicks * _spanForTick);
+                        _onTick?.Invoke(this, new MarketTick(tickDate));
+                        _accumalutedTicks++;
+                    }
+                }
+            });
+            _task.Wait();
+            Reset();
         }
 
         private void HandleReset()
         {
-            _timer.Stop();
-            _timer.Elapsed -= HandleTimerElapsed;
-            OnReset?.Invoke(this, EventArgs.Empty);
-            _accumalutedTicks = 0;
-        }
-
-        private void HandleTimerElapsed(object sender, ElapsedEventArgs args) 
-        {
             lock (_lock)
             {
-                var tickDate = _startDate.AddTicks(_accumalutedTicks * _spanForTick);
-                _onTick?.Invoke(this, new MarketTick(tickDate));
-                _accumalutedTicks++;
+                _tokenSource.Cancel();
+                _task.Dispose();
+                _tokenSource.Dispose();
+                _tokenSource = new CancellationTokenSource();
+                OnReset?.Invoke(this, EventArgs.Empty);
+                _accumalutedTicks = 0;
             }
         }
     }
