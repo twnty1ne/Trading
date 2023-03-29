@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Trading.Connections.Binance;
+using Trading.Connections.Bybit;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
 using Trading.Shared.Resolvers;
@@ -33,6 +34,7 @@ namespace Trading.Exchange.Connections
             return new Dictionary<ConnectionEnum, Func<IConnection>>
             {
                 { ConnectionEnum.Binance, () => new BinanceConnection(_credentialsProvider)},
+                { ConnectionEnum.Bybit, () => new BybitConnection(_credentialsProvider)},
             };
         }
     }

@@ -66,7 +66,9 @@ namespace Trading.Exchange.Connections.Ticker
         private void HandleStarded(DateTime date)
         {
             _startDate = new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
+
             var ticks = (DateTime.UtcNow - _startDate).Ticks / _spanForTick + 1;
+
             _task = Task.Run(() =>
             {
                 while (ticks >= _accumalutedTicks && !_tokenSource.IsCancellationRequested)
@@ -79,7 +81,9 @@ namespace Trading.Exchange.Connections.Ticker
                     }
                 }
             });
+
             _task.Wait();
+
             Reset();
         }
 

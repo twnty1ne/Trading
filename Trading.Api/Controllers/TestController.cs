@@ -9,6 +9,13 @@ using Trading.Report.DAL;
 using Trading.Bot;
 using Trading.Exchange;
 using Trading.Report.Core;
+using Trading.Bot.Strategies.CandleVolume;
+using Trading.Exchange.Markets.Core.Instruments;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes;
+using Bybit.Net.Objects.Models;
+using Trading.Connections.Binance;
+using Trading.Connections.Bybit;
+using System.Threading.Tasks;
 
 namespace Trading.Api.Controllers
 {
@@ -185,6 +192,8 @@ namespace Trading.Api.Controllers
             {
                 using (var scope = _scopeFactory.CreateScope())
                 {
+                    var t = y.Analytics.GetResults();
+
                     var instrumentRepository = scope.ServiceProvider.GetService<IRepository<Instrument>>();
                     var sessionRepository = scope.ServiceProvider.GetService<IRepository<Session>>();
                     var timeframeRepository = scope.ServiceProvider.GetService<IRepository<Timeframe>>();
@@ -220,7 +229,7 @@ namespace Trading.Api.Controllers
 
                     sessionRepository.Add(session);
                     sessionRepository.SaveChanges();
-                }
+                } 
                 
             };
             _bot.Session.Start();
@@ -241,13 +250,12 @@ namespace Trading.Api.Controllers
             return Ok(bot);
         }
 
-
         [HttpGet("10")]
-        public IActionResult TestMethod10(int array)
+        public async Task<IActionResult> TestMethod10()
         {
-            _bot.Session.Stop();
-            return Ok();
+            var connection = new BybitConnection(new BinanceCredentialsProvider());
+            var candles = await connection.GetFuturesCandlesAsync(new InstrumentName("ETH", "USDT"), Timeframes.FourHours);
+            return Ok(candles);
         }
-
     }
 }

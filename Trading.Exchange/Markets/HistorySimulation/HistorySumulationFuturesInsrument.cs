@@ -54,7 +54,9 @@ namespace Trading.Exchange.Markets.HistorySimulation
         public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size, Guid id)
         {
             var v = size * Price / leverage;
+
             _balance.Allocate(v);
+
             _instrument.SetPositionEntry(side, leverage, stopLoss, takeProfit, size, id);
         }
     }
