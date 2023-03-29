@@ -29,7 +29,7 @@ namespace Trading.Api
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddControllers();
-            services.AddSingleton<IExchange, Exchange.Exchange>().Configure<Exchange.Options>(x => x.ConnectionType = ConnectionEnum.Binance);
+            services.AddSingleton<IExchange, Exchange.Exchange>().Configure<Exchange.Options>(x => x.ConnectionType = ConnectionEnum.Bybit);
             services.AddSingleton<IBot, Bot.Bot>().Configure<Bot.Options>(x => 
             {
                 x.Session = Sessions.BackTest;

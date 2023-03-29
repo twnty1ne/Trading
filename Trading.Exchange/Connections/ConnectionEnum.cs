@@ -6,6 +6,7 @@ namespace Trading.Exchange.Connections
 {
     public enum ConnectionEnum
     {
-        Binance = 1
+        Binance = 1,
+        Bybit = 2
     }
 }

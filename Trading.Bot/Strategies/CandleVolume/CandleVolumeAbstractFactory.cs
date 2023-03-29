@@ -36,7 +36,7 @@ namespace Trading.Bot.Strategies.CandleVolume
         {
             get => new List<IInstrumentName>
             {
-                new InstrumentName("ETH", "USDT"),
+                new InstrumentName("LTC", "USDT"),
             };
         }
 
