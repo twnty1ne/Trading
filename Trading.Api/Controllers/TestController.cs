@@ -27,10 +27,10 @@ namespace Trading.Api.Controllers
         private readonly IBot _bot;
         private readonly IServiceScopeFactory _scopeFactory;
 
-        public TestController(IExchange exchange, IBot bot, IServiceScopeFactory scopeFactory)
+        public TestController(/*IExchange exchange, IBot bot, */IServiceScopeFactory scopeFactory)
         {
-            _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
-            _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+            //_exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
+            //_bot = bot ?? throw new ArgumentNullException(nameof(bot));
             _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
         }
 
@@ -253,7 +253,7 @@ namespace Trading.Api.Controllers
         [HttpGet("10")]
         public async Task<IActionResult> TestMethod10()
         {
-            var connection = new BybitConnection(new BinanceCredentialsProvider());
+            var connection = new BinanceConnection(new BinanceCredentialsProvider());
             var candles = await connection.GetFuturesCandlesAsync(new InstrumentName("ETH", "USDT"), Timeframes.FourHours);
             return Ok(candles);
         }
