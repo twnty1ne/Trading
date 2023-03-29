@@ -15,6 +15,7 @@ using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
+using Trading.Shared.Ranges;
 
 namespace Trading.Connections.Binance
 {
@@ -35,24 +36,34 @@ namespace Trading.Connections.Binance
             if (!successfullyConverted) throw new ArgumentException("Invalid timeframe");
 
             var result = new List<IBinanceKline>();
+
             var limit = 1000;
             var lastResultItemsAmount = 0;
-            var lastEndDate = DateTime.UtcNow;
+            
             var timeframeTicks = timeframe.GetTimeframeTimeSpan().Ticks;
 
-            while (lastResultItemsAmount == 0 || lastResultItemsAmount == limit && lastEndDate > new DateTime(2022, 06, 01))
+            var from = new DateTime(2023, 01, 1);
+            var to = new DateTime(2023, 01, 31, 23, 59, 59);
+            var range = new Range<DateTime>(from, to);
+
+            var lastEndDate = DateTime.UtcNow;
+
+            while (lastResultItemsAmount == 0 || lastResultItemsAmount == limit && range.Contains(lastEndDate))
             {
                 var response = await _client.UsdFuturesApi.ExchangeData
                     .GetKlinesAsync($"{name.BaseCurrencyName}{name.QuoteCurrencyName}", convertedTimeframe, limit: limit, endTime: lastEndDate);
 
                 if (!response.Success) throw new Exception($"status code: {response.ResponseStatusCode}, message: {response.Error}");
 
-                result.AddRange(response.Data);
+                result.AddRange(response.Data.Where(x => range.Contains(x.OpenTime)));
                 lastResultItemsAmount = response.Data.Count();
+
                 lastEndDate = lastEndDate.AddTicks(-timeframeTicks * limit);
             }
 
-            return result.OrderBy(x => x.CloseTime).Select(x => new Candle(x.OpenPrice, x.ClosePrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenTime, x.CloseTime)).ToList().AsReadOnly();
+            return result.OrderBy(x => x.CloseTime)
+                .Select(x => new Candle(x.OpenPrice, x.ClosePrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenTime, x.CloseTime))
+                .ToList().AsReadOnly();
         }
 
         public override IInstrumentStream GetHistoryInstrumentStream(IInstrumentName name, IMarketTicker ticker)
