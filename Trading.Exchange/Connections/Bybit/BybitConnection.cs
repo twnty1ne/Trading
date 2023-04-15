@@ -25,7 +25,7 @@ namespace Trading.Connections.Bybit
         private readonly IBybitClient _client = new BybitClient();
         private readonly IBybitSocketClient _socketClient = new BybitSocketClient();
 
-        public BybitConnection(ICredentialsProvider credentialProvider) : base(credentialProvider, ConnectionEnum.Binance)
+        public BybitConnection(ICredentialsProvider credentialProvider) : base(credentialProvider, ConnectionEnum.Bybit)
         {
         }
 
