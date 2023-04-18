@@ -30,6 +30,13 @@ namespace Trading.Connections.Bybit
         }
 
         public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
+        { 
+            var range = new Range<DateTime>(new DateTime(2023, 01, 1), new DateTime(2023, 01, 31, 23, 59, 59));
+
+            return await GetFuturesCandlesAsync(name, timeframe, range);
+        }
+
+        public override async Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe, IRange<DateTime> range)
         {
             var successfullyConverted = timeframe.TryConvertToBybitTimeframe(out var convertedTimeframe);
 
@@ -40,11 +47,8 @@ namespace Trading.Connections.Bybit
             var limit = 200;
             var lastResultItemsAmount = 0;
 
-            var from = new DateTime(2023, 01, 1);
-            var to = new DateTime(2023, 01, 31, 23, 59, 59);
-            var range = new Range<DateTime>(from, to);
+            var lastEndDate = range.From;
 
-            var lastEndDate = from;
             var timeframeTicks = timeframe.GetTimeframeTimeSpan().Ticks;
 
             while (lastResultItemsAmount == 0 || lastResultItemsAmount == limit && range.Contains(lastEndDate))

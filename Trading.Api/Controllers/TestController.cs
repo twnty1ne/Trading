@@ -16,6 +16,8 @@ using Bybit.Net.Objects.Models;
 using Trading.Connections.Binance;
 using Trading.Connections.Bybit;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using Trading.Shared.Ranges;
 
 namespace Trading.Api.Controllers
 {
@@ -27,7 +29,7 @@ namespace Trading.Api.Controllers
         private readonly IBot _bot;
         private readonly IServiceScopeFactory _scopeFactory;
 
-        public TestController(/*IExchange exchange, IBot bot, */IServiceScopeFactory scopeFactory)
+        public TestController(/*IExchange exchange, IBot bot,*/ IServiceScopeFactory scopeFactory)
         {
             //_exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
             //_bot = bot ?? throw new ArgumentNullException(nameof(bot));
@@ -198,9 +200,11 @@ namespace Trading.Api.Controllers
                     var sessionRepository = scope.ServiceProvider.GetService<IRepository<Session>>();
                     var timeframeRepository = scope.ServiceProvider.GetService<IRepository<Timeframe>>();
                     var strategyRepository = scope.ServiceProvider.GetService<IRepository<Strategy>>();
+
                     var instruments = instrumentRepository.GetAll();
                     var strategies = strategyRepository.GetAll();
                     var timeframes = timeframeRepository.GetAll();
+
                     var session = new Session();
                     session.Trades = y.Trades.Select(x => new Trade
                     {
@@ -226,6 +230,7 @@ namespace Trading.Api.Controllers
                         },
                         
                     }).ToList();
+
 
                     sessionRepository.Add(session);
                     sessionRepository.SaveChanges();
@@ -253,8 +258,8 @@ namespace Trading.Api.Controllers
         [HttpGet("10")]
         public async Task<IActionResult> TestMethod10()
         {
-            var connection = new BinanceConnection(new BinanceCredentialsProvider());
-            var candles = await connection.GetFuturesCandlesAsync(new InstrumentName("ETH", "USDT"), Timeframes.FourHours);
+            var connection = new BybitConnection(new BinanceCredentialsProvider());
+            var candles = await connection.GetFuturesCandlesAsync(new InstrumentName("ETH", "USDT"), Timeframes.FourHours, new Range<DateTime>(DateTime.UtcNow.AddDays(-8), DateTime.UtcNow.AddDays(-1)));
             return Ok(candles);
         }
     }
