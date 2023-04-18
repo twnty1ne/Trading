@@ -30,6 +30,14 @@ namespace Trading.Connections.Binance
 
         public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
         {
+            var range = new Range<DateTime>(new DateTime(2023, 01, 1), new DateTime(2023, 01, 31, 23, 59, 59));
+
+            return await GetFuturesCandlesAsync(name, timeframe, range);
+        }
+
+
+        public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe, IRange<DateTime> range)
+        {
             KlineInterval convertedTimeframe;
             var successfullyConverted = timeframe.TryConvertToBinanceTimeframe(out convertedTimeframe);
 
@@ -39,14 +47,10 @@ namespace Trading.Connections.Binance
 
             var limit = 1000;
             var lastResultItemsAmount = 0;
-            
+
             var timeframeTicks = timeframe.GetTimeframeTimeSpan().Ticks;
 
-            var from = new DateTime(2023, 01, 1);
-            var to = new DateTime(2023, 01, 31, 23, 59, 59);
-            var range = new Range<DateTime>(from, to);
-
-            var lastEndDate = DateTime.UtcNow;
+            var lastEndDate = range.To;
 
             while (lastResultItemsAmount == 0 || lastResultItemsAmount == limit && range.Contains(lastEndDate))
             {
