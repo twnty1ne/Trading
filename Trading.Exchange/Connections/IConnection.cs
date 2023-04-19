@@ -11,6 +11,7 @@ namespace Trading.Exchange.Connections
 {
     public interface IConnection
     {
+        ConnectionEnum Type { get; }
         Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe);
         Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe, IRange<DateTime> range);
         IInstrumentStream GetInstrumentStream(IInstrumentName name);

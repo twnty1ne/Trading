@@ -9,15 +9,13 @@ using Trading.Report.DAL;
 using Trading.Bot;
 using Trading.Exchange;
 using Trading.Report.Core;
-using Trading.Bot.Strategies.CandleVolume;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
-using Bybit.Net.Objects.Models;
 using Trading.Connections.Binance;
-using Trading.Connections.Bybit;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Trading.Shared.Ranges;
+using Trading.Connections.Bybit;
 
 namespace Trading.Api.Controllers
 {
@@ -31,8 +29,6 @@ namespace Trading.Api.Controllers
 
         public TestController(/*IExchange exchange, IBot bot,*/ IServiceScopeFactory scopeFactory)
         {
-            //_exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
-            //_bot = bot ?? throw new ArgumentNullException(nameof(bot));
             _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
         }
 
@@ -259,7 +255,8 @@ namespace Trading.Api.Controllers
         public async Task<IActionResult> TestMethod10()
         {
             var connection = new BybitConnection(new BinanceCredentialsProvider());
-            var candles = await connection.GetFuturesCandlesAsync(new InstrumentName("ETH", "USDT"), Timeframes.FourHours, new Range<DateTime>(DateTime.UtcNow.AddDays(-8), DateTime.UtcNow.AddDays(-1)));
+            var candles = await connection
+                .GetFuturesCandlesAsync(new InstrumentName("ETH", "USDT"), Timeframes.FourHours, new Range<DateTime>(DateTime.UtcNow.AddDays(-8), DateTime.UtcNow.AddDays(-1)));
             return Ok(candles);
         }
     }
