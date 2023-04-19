@@ -21,6 +21,8 @@ namespace Trading.Exchange.Connections
             Credentials = _credentialsProvider.GetCredentials();
         }
 
+        public abstract ConnectionEnum Type { get; } 
+
         public abstract Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe);
         public abstract Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe, IRange<DateTime> range);
         public abstract IInstrumentStream GetHistoryInstrumentStream(IInstrumentName name, IMarketTicker ticker);

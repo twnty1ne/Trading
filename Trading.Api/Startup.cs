@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Trading.Api.Services;
 using Trading.Bot;
 using Trading.Bot.Sessions;
 using Trading.Bot.Strategies;
@@ -29,19 +30,28 @@ namespace Trading.Api
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddControllers();
-            services.AddSingleton<IExchange, Exchange.Exchange>().Configure<Exchange.Options>(x => x.ConnectionType = ConnectionEnum.Bybit);
-            services.AddSingleton<IBot, Bot.Bot>().Configure<Bot.Options>(x => 
-            {
-                x.Session = Sessions.BackTest;
-                x.Strategy = Strategies.CandleVolume;
-            });
+
+            services
+                .AddSingleton<IExchange, Exchange.Exchange>()
+                .Configure<Exchange.Options>(x => x.ConnectionType = ConnectionEnum.Bybit);
+
+            services
+                .AddSingleton<IBot, Bot.Bot>()
+                .Configure<Bot.Options>(x => 
+                {
+                    x.Session = Sessions.BackTest;
+                    x.Strategy = Strategies.CandleVolume;
+                });
+
             services.AddTransient<ICredentialsProvider, BinanceCredentialsProvider>();
+
             services.AddDbContext<SessionContext>(ServiceLifetime.Scoped);
             services.AddTransient<IRepository<Session>, SessionRepository>();
             services.AddTransient<IRepository<Instrument>, InstrumentRepository>();
             services.AddTransient<IRepository<Strategy>, StrategyRepository>();
             services.AddTransient<IRepository<Timeframe>, TimeframeRepository>();
 
+            services.AddTransient<ICandleService, CandleService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

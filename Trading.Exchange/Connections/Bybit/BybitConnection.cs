@@ -29,6 +29,8 @@ namespace Trading.Connections.Bybit
         {
         }
 
+        public override ConnectionEnum Type => ConnectionEnum.Bybit;
+
         public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
         { 
             var range = new Range<DateTime>(new DateTime(2023, 01, 1), new DateTime(2023, 01, 31, 23, 59, 59));
