@@ -8,14 +8,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
-using Trading.Exchange.Connections.Binance;
 using Trading.Exchange.Connections.Bybit;
 using Trading.Exchange.Connections.Bybit.Extentions;
+using Trading.Exchange.Connections.Storage;
 using Trading.Exchange.Connections.Ticker;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
+using Trading.Exchange.Storage;
+using Trading.Shared.Excel;
 using Trading.Shared.Ranges;
 
 namespace Trading.Connections.Bybit
@@ -24,10 +26,13 @@ namespace Trading.Connections.Bybit
     {
         private readonly IBybitClient _client = new BybitClient();
         private readonly IBybitSocketClient _socketClient = new BybitSocketClient();
+        private readonly IExchangeInfoStorage _storage = new ExchangeInfoStorage();
 
         public BybitConnection(ICredentialsProvider credentialProvider) : base(credentialProvider, ConnectionEnum.Bybit)
         {
         }
+
+        public override ConnectionEnum Type => ConnectionEnum.Bybit;
 
         public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
         { 
@@ -38,6 +43,11 @@ namespace Trading.Connections.Bybit
 
         public override async Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe, IRange<DateTime> range)
         {
+            if (TryGetFromStorage(name, timeframe, range, out var candles))
+            {
+                return candles;
+            }
+
             var successfullyConverted = timeframe.TryConvertToBybitTimeframe(out var convertedTimeframe);
 
             if (!successfullyConverted) throw new ArgumentException("Invalid timeframe");
@@ -85,6 +95,41 @@ namespace Trading.Connections.Bybit
 
             return new Candle(kline.OpenPrice, kline.ClosePrice, kline.HighPrice, kline.LowPrice, kline.Volume, kline.OpenTime.ToUniversalTime(),
                 kline.OpenTime.ToUniversalTime().AddTicks(timeframeTicks - TimeSpan.TicksPerSecond));
+        }
+
+        private bool TryGetFromStorage(IInstrumentName name, Timeframes timeframe, IRange<DateTime> range, out IReadOnlyCollection<ICandle> candles)
+        {
+            var infoRead = _storage.TryGetSymbol(name, Type, out var info);
+
+            if (!infoRead)
+            {
+                candles = Enumerable.Empty<ICandle>().ToList().AsReadOnly();
+                return false;
+            }
+
+            if (info.FirstCandleDate >= range.To)
+            {
+                candles = Enumerable.Empty<ICandle>().ToList().AsReadOnly();
+                return true;
+            }
+
+            if (range.From < info.FirstCandleDate)
+            {
+                range = new Range<DateTime>(info.FirstCandleDate, range.To);
+            }
+
+            _storage.TryGetCandles(name, Type, timeframe, out var storageCandles);
+
+            var candleRange = new CandlesRange(storageCandles, timeframe);
+
+            if (candleRange.FullFilled(range))
+            {
+                candles = storageCandles.Where(x => range.Contains(x.CloseTime)).ToList().AsReadOnly();
+                return true;
+            }
+
+            candles = Enumerable.Empty<ICandle>().ToList().AsReadOnly();
+            return false;
         }
     }
 } 
