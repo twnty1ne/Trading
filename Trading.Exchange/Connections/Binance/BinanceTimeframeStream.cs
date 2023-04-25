@@ -23,6 +23,7 @@ namespace Trading.Exchange.Connections.Binance
             _name = name ?? throw new ArgumentNullException(nameof(name));
             _timeframe = timeframe;
             _ = connection ?? throw new ArgumentNullException(nameof(connection));
+
             _closedCandles = connection.GetFuturesCandlesAsync(_name, _timeframe).GetAwaiter().GetResult();
             ListenCandleUpdates().Wait();
         }
@@ -33,18 +34,22 @@ namespace Trading.Exchange.Connections.Binance
         private async Task ListenCandleUpdates()
         {
             KlineInterval convertedTimeframe;
+
             var successfullyConverted = _timeframe.TryConvertToBinanceTimeframe(out convertedTimeframe);
             if (!successfullyConverted) throw new ArgumentException("Invalid timeframe");
+
             await _socketClient.UsdFuturesStreams.SubscribeToKlineUpdatesAsync(_name.GetFullName(), convertedTimeframe, x =>
             {
                 var streamCandle = x.Data.Data;
                 var candle = new Candle(streamCandle.OpenPrice, streamCandle.ClosePrice, streamCandle.HighPrice, streamCandle.LowPrice, 
                     streamCandle.Volume, streamCandle.OpenTime, streamCandle.CloseTime);
+
                 if (streamCandle.Final) 
                 {
                     var closedCandlesCopy = new List<ICandle>(_closedCandles);
                     closedCandlesCopy.Add(candle);
                     _closedCandles = closedCandlesCopy;
+
                     OnCandleClosed?.Invoke(this, closedCandlesCopy);
                 }
             });
