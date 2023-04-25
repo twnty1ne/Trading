@@ -11,6 +11,8 @@ using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Shared.Resolvers;
 using System.Diagnostics;
 using Trading.Shared.Ranges;
+using Trading.Shared.Excel;
+using Trading.Exchange.Connections.Storage;
 
 namespace Trading.Api.Services
 {
@@ -18,24 +20,6 @@ namespace Trading.Api.Services
     {
         private readonly string _path = Path.Combine(Directory.GetCurrentDirectory(), "Services", "Candles");
 
-        private class FileName 
-        {
-            private readonly ConnectionEnum Connection;
-            private readonly Timeframes Timeframe;
-            private readonly IInstrumentName InstrumentName;
-
-            public FileName(ConnectionEnum connection, Timeframes timeframe, IInstrumentName instrumentName)
-            {
-                Connection = connection;
-                Timeframe = timeframe;
-                InstrumentName = instrumentName;
-            }
-
-            public string Value() 
-            {
-                return $"{Connection.ToString().ToLower()}_{Timeframe.ToString().ToLower()}_{InstrumentName.GetFullName().ToLower()}";
-            }
-        }
 
         private IResolver<ConnectionEnum, IConnection> _connectionResolver;
 
@@ -64,11 +48,11 @@ namespace Trading.Api.Services
             foreach (var item in instrumentTimeframeZip)
             {
                 var c = await connection.GetFuturesCandlesAsync(item.Instrument, item.Timeframe, range);
-                await LoadToFile(new FileName(connection.Type, item.Timeframe, item.Instrument), c);
+                await LoadToFile(new CandlesFileName(connection.Type, item.Timeframe, item.Instrument), c);
             }
         }
 
-        private async Task LoadToFile(FileName name, IEnumerable<ICandle> candles) 
+        private async Task LoadToFile(CandlesFileName name, IEnumerable<ICandle> candles) 
         {
             using (FileStream file = new FileStream(Path.Combine(_path, name.Value()), FileMode.Create, FileAccess.Write))
             {
@@ -95,6 +79,8 @@ namespace Trading.Api.Services
             sheet.Cells[1, 3].Value = "OpenTime";
             sheet.Cells[1, 4].Value = "CloseTime";
             sheet.Cells[1, 5].Value = "Volume";
+            sheet.Cells[1, 6].Value = "High";
+            sheet.Cells[1, 7].Value = "Low";
 
             var positionRow = 2;
 
@@ -105,6 +91,8 @@ namespace Trading.Api.Services
                 sheet.Cells[positionRow, 3].Value = candle.OpenTime.ToString();
                 sheet.Cells[positionRow, 4].Value = candle.CloseTime.ToString();
                 sheet.Cells[positionRow, 5].Value = candle.Volume;
+                sheet.Cells[positionRow, 6].Value = candle.High;
+                sheet.Cells[positionRow, 7].Value = candle.Low;
 
                 positionRow++;
             }
