@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Trady.Core.Infrastructure;
 
 namespace Trading.Exchange.Markets.Core.Instruments.Candles
 {
