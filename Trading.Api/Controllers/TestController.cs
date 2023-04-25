@@ -247,10 +247,7 @@ namespace Trading.Api.Controllers
                 .AppendLine("SL: 0,4355352")
                 .AppendLine("TP: 0,4268592")
                 .AppendLine("Price: 0,4338");
-
-            var bot = new TelegramBotClient("5730777041:AAEB8X_UIbVFIkI5JaX1MBKcN_JMQg6-FWY")
-                .SendDocumentAsync(new ChatId(-1001636388029), sb.ToString()).GetAwaiter().GetResult();
-
+            var bot = new TelegramBotClient("5730777041:AAEB8X_UIbVFIkI5JaX1MBKcN_JMQg6-FWY").SendDocumentAsync(new ChatId(-1001636388029), sb.ToString()).GetAwaiter().GetResult();
             return Ok(bot);
         }
 
@@ -258,12 +255,8 @@ namespace Trading.Api.Controllers
         public async Task<IActionResult> TestMethod10()
         {
             var connection = new BybitConnection(new BinanceCredentialsProvider());
-
-            var range = new Range<DateTime>(new DateTime(2023, 04, 14, 07, 00, 00), new DateTime(2023, 04, 25, 20, 59, 59));
-
             var candles = await connection
-                .GetFuturesCandlesAsync(new InstrumentName("LTC", "USDT"), Timeframes.OneHour, range);
-
+                .GetFuturesCandlesAsync(new InstrumentName("ETH", "USDT"), Timeframes.FourHours, new Range<DateTime>(DateTime.UtcNow.AddDays(-8), DateTime.UtcNow.AddDays(-1)));
             return Ok(candles);
         }
     }

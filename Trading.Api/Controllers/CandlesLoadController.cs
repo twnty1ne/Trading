@@ -27,14 +27,12 @@ namespace Trading.Api.Controllers
             {
                 new InstrumentName("LTC", "USDT"),
             };
-            var range = new Shared.Ranges.Range<DateTime>(new DateTime(2023, 04, 01), new DateTime(2023, 04, 20));
-
+            var range = new Shared.Ranges.Range<DateTime>(DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
             var brokers = new List<ConnectionEnum>
             {
                 ConnectionEnum.Binance,
                 ConnectionEnum.Bybit
             };
-
             var timeframes = new List<Timeframes>
             {
                 Timeframes.FiveMinutes,
