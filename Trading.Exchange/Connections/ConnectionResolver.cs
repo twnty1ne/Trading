@@ -8,7 +8,7 @@ using Trading.Shared.Resolvers;
 
 namespace Trading.Exchange.Connections
 {
-    internal class ConnectionResolver : IResolver<ConnectionEnum, IConnection>
+    public class ConnectionResolver : IResolver<ConnectionEnum, IConnection>
     {
         private readonly IResolver<ConnectionEnum, IConnection> _resolver;
         private readonly ICredentialsProvider _credentialsProvider;
