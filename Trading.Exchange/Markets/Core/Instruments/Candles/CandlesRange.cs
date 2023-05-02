@@ -20,6 +20,11 @@ namespace Trading.Exchange.Markets.Core.Instruments.Candles
 
         public bool Consistent() 
         {
+            if (!_candles.Any()) 
+            {
+                return true;
+            }
+
             var timeframeTicks = _timeframe.GetTimeframeTimeSpan().Ticks;
 
             var ic = new IndexedCandle(_candles.Select(x =>
