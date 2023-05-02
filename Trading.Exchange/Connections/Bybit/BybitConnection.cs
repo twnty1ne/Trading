@@ -1,5 +1,4 @@
 ﻿using Bybit.Net.Clients;
-using Bybit.Net.Enums;
 using Bybit.Net.Interfaces.Clients;
 using Bybit.Net.Objects.Models;
 using System;
@@ -17,7 +16,6 @@ using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
 using Trading.Exchange.Storage;
-using Trading.Shared.Excel;
 using Trading.Shared.Ranges;
 
 namespace Trading.Connections.Bybit
@@ -34,7 +32,7 @@ namespace Trading.Connections.Bybit
 
         public override ConnectionEnum Type => ConnectionEnum.Bybit;
 
-        public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
+        public override async Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
         { 
             var range = new Range<DateTime>(new DateTime(2023, 01, 1), new DateTime(2023, 01, 31, 23, 59, 59));
 
@@ -63,7 +61,8 @@ namespace Trading.Connections.Bybit
 
             while (lastResultItemsAmount == 0 || lastResultItemsAmount == limit && range.Contains(lastEndDate))
             {
-                var response = await _client.UsdPerpetualApi.ExchangeData.GetKlinesAsync(name.GetFullName(), convertedTimeframe, lastEndDate, limit: limit);
+                var response = await _client.UsdPerpetualApi.ExchangeData.GetKlinesAsync(name.GetFullName(),
+                    convertedTimeframe, lastEndDate, limit: limit);
 
                 if (!response.Success) throw new Exception($"status code: {response.ResponseStatusCode}, message: {response.Error}");
 

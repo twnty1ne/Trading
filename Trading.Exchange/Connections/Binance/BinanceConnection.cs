@@ -21,7 +21,6 @@ using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
 using Trading.Exchange.Storage;
-using Trading.Shared.Excel;
 using Trading.Shared.Ranges;
 
 namespace Trading.Connections.Binance

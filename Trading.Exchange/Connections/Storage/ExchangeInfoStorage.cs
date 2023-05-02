@@ -10,7 +10,6 @@ using Trading.Exchange.Connections.Storage;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
-using Trading.Shared.Excel;
 
 namespace Trading.Exchange.Storage
 {
@@ -57,7 +56,10 @@ namespace Trading.Exchange.Storage
                 var sheet = importer.ReadSheet();
                 var pocoCandles = sheet.ReadRows<PocoCandle>();
 
-                candles =  pocoCandles.Select(x => new Candle(x.Open, x.Close, x.High, x.Low, x.Volume, x.OpenTime, x.CloseTime)).ToList();
+                candles =  pocoCandles.Select(x => new Candle(x.Open, x.Close, x.High, x.Low, x.Volume, x.OpenTime, x.CloseTime))
+                    .OrderBy(x => x.OpenTime)
+                    .ToList();
+
                 return true;
             }
             catch (Exception ex)

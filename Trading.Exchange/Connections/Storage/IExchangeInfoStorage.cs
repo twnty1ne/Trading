@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Trading.Exchange.Connections;
-using Trading.Exchange.Connections.Storage;
+﻿using System.Collections.Generic;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 
-namespace Trading.Shared.Excel
+namespace Trading.Exchange.Connections.Storage
 {
     internal interface IExchangeInfoStorage
     {
