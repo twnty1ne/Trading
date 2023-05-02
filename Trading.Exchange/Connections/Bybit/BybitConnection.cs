@@ -73,7 +73,10 @@ namespace Trading.Connections.Bybit
                 lastEndDate = lastEndDate.AddTicks(timeframeTicks * limit);
             }
 
-            return result.OrderBy(x => x.OpenTime)
+            return result.Where(x => range.Contains(x.OpenTime))
+                .GroupBy(x => x.OpenTime)
+                .Select(x => x.First())
+                .OrderBy(x => x.OpenTime)
                 .Select(x => SelectCandle(x, timeframe))
                 .ToList()
                 .AsReadOnly();

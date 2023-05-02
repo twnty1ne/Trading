@@ -80,9 +80,14 @@ namespace Trading.Connections.Binance
                 lastEndDate = lastEndDate.AddTicks(-timeframeTicks * limit);
             }
 
-            return result.OrderBy(x => x.CloseTime)
+            return result
+                .Where(x => range.Contains(x.OpenTime))
+                .GroupBy(x => x.OpenTime)
+                .Select(x => x.First())
+                .OrderBy(x => x.CloseTime)
                 .Select(x => new Candle(x.OpenPrice, x.ClosePrice, x.HighPrice, x.LowPrice, x.Volume, x.OpenTime, x.CloseTime))
-                .ToList().AsReadOnly();
+                .ToList()
+                .AsReadOnly();
         }
 
         public override IInstrumentStream GetHistoryInstrumentStream(IInstrumentName name, IMarketTicker ticker)
