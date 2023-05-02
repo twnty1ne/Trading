@@ -26,16 +26,88 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_adausdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_bnbusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_btcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_ethusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Connections\Storage\Candles\binance_fiveminutes_ltcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_solusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_xrpusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_adausdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_bnbusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_btcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_ethusdt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Connections\Storage\Candles\binance_onehour_ltcusdt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_solusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_xrpusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_adausdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_bnbusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_btcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_ethusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Connections\Storage\Candles\bybit_fiveminutes_ltcusdt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_solusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_xrpusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_adausdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_bnbusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_btcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_ethusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Connections\Storage\Candles\bybit_onehour_ltcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_solusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_xrpusdt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Connections\Storage\Instruments\instruments_info.xlsx">
