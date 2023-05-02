@@ -11,7 +11,6 @@ using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Shared.Resolvers;
 using System.Diagnostics;
 using Trading.Shared.Ranges;
-using Trading.Shared.Excel;
 using Trading.Exchange.Connections.Storage;
 
 namespace Trading.Api.Services
@@ -19,8 +18,7 @@ namespace Trading.Api.Services
     public class CandleService : ICandleService
     {
         private readonly string _path = Path.Combine(Directory.GetCurrentDirectory(), "Services", "Candles");
-
-
+        
         private IResolver<ConnectionEnum, IConnection> _connectionResolver;
 
         public CandleService()
