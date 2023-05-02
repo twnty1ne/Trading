@@ -58,8 +58,8 @@ namespace Trading.Exchange.Markets.Core.Instruments.Candles
 
             var candlesInRangeExpectedAmount = Math.Abs(range.From.Ticks - range.To.Ticks) / timeframeTicks;
             var allowedTreshold = new Range<long>(0, 1);
-
-            return Consistent() && allowedTreshold.Contains(candlesInRange.Count() - candlesInRangeExpectedAmount);
+            
+            return allowedTreshold.Contains(candlesInRange.Count() - candlesInRangeExpectedAmount);
         }
     }
 }

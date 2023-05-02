@@ -74,7 +74,7 @@ namespace Trading.Connections.Binance
 
                 if (!response.Success) throw new Exception($"status code: {response.ResponseStatusCode}, message: {response.Error}");
 
-                result.AddRange(response.Data.Where(x => range.Contains(x.OpenTime)));
+                result.AddRange(response.Data);
                 lastResultItemsAmount = response.Data.Count();
 
                 lastEndDate = lastEndDate.AddTicks(-timeframeTicks * limit);
@@ -118,11 +118,13 @@ namespace Trading.Connections.Binance
 
             _storage.TryGetCandles(name, Type, timeframe, out var storageCandles);
 
+            storageCandles = storageCandles.Where(x => range.Contains(x.OpenTime));
+
             var candleRange = new CandlesRange(storageCandles, timeframe);
 
             if (candleRange.FullFilled(range))
             {
-                candles = storageCandles.Where(x => range.Contains(x.CloseTime)).ToList().AsReadOnly();
+                candles = storageCandles.ToList().AsReadOnly();
                 return true;
             }
 
