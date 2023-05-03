@@ -15,12 +15,13 @@ namespace Trading.Bot.Strategies
             Id = Guid.NewGuid();
             InstrumentName = instrumentName;
             Side = side;
-            Date = ic.DateTime;
+            Date = ic.DateTime.UtcDateTime.Add(timeframe.GetTimeframeTimeSpan());
             Index = ic.Index;
             _riskManagment = riskManagment.Calculate(ic, side);
             RiskPercent = riskPercent;
             Timeframe = timeframe;
             Strategy = strategy;
+            Candle = ic;
         }
 
         public decimal TakeProfit { get => _riskManagment.TakeProfit; }
@@ -34,5 +35,6 @@ namespace Trading.Bot.Strategies
         public Timeframes Timeframe { get; }
         public Strategies Strategy { get; }
         public Guid Id { get; }
+        public IIndexedOhlcv Candle { get; }
     }
 }

@@ -18,11 +18,14 @@ namespace Trading.Report.DAL
         public DbSet<Timeframe> Timeframes { get; set; }
         public DbSet<Strategy> Strategies { get; set; }
         public DbSet<Trade> Trades { get; set; }
+        public DbSet<TradeCandle> TradeCandles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            
             optionsBuilder.UseNpgsql(
-                @"Server=postgres_db;Port=5432;User id=postgres;password=123;database=Sessions");
+                @"Server=postgres_db;Port=5432;User id=postgres;password=123;database=Sessions")
+                .UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

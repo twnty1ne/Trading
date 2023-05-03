@@ -15,6 +15,7 @@ namespace Trading.Bot.Sessions
             _ = signal ?? throw new ArgumentNullException(nameof(signal));
             Timeframe = signal.Timeframe;
             Strategy = signal.Strategy;
+            Signal = signal;
         }
 
         public Timeframes Timeframe { get; }
@@ -22,5 +23,7 @@ namespace Trading.Bot.Sessions
         public IPosition Position { get; }
 
         public Strategies.Strategies Strategy { get; }
+
+        public ISignal Signal { get; }
     }
 }

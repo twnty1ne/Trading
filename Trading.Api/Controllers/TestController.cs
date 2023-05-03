@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using Trading.Shared.Ranges;
 using Trading.Connections.Bybit;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
 
 namespace Trading.Api.Controllers
 {
@@ -27,9 +28,11 @@ namespace Trading.Api.Controllers
         private readonly IBot _bot;
         private readonly IServiceScopeFactory _scopeFactory;
 
-        public TestController(/*IExchange exchange, IBot bot,*/ IServiceScopeFactory scopeFactory)
+        public TestController(IExchange exchange, IBot bot, IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
+            _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
+            _bot = bot ?? throw new ArgumentNullException(nameof(bot));;
         }
 
 
@@ -185,7 +188,6 @@ namespace Trading.Api.Controllers
         [HttpGet("8")]
         public IActionResult TestMethod8()
         {
-            
             _bot.Session.OnStopped += (x, y) =>
             {
                 using (var scope = _scopeFactory.CreateScope())
@@ -224,7 +226,16 @@ namespace Trading.Api.Controllers
                             EntryDateTicks = x.Position.EntryDate.Ticks,
                             EntryDateStringValue = x.Position.EntryDate.ToString("G"),
                         },
-                        
+                        Candles = x.Signal.Candle.BackingList.Select(z => new TradeCandle
+                        {
+                            Close = z.Close,
+                            Open = z.Open,
+                            High = z.High,
+                            Low = z.Low,
+                            Volume = z.Volume,
+                            OpenTime = z.DateTime.UtcDateTime,
+                            CloseTime = z.DateTime.UtcDateTime.Add(x.Timeframe.GetTimeframeTimeSpan())
+                        }).ToList()
                     }).ToList();
 
 
