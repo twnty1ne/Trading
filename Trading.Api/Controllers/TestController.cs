@@ -11,9 +11,7 @@ using Trading.Exchange;
 using Trading.Report.Core;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
-using Trading.Connections.Binance;
 using System.Threading.Tasks;
-using System.Diagnostics;
 using Trading.Shared.Ranges;
 using Trading.Connections.Bybit;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
@@ -204,6 +202,7 @@ namespace Trading.Api.Controllers
                     var timeframes = timeframeRepository.GetAll();
 
                     var session = new Session();
+                    
                     session.Trades = y.Trades.Select(x => new Trade
                     {
                         StrategyId = strategies.First(y => y.Type == x.Strategy).Id,
@@ -237,13 +236,13 @@ namespace Trading.Api.Controllers
                             CloseTime = z.DateTime.UtcDateTime.Add(x.Timeframe.GetTimeframeTimeSpan())
                         }).ToList()
                     }).ToList();
-
-
+                    
                     sessionRepository.Add(session);
                     sessionRepository.SaveChanges();
                 } 
                 
             };
+            
             _bot.Session.Start();
             return Ok();
         }

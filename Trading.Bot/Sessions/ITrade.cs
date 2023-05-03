@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Trading.Bot.Strategies;
+﻿using Trading.Bot.Strategies;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 

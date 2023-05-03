@@ -2,6 +2,7 @@
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
 using Trady.Core.Infrastructure;
 
 namespace Trading.Bot.Strategies
@@ -10,7 +11,8 @@ namespace Trading.Bot.Strategies
     {
         private readonly (decimal EntryPrice, decimal StopLoss, decimal TakeProfit) _riskManagment;
 
-        public Signal(IIndexedOhlcv ic, PositionSides side, IInstrumentName instrumentName, IRiskManagment riskManagment, decimal riskPercent, Timeframes timeframe, Strategies strategy)
+        public Signal(IIndexedOhlcv ic, PositionSides side, IInstrumentName instrumentName,
+            IRiskManagment riskManagment, decimal riskPercent, Timeframes timeframe, Strategies strategy)
         {
             Id = Guid.NewGuid();
             InstrumentName = instrumentName;

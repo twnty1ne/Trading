@@ -1,7 +1,5 @@
 ﻿using Stateless;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Trading.Bot.Strategies;
 using Trading.Exchange.Markets.Core;
@@ -81,6 +79,7 @@ namespace Trading.Bot.Sessions
                 _signalFiredHandler?.Invoke(signal);
 
                 var instrument = _market.GetInstrument(signal.InstrumentName);
+                
                 if (!_buffer.Signals.Any(x => x.InstrumentName == signal.InstrumentName)) instrument.OnPositionOpened += HandlePositionOpened;
 
                 var price = instrument.Price;

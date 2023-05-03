@@ -48,8 +48,7 @@ namespace Trading.Report.DAL
                         Name = "XRPUSDT"
                     }
                 });
-
-
+            
             builder
                 .Entity<Timeframe>()
                 .HasData(new List<Timeframe>()
@@ -112,6 +111,5 @@ namespace Trading.Report.DAL
                .Entity<Position>()
                .Property(b => b.EntryDateStringValue).UsePropertyAccessMode(PropertyAccessMode.Field);
         }
-
     }
 }
