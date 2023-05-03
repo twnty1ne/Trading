@@ -28,7 +28,8 @@ namespace Trading.Exchange.Connections.Ticker
             _stateMachine
                 .Configure(TickerStates.WaitingForStart)
                 .Permit(TickerTriggers.Start, TickerStates.Started)
-                .OnEntryFrom(TickerTriggers.Reset, HandleReset);
+                .OnEntryFrom(TickerTriggers.Reset, HandleReset)
+                .Ignore(TickerTriggers.Reset);
 
             _stateMachine
                 .Configure(TickerStates.Started)
