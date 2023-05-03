@@ -46,11 +46,14 @@ namespace Trading.Bot.Strategies
         private void HandleCandleClose(object sender, IReadOnlyCollection<ICandle> candles) 
         {
             var timeframe = (ITimeframe)sender;
+           
             using var analyzeContext = new AnalyzeContext(candles.Select(x => new Candle(new DateTimeOffset(x.OpenTime), x.Open, x.High, x.Low, x.Close, x.Volume)));
             var shortEntryCandles = new SimpleRuleExecutor(analyzeContext, _sellRule).Execute(candles.Count() - 1);
             var longEntryCandles = new SimpleRuleExecutor(analyzeContext, _buyRule).Execute(candles.Count() - 1);
+            
             if (shortEntryCandles.Any()) OnSignalFired?.Invoke(this, _signalSelector
                 .Invoke(shortEntryCandles.First(), PositionSides.Short, _instrument.Name, timeframe.Type, _strategy));
+            
             if (longEntryCandles.Any()) OnSignalFired?.Invoke(this, _signalSelector
                 .Invoke(longEntryCandles.First(), PositionSides.Long, _instrument.Name, timeframe.Type, _strategy));
         }

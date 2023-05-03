@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Trading.Bot.Strategies;
 using Trading.Exchange;
-using Trading.Exchange.Connections.Ticker;
 using Trading.Exchange.Markets.Core.Replay;
 
 namespace Trading.Bot.Sessions.Backtest
@@ -19,7 +15,8 @@ namespace Trading.Bot.Sessions.Backtest
             _ = exchange ?? throw new ArgumentNullException(nameof(exchange));
             _factory = new BacktestSessionAbstractFactory(exchange, strategy);
             _session = new TradingSession(_factory);
-            _replay = _factory.Market.GetReplay(new DateTime(2023, 1, 1, 0, 0, 0), new DateTime(2023, 1, 31, 23, 59, 59));
+            _replay = _factory.Market.GetReplay(new DateTime(2023, 1, 1, 0, 0, 0), 
+                new DateTime(2023, 1, 31, 23, 59, 59));
         }
 
         public event EventHandler<ISessionBuffer> OnStopped;
