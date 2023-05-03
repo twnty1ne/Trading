@@ -10,8 +10,8 @@ namespace Trading.Exchange.Markets.Core.Instruments.Candles
             Close = close;
             High = high;
             Low = low;
-            OpenTime = openTime;
-            CloseTime = closeTime;
+            OpenTime = new DateTime(openTime.Ticks, DateTimeKind.Utc);
+            CloseTime = new DateTime(closeTime.Ticks, DateTimeKind.Utc);;
             Volume = volume;
         }
 

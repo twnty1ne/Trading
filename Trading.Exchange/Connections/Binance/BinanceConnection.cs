@@ -69,7 +69,7 @@ namespace Trading.Connections.Binance
             while (lastResultItemsAmount == 0 || lastResultItemsAmount == limit && range.Contains(lastEndDate))
             {
                 var response = await _client.UsdFuturesApi.ExchangeData
-                    .GetKlinesAsync($"{name.BaseCurrencyName}{name.QuoteCurrencyName}", convertedTimeframe, limit: limit, endTime: lastEndDate);
+                    .GetKlinesAsync(name.GetFullName(), convertedTimeframe, limit: limit, endTime: lastEndDate);
 
                 if (!response.Success) throw new Exception($"status code: {response.ResponseStatusCode}, message: {response.Error}");
 
