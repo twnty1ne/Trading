@@ -34,6 +34,7 @@ namespace Trading.Bot.Strategies.CandleVolume
         public Timeframes Timeframe { get => _signal.Timeframe; }
 
         public Strategies Strategy { get => _signal.Strategy; }
+        public IIndexedOhlcv Candle { get => _signal.Candle; }
 
         public Guid Id { get => _signal.Id; }
     }

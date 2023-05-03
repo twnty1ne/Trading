@@ -17,12 +17,13 @@ namespace Trading.Report.DAL
         public DbSet<Timeframe> Timeframes { get; set; }
         public DbSet<Strategy> Strategies { get; set; }
         public DbSet<Trade> Trades { get; set; }
+        public DbSet<TradeCandle> TradeCandles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                @"Server=DESKTOP-HFEPFQ9\SQLEXPRESS;Database=Session;Trusted_Connection=True");
-
+                @"Server=DESKTOP-N8JSEMD;Database=Session;Trusted_Connection=True")
+                .UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

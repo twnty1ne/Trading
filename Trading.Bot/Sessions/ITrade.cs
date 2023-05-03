@@ -12,5 +12,6 @@ namespace Trading.Bot.Sessions
         Timeframes Timeframe { get; }
         IPosition Position { get; }
         Strategies.Strategies Strategy { get; }
+        ISignal Signal { get; }
     }
 }

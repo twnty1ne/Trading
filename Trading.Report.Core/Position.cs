@@ -13,7 +13,7 @@ namespace Trading.Report.Core
         public DateTime EntryDate { get; set;  }
         public decimal EntryPrice { get; set; }
         public decimal StopLoss { get; set; }
-        public Instrument Instrument { get;  }
+        public virtual Instrument Instrument { get; set; }
         public int InstrumentId { get; set; }
         public PositionStates State { get; set; }
         public decimal CurrentPrice { get; set; }

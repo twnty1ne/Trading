@@ -8,6 +8,6 @@ namespace Trading.Report.Core
 {
     public class Session : Entity
     {
-        public IEnumerable<Trade> Trades { get; set; }
+        public virtual IEnumerable<Trade> Trades { get; set; }
     }
 }

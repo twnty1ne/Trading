@@ -2,6 +2,7 @@
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
+using Trady.Core.Infrastructure;
 
 namespace Trading.Bot.Strategies
 {
@@ -18,5 +19,6 @@ namespace Trading.Bot.Strategies
         decimal RiskPercent { get; }
         Timeframes Timeframe { get; }
         Strategies Strategy { get; }
+        IIndexedOhlcv Candle { get; }
     }
 }
