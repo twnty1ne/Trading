@@ -16,7 +16,7 @@ namespace Trading.Bot.Strategies.CandleVolume
             return (price, stopLoss, CalculateTakeProfit(ic, side, price, stopLoss));
         }
 
-        private decimal CalculateStopLoss(IIndexedOhlcv ic, PositionSides position)
+        private decimal CalculateStopLoss(IIndexedOhlcv ic, PositionSides side)
         {
             return side == PositionSides.Short
                 ? ic.Close + ic.Close * _stopLossPersent
@@ -26,12 +26,10 @@ namespace Trading.Bot.Strategies.CandleVolume
         private decimal CalculateTakeProfit(IIndexedOhlcv ic, PositionSides side, decimal price, decimal stopLoss)
         {
             var riskAbs = Math.Abs(stopLoss - price);
-            if (side == PositionSides.Short)
-            {
-                var v = price - _riskRescue * riskAbs;
-                return price - _riskRescue * riskAbs;
-            }
-            return price + _riskRescue * riskAbs;
+            
+            return side == PositionSides.Short
+                ? price - _riskRescue * riskAbs
+                : price + _riskRescue * riskAbs;
         }
     }
 }

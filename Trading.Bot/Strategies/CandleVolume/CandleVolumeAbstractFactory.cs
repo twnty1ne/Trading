@@ -12,7 +12,10 @@ namespace Trading.Bot.Strategies.CandleVolume
 {
     internal class CandleVolumeAbstractFactory : IStrategyAbstractFactory
     {
-        public Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> SignalSelector { get => (x, y, z, t, p) => new CandleVolumeSignal(x, y, z, t, p); }
+        public Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> SignalSelector
+        {
+            get => (x, y, z, t, p) => new CandleVolumeSignal(x, y, z, t, p);
+        }
 
         public Predicate<IIndexedOhlcv> SellRule 
         {
