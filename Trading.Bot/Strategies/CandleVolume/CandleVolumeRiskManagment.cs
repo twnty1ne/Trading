@@ -7,6 +7,7 @@ namespace Trading.Bot.Strategies.CandleVolume
     internal class CandleVolumeRiskManagment : IRiskManagment
     {
         private readonly decimal _riskRescue = 3m;
+        private readonly decimal _stopLossPersent = 0.005m;
 
         public (decimal Price, decimal StopLoss, decimal TakeProfit) Calculate(IIndexedOhlcv ic, PositionSides side)
         {
@@ -15,21 +16,20 @@ namespace Trading.Bot.Strategies.CandleVolume
             return (price, stopLoss, CalculateTakeProfit(ic, side, price, stopLoss));
         }
 
-        private decimal CalculateStopLoss(IIndexedOhlcv ic, PositionSides position)
+        private decimal CalculateStopLoss(IIndexedOhlcv ic, PositionSides side)
         {
-            if (position == PositionSides.Short) return ic.High;
-            return ic.Low;
+            return side == PositionSides.Short
+                ? ic.Close + ic.Close * _stopLossPersent
+                : ic.Close - ic.Close * _stopLossPersent;
         }
 
         private decimal CalculateTakeProfit(IIndexedOhlcv ic, PositionSides side, decimal price, decimal stopLoss)
         {
             var riskAbs = Math.Abs(stopLoss - price);
-            if (side == PositionSides.Short)
-            {
-                var v = price - _riskRescue * riskAbs;
-                return price - _riskRescue * riskAbs;
-            }
-            return price + _riskRescue * riskAbs;
+            
+            return side == PositionSides.Short
+                ? price - _riskRescue * riskAbs
+                : price + _riskRescue * riskAbs;
         }
     }
 }
