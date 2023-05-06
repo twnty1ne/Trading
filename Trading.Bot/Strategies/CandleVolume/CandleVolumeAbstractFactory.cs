@@ -35,13 +35,16 @@ namespace Trading.Bot.Strategies.CandleVolume
                 .And(x => !x.IsBreakingHighestHigh(1));
         }
 
-        public IReadOnlyCollection<IInstrumentName> SupportedInstruments
-        {
-            get => new List<IInstrumentName>
+        public IReadOnlyCollection<IInstrumentName> SupportedInstruments  => new List<IInstrumentName>
             {
+                new InstrumentName("ETH", "USDT"),
+                new InstrumentName("BTC", "USDT"),
+                new InstrumentName("XRP", "USDT"),
+                new InstrumentName("ADA", "USDT"),
+                new InstrumentName("SOL", "USDT"),
                 new InstrumentName("LTC", "USDT"),
+                new InstrumentName("BNB", "USDT"),
             };
-        }
 
         public IReadOnlyCollection<Timeframes> SupportedTimeframes 
         {
