@@ -20,8 +20,7 @@ namespace Trading.Bot.Sessions.Backtest
         }
 
         public event EventHandler<ISessionBuffer> OnStopped;
-
-
+        
         public DateTime Date { get => _session.Date; }
 
         public void Start()

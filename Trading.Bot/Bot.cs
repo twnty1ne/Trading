@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using Trading.Bot.Sessions;
-using Trading.Bot.Strategies;
 using Trading.Exchange;
 using Trading.Shared.Resolvers;
 

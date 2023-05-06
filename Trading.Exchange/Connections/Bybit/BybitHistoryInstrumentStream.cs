@@ -1,5 +1,4 @@
-﻿using Binance.Net.Interfaces.Clients;
-using Bybit.Net.Interfaces.Clients;
+﻿using Bybit.Net.Interfaces.Clients;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
