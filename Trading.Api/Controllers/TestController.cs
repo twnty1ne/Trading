@@ -225,7 +225,7 @@ namespace Trading.Api.Controllers
                             EntryDateTicks = x.Position.EntryDate.Ticks,
                             EntryDateStringValue = x.Position.EntryDate.ToString("G"),
                         },
-                        Candles = x.Signal.Candle.BackingList.Select(z => new TradeCandle
+                        Candles = x.Signal.Candle.BackingList.TakeLast(300).Select(z => new TradeCandle
                         {
                             Close = z.Close,
                             Open = z.Open,
