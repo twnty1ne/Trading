@@ -25,7 +25,7 @@ namespace Trading.Exchange.Connections.Binance
             _timeframeTicks = _timeframe.GetTimeframeTimeSpan().Ticks;
             _ticker = ticker ?? throw new ArgumentNullException(nameof(ticker));
             _ = connection ?? throw new ArgumentNullException(nameof(connection));
-            _candleBuffer = connection.GetFuturesCandlesAsync(_name, _timeframe).GetAwaiter().GetResult().ToDictionary(x => x.CloseTime.Ticks + TimeSpan.FromMilliseconds(1).Ticks);
+            _candleBuffer = connection.GetFuturesCandlesAsync(_name, _timeframe).GetAwaiter().GetResult().ToDictionary(x => x.CloseTime.Ticks + TimeSpan.FromSeconds(1).Ticks);
             _closedCandles = new List<ICandle>();
             _ticker.OnTick += HandleNewTick;
         }
