@@ -38,6 +38,7 @@ namespace Trading.Exchange.Connections.Binance
         {
             var closedCandle = _candleBuffer.GetValueOrDefault(tick.Date.Ticks);
             var openedCandle = _candleBuffer.GetValueOrDefault(tick.Date.Ticks + _timeframeTicks);
+            
             if (closedCandle != null)
             {
                 var closedCandlesCopy = new List<ICandle>(_closedCandles);
