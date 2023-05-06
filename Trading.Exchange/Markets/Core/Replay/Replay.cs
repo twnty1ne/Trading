@@ -1,8 +1,6 @@
 ﻿using Stateless;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Trading.Exchange.Connections.Ticker;
 
 namespace Trading.Exchange.Markets.Core.Replay
@@ -72,6 +70,7 @@ namespace Trading.Exchange.Markets.Core.Replay
                 Stop();
                 return;
             }
+            
             Debug.WriteLine($"Started: {_from}, Current: {tick.Date}");
         }
     }
