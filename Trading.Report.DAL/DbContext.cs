@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using Trading.DAL.Extentions;
 using Trading.Report.Core;
 
 namespace Trading.Report.DAL
@@ -30,6 +31,8 @@ namespace Trading.Report.DAL
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.SetDecimalPrecision(18, 6);
+            
             builder
                 .Entity<Instrument>()
                 .HasData(new List<Instrument>()
