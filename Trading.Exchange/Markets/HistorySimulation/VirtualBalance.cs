@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Trading.Exchange.Markets.Core;
 
 namespace Trading.Exchange.Markets.HistorySimulation
@@ -26,6 +24,7 @@ namespace Trading.Exchange.Markets.HistorySimulation
             {
                 if (volume > NetVolume - _allocatedVolume) throw new ArgumentOutOfRangeException();
                 if (volume < 0) throw new ArgumentOutOfRangeException();
+                
                 _allocatedVolume += volume;
                 Debug.WriteLine($"Allocated: {volume}");
             } 
@@ -37,6 +36,7 @@ namespace Trading.Exchange.Markets.HistorySimulation
             {
                 if (volume < 0) throw new ArgumentOutOfRangeException();
                 if(volume > _allocatedVolume) throw new ArgumentOutOfRangeException();
+                
                 _allocatedVolume -= volume;
                 Debug.WriteLine($"Released: {volume}");
             }
@@ -55,6 +55,7 @@ namespace Trading.Exchange.Markets.HistorySimulation
             lock (_lock) 
             {
                 if (value < 0 && value > NetVolume) throw new ArgumentOutOfRangeException();
+                
                 NetVolume += value;
             }
         }

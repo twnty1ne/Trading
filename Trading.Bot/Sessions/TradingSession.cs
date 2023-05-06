@@ -79,9 +79,12 @@ namespace Trading.Bot.Sessions
                 _signalFiredHandler?.Invoke(signal);
 
                 var instrument = _market.GetInstrument(signal.InstrumentName);
-                
-                if (!_buffer.Signals.Any(x => x.InstrumentName == signal.InstrumentName)) instrument.OnPositionOpened += HandlePositionOpened;
 
+                if (!_buffer.Signals.Any(x => x.InstrumentName == signal.InstrumentName))
+                {
+                    instrument.OnPositionOpened += HandlePositionOpened;
+                }
+                
                 var price = instrument.Price;
                 var volume = (_market.Balance.NetVolume * signal.RiskPercent) / Math.Abs(price - signal.StopLoss);
 

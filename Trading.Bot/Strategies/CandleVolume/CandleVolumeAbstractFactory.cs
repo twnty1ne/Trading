@@ -54,6 +54,6 @@ namespace Trading.Bot.Strategies.CandleVolume
             };
         }
 
-        public Strategies Strategy { get => Strategies.CandleVolume; }
+        public Strategies Strategy => Strategies.CandleVolume; 
     }
 }

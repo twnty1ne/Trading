@@ -2,14 +2,10 @@
 using Binance.Net.Enums;
 using Binance.Net.Interfaces;
 using Binance.Net.Interfaces.Clients;
-using CryptoExchange.Net.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
 using Trading.Exchange.Connections.Binance;
@@ -39,7 +35,7 @@ namespace Trading.Connections.Binance
 
         public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
         {
-            var range = new Range<DateTime>(new DateTime(2023, 01, 1), new DateTime(2023, 01, 31, 23, 59, 59));
+            var range = new Range<DateTime>(new DateTime(2021, 01, 1), new DateTime(2023, 04, 30));
 
             return await GetFuturesCandlesAsync(name, timeframe, range);
         }
