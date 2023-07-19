@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Trading.Researching.Core.Analytics.Metrics;
 using Trading.Researching.Core.DecisionMaking;
-using Trading.Researching.Core.DecisionMaking.Agorithms;
+using Trading.Researching.Core.DecisionMaking.Ranking;
 
 namespace Trading.Researching.Core.Analytics
 {
