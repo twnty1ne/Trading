@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Trading.Researching.Core.DecisionMaking.Ranking;
 
 namespace Trading.Researching.Core.Analytics
 {
