@@ -12,8 +12,11 @@ using Trading.Report.Core;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
 using Trading.Shared.Ranges;
 using Trading.Connections.Bybit;
+using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Builder;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
 
 namespace Trading.Api.Controllers
@@ -269,12 +272,21 @@ namespace Trading.Api.Controllers
         {
             var connection = new BybitConnection(new BinanceCredentialsProvider());
 
-            var range = new Range<DateTime>(new DateTime(2023, 04, 14, 07, 00, 00), new DateTime(2023, 04, 25, 20, 59, 59));
+            var range = new Range<DateTime>(new DateTime(2023, 04, 14, 07, 00, 00), 
+                new DateTime(2023, 04, 25, 20, 59, 59));
 
             var candles = await connection
                 .GetFuturesCandlesAsync(new InstrumentName("LTC", "USDT"), Timeframes.OneHour, range);
 
             return Ok(candles);
+        }
+        
+        [HttpGet("11")]
+        public void TestMethod11()
+        {
+            var builder = new DecisionTreeBuilder<CandleVolumeStrategyContext>();
+            var doc = XElement.Load("CandleVolumeDecisionTree.xml");
+            var tree = builder.FromXml(doc);
         }
     }
 }

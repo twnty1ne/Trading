@@ -33,7 +33,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Candles\" />
+    <Compile Remove="Services\Candles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Services\Candles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Services\Candles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Services\Candles\**" />
   </ItemGroup>
 
 
