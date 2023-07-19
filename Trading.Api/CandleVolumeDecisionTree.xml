@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<DecisionTree strategy="candle_volume">
+    <splitNode>
+        <question feature_type='bool' feature="short"/>
+        <positiveNode>
+            <splitNode>
+                <question feature_type='continuous' feature="pd_size" split_point="0.03" split_sign="EqualsOrLess"/>
+                <positiveNode>
+                    <positiveDecision/>
+                </positiveNode>
+                <negativeNode>
+                    <negativeDecision/>
+                </negativeNode>
+            </splitNode>
+        </positiveNode>
+        <negativeNode>
+            <negativeDecision/>
+        </negativeNode>
+    </splitNode>
+</DecisionTree>

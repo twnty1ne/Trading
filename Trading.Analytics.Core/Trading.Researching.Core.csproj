@@ -13,4 +13,19 @@
     <ProjectReference Include="..\Trading.Shared\Trading.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="DecisionMaking\Splitting\Algorithms\DecisionTree\Building\**" />
+    <Compile Remove="DecisionMaking\Splitting\Algorithms\Building\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="DecisionMaking\Splitting\Algorithms\DecisionTree\Building\**" />
+    <EmbeddedResource Remove="DecisionMaking\Splitting\Algorithms\Building\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="DecisionMaking\Splitting\Algorithms\DecisionTree\Building\**" />
+    <None Remove="DecisionMaking\Splitting\Algorithms\Building\**" />
+  </ItemGroup>
+
 </Project>
