@@ -73,8 +73,8 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
         private void HandlePriceUpdated(object sender, IPriceTick priceTick) 
         {
             CurrentPrice = priceTick.Price;
-            if(HitStopLoss()) _stateMachine.FireAsync(PositionTriggers.CloseByStopLoss).Wait();
-            if(HitTakeProfit()) _stateMachine.FireAsync(PositionTriggers.CloseByTakeProfit).Wait();
+            if(HitStopLoss()) _stateMachine.Fire(PositionTriggers.CloseByStopLoss);
+            if(HitTakeProfit()) _stateMachine.Fire(PositionTriggers.CloseByTakeProfit);
 
         }
 
