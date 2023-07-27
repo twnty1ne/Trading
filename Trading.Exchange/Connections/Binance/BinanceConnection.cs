@@ -37,7 +37,7 @@ namespace Trading.Connections.Binance
 
         public override ConnectionEnum Type => ConnectionEnum.Binance;
 
-        public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
+        public override async  Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
         {
             var range = new Range<DateTime>(new DateTime(2023, 01, 1), new DateTime(2023, 01, 31, 23, 59, 59));
 
@@ -45,7 +45,7 @@ namespace Trading.Connections.Binance
         }
 
 
-        public async override Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe, IRange<DateTime> range)
+        public override async  Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe, IRange<DateTime> range)
         {
             if (TryGetFromStorage(name, timeframe, range, out var candles)) 
             {

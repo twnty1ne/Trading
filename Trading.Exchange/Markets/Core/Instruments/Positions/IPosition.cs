@@ -10,6 +10,7 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
         Guid Id { get; }
         decimal TakeProfit { get; }
         DateTime EntryDate { get; }
+        DateTime CloseDate { get; }
         decimal EntryPrice { get; }
         decimal StopLoss { get; }
         IInstrumentName InstrumentName { get; }
@@ -23,5 +24,6 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
         decimal UnrealizedPnL { get; }
         decimal RealizedPnl { get; }
         decimal ROE { get; }
+        IEnumerable<IPriceTick> Ticks { get; }
     }
 }

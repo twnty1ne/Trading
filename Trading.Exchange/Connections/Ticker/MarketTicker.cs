@@ -1,10 +1,8 @@
 ﻿using Stateless;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 
 namespace Trading.Exchange.Connections.Ticker
 {
@@ -30,7 +28,8 @@ namespace Trading.Exchange.Connections.Ticker
             _stateMachine
                 .Configure(TickerStates.WaitingForStart)
                 .Permit(TickerTriggers.Start, TickerStates.Started)
-                .OnEntryFrom(TickerTriggers.Reset, HandleReset);
+                .OnEntryFrom(TickerTriggers.Reset, HandleReset)
+                .Ignore(TickerTriggers.Reset);
 
             _stateMachine
                 .Configure(TickerStates.Started)
@@ -65,6 +64,7 @@ namespace Trading.Exchange.Connections.Ticker
 
         private void HandleStarded(DateTime date)
         {
+
             _startDate = new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
 
             var ticks = (DateTime.UtcNow - _startDate).Ticks / _spanForTick + 1;

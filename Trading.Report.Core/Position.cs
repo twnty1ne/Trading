@@ -11,6 +11,7 @@ namespace Trading.Report.Core
     {
         public decimal TakeProfit { get; set; }
         public DateTime EntryDate { get; set;  }
+        public DateTime CloseDate { get; set; }
         public decimal EntryPrice { get; set; }
         public decimal StopLoss { get; set; }
         public Instrument Instrument { get;  }
@@ -27,5 +28,6 @@ namespace Trading.Report.Core
         public decimal ROE { get; set; }
         public long EntryDateTicks { get; set; }
         public string EntryDateStringValue { get; set; }
+        public ICollection<PriceTick> Ticks { get; set; }
     }
 }

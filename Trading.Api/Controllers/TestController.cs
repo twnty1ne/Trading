@@ -28,11 +28,13 @@ namespace Trading.Api.Controllers
         private readonly IBot _bot;
         private readonly IServiceScopeFactory _scopeFactory;
 
-        public TestController(/*IExchange exchange, IBot bot,*/ IServiceScopeFactory scopeFactory)
+
+        public TestController(IExchange exchange, IBot bot, IServiceScopeFactory scopeFactory)
         {
+            _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
+            _bot = bot ?? throw new ArgumentNullException(nameof(bot));
             _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
         }
-
 
         [HttpGet("1")]
         public IActionResult TestMethod1()
@@ -221,9 +223,15 @@ namespace Trading.Api.Controllers
                             InitialMargin = x.Position.InitialMargin,
                             StopLoss = x.Position.StopLoss,
                             EntryDate = x.Position.EntryDate,
+                            CloseDate = x.Position.CloseDate,
                             InstrumentId = instruments.First(y => y.Name == x.Position.InstrumentName.GetFullName()).Id,
                             EntryDateTicks = x.Position.EntryDate.Ticks,
                             EntryDateStringValue = x.Position.EntryDate.ToString("G"),
+                            Ticks = x.Position.Ticks.Select(z => new PriceTick
+                            {
+                                DateTime = z.DateTime,
+                                Price = z.Price
+                            }).ToList()
                         },
                         
                     }).ToList();
