@@ -47,6 +47,7 @@ namespace Trading.Api
 
             services.AddDbContext<SessionContext>(ServiceLifetime.Scoped);
             services.AddTransient<IRepository<Session>, SessionRepository>();
+            services.AddTransient<IRepository<Trade>, TradeRepository>();
             services.AddTransient<IRepository<Instrument>, InstrumentRepository>();
             services.AddTransient<IRepository<Strategy>, StrategyRepository>();
             services.AddTransient<IRepository<Timeframe>, TimeframeRepository>();
