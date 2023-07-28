@@ -93,6 +93,11 @@ namespace Trading.Report.DAL
                         Id = 11,
                         Name = "ETCUSDT"
                     },
+                    new Instrument
+                    {
+                        Id = 12,
+                        Name = "BTCUSDT"
+                    },
                 });
             
             builder
