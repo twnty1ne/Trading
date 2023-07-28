@@ -26,6 +26,15 @@ namespace Trading.Report.DAL
             return await _context.Set<TEntity>().ToListAsync();
         }
 
+        public async Task<TEntity> GetByIdAsync(int id)
+        {
+            var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);
+
+            if (entity is null) throw new Exception("Entity not found");
+            
+            return entity;
+        }
+
         public virtual void Add(TEntity entity)
         {
             _context.Add(entity);
