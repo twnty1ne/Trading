@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Trading.Core;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 
@@ -8,6 +9,7 @@ namespace Trading.Report.Core
     {
         public decimal TakeProfit { get; set; }
         public DateTime EntryDate { get; set;  }
+        public DateTime CloseDate { get; set; }
         public decimal EntryPrice { get; set; }
         public decimal StopLoss { get; set; }
         public virtual Instrument Instrument { get; set; }
@@ -24,5 +26,6 @@ namespace Trading.Report.Core
         public decimal ROE { get; set; }
         public long EntryDateTicks { get; set; }
         public string EntryDateStringValue { get; set; }
+        public virtual ICollection<PositionPriceTick> Ticks { get; set; }
     }
 }

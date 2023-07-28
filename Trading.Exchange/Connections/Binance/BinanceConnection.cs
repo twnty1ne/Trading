@@ -35,7 +35,7 @@ namespace Trading.Connections.Binance
 
         public override async Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe)
         {
-            var range = new Range<DateTime>(new DateTime(2019, 08, 30), new DateTime(2023, 04, 30));
+            var range = new Range<DateTime>(new DateTime(2023, 01, 1), new DateTime(2023, 01, 31, 23, 59, 59));
 
             return await GetFuturesCandlesAsync(name, timeframe, range);
         }

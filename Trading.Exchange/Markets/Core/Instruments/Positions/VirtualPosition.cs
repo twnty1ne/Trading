@@ -1,6 +1,7 @@
 ﻿using Stateless;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Trading.Exchange.Connections;
 using Trading.Exchange.Markets.HistorySimulation;
@@ -11,6 +12,7 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
     {
         private readonly IInstrumentStream _stream;
         private readonly StateMachine<PositionStates, PositionTriggers> _stateMachine;
+        private readonly List<IPriceTick> _ticks = new List<IPriceTick>();
         private (decimal volume, decimal price) _realizedVolume;
         private decimal _unRealizedVolume;
         
@@ -49,7 +51,6 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
                 .OnEntry(() => RealizeVolume(TakeProfit))
                 .Ignore(PositionTriggers.CloseByStopLoss)
                 .Ignore(PositionTriggers.CloseByTakeProfit);
-
         }
 
         public decimal TakeProfit { get; }
@@ -66,6 +67,8 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
         public decimal UnrealizedPnL { get => (CurrentPrice - EntryPrice) * _unRealizedVolume * (int)Side; }
         public decimal RealizedPnl { get => ((_realizedVolume.price * _realizedVolume.volume) - (_realizedVolume.volume * EntryPrice)) * (int)Side; }
         public decimal ROE { get => RealizedPnl / InitialMargin; }
+        public IEnumerable<IPriceTick> Ticks { get => _ticks; }
+        public DateTime CloseDate { get; private set; }
         public DateTime EntryDate { get; }
         public Guid Id { get; }
 
@@ -75,12 +78,16 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
         private void HandlePriceUpdated(object sender, IPriceTick priceTick) 
         {
             CurrentPrice = priceTick.Price;
+            _ticks.Add(priceTick);
+            
             if(HitStopLoss()) _stateMachine.FireAsync(PositionTriggers.CloseByStopLoss).Wait();
             if(HitTakeProfit()) _stateMachine.FireAsync(PositionTriggers.CloseByTakeProfit).Wait();
         }
 
-        private void Close() 
+        private void Close()
         {
+            CloseDate = _ticks.OrderBy(x => x.DateTime).Last().DateTime;
+            
             OnClosed?.Invoke(this, EventArgs.Empty);
             _stream.OnPriceUpdated -= HandlePriceUpdated;
         }

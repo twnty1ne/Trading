@@ -19,6 +19,7 @@ namespace Trading.Report.DAL
         public DbSet<Strategy> Strategies { get; set; }
         public DbSet<Trade> Trades { get; set; }
         public DbSet<TradeCandle> TradeCandles { get; set; }
+        public DbSet<PositionPriceTick> PositionPriceTicks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,7 +50,47 @@ namespace Trading.Report.DAL
                     {
                         Id = 3,
                         Name = "XRPUSDT"
-                    }
+                    },
+                    new Instrument
+                    {
+                        Id = 4,
+                        Name = "ADAUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 5,
+                        Name = "SOLUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 6,
+                        Name = "LTCUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 7,
+                        Name = "UNIUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 8,
+                        Name = "LINKUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 9,
+                        Name = "ATOMUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 10,
+                        Name = "NEARUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 11,
+                        Name = "ETCUSDT"
+                    },
                 });
             
             builder
