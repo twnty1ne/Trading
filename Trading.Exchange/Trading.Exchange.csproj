@@ -6,6 +6,78 @@
 
   <ItemGroup>
     <None Remove="Markets\Core\Instruments\Positions\rzwz5xvm.dzl~" />
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_atomusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_etcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_fttusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_linkusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_nearusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_fiveminutes_uniusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_atomusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_etcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_fttusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_linkusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_nearusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_uniusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_atomusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_etcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_fttusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_linkusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_nearusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_fiveminutes_uniusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_atomusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_etcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_fttusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_linkusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_nearusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\bybit_onehour_uniusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
