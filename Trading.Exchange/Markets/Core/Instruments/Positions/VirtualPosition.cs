@@ -13,8 +13,7 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
         private readonly StateMachine<PositionStates, PositionTriggers> _stateMachine;
         private (decimal volume, decimal price) _realizedVolume;
         private decimal _unRealizedVolume;
-
-
+        
         public VirtualPosition(decimal takeProfit, decimal entryPrice, decimal stopLoss, IInstrumentName instrumentName, IInstrumentStream stream, PositionSides side, 
             int leverage, decimal size, DateTime entryDate, Guid id)
         {
@@ -41,14 +40,17 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
 
             _stateMachine
                 .Configure(PositionStates.ClosedByStopLoss)
-                .OnEntry(() => RealizeVolume(StopLoss));
+                .OnEntry(() => RealizeVolume(StopLoss))
+                .Ignore(PositionTriggers.CloseByStopLoss)
+                .Ignore(PositionTriggers.CloseByTakeProfit);
 
             _stateMachine
                 .Configure(PositionStates.ClosedByTakeProfit)
-                .OnEntry(() => RealizeVolume(TakeProfit));
+                .OnEntry(() => RealizeVolume(TakeProfit))
+                .Ignore(PositionTriggers.CloseByStopLoss)
+                .Ignore(PositionTriggers.CloseByTakeProfit);
 
         }
-
 
         public decimal TakeProfit { get; }
         public decimal EntryPrice { get; }
@@ -75,7 +77,6 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
             CurrentPrice = priceTick.Price;
             if(HitStopLoss()) _stateMachine.FireAsync(PositionTriggers.CloseByStopLoss).Wait();
             if(HitTakeProfit()) _stateMachine.FireAsync(PositionTriggers.CloseByTakeProfit).Wait();
-
         }
 
         private void Close() 
