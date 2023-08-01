@@ -18,6 +18,7 @@ namespace Trading.Api.Services
     public class CandleService : ICandleService
     {
         private readonly string _path = Path.Combine(Directory.GetCurrentDirectory(), "Services", "Candles");
+        private readonly int _excelMaximumRows = 1000000;
         
         private IResolver<ConnectionEnum, IConnection> _connectionResolver;
 
@@ -39,14 +40,29 @@ namespace Trading.Api.Services
         private async Task LoadCandlesFromBrokerAsync(IConnection connection,
             IEnumerable<Timeframes> timeframes,
             IEnumerable<IInstrumentName> instruments,
-            IRange<DateTime> range) 
+            IRange<DateTime> range)
         {
-            var instrumentTimeframeZip = instruments.SelectMany(Instrument => timeframes.Select(Timeframe => (Instrument, Timeframe)));
+            var instrumentTimeframeZip =
+                instruments.SelectMany(Instrument => timeframes.Select(Timeframe => (Instrument, Timeframe)));
 
             foreach (var item in instrumentTimeframeZip)
             {
-                var c = await connection.GetFuturesCandlesAsync(item.Instrument, item.Timeframe, range);
-                await LoadToFile(new CandlesFileName(connection.Type, item.Timeframe, item.Instrument), c);
+                var allCandles = await connection.GetFuturesCandlesAsync(item.Instrument, item.Timeframe, range);
+
+                var chunks = allCandles
+                    .Select((x, i) => new { Index = i, Value = x })
+                    .GroupBy(x => x.Index / _excelMaximumRows)
+                    .ToList();
+                
+                var fileChunkLoadingTasks = chunks.Select(chunk =>
+                {
+                    var chunkIndex = chunk.Key;
+                    var chunkCandles = chunk.Select(v => v.Value).ToList();
+                    return LoadToFile(new CandlesFileName(connection.Type, item.Timeframe, item.Instrument, chunkIndex), 
+                        chunkCandles);
+                });
+                
+                await Task.WhenAll(fileChunkLoadingTasks);
             }
         }
 

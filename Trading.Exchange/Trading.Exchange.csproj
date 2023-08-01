@@ -79,6 +79,78 @@
     <None Update="Connections\Storage\Candles\bybit_onehour_uniusdt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_adausdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_adausdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_atomusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_atomusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_bnbusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_bnbusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_btcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_btcusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_etcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_etcusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_ethusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_ethusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_linkusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_linkusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_ltcusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_ltcusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_nearusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_nearusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_solusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_solusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_uniusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_uniusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_xrpusdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_xrpusdt_chunk_1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

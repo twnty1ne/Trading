@@ -11,17 +11,26 @@ namespace Trading.Exchange.Connections.Storage
         private readonly ConnectionEnum Connection;
         private readonly Timeframes Timeframe;
         private readonly IInstrumentName InstrumentName;
+        private readonly int _chunkIndex;
 
-        public CandlesFileName(ConnectionEnum connection, Timeframes timeframe, IInstrumentName instrumentName)
+        public CandlesFileName(ConnectionEnum connection, Timeframes timeframe, IInstrumentName instrumentName, int chunkIndex  = 0)
         {
             Connection = connection;
             Timeframe = timeframe;
             InstrumentName = instrumentName;
+            _chunkIndex = chunkIndex;
         }
 
         public string Value()
         {
-            return $"{Connection.ToString().ToLower()}_{Timeframe.ToString().ToLower()}_{InstrumentName.GetFullName().ToLower()}";
+            var fileName = $"{Connection.ToString().ToLower()}_{Timeframe.ToString().ToLower()}_{InstrumentName.GetFullName().ToLower()}";
+
+            if (_chunkIndex > 0)
+            {
+                fileName += $"_chunk_{_chunkIndex}";
+            }
+
+            return fileName;
         }
     }
 }
