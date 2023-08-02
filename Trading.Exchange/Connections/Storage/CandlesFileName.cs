@@ -1,36 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Trading.Exchange.Markets.Core.Instruments.Timeframes;
+﻿using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Exchange.Markets.Core.Instruments;
 
 namespace Trading.Exchange.Connections.Storage
 {
     public class CandlesFileName
     {
-        private readonly ConnectionEnum Connection;
-        private readonly Timeframes Timeframe;
-        private readonly IInstrumentName InstrumentName;
-        private readonly int _chunkIndex;
+        private readonly ConnectionEnum _connection;
+        private readonly Timeframes _timeframe;
+        private readonly IInstrumentName _instrumentName;
+        private readonly int _year;
+        private readonly int _month;
 
-        public CandlesFileName(ConnectionEnum connection, Timeframes timeframe, IInstrumentName instrumentName, int chunkIndex  = 0)
+        public CandlesFileName(ConnectionEnum connection, Timeframes timeframe, IInstrumentName instrumentName, int year, 
+            int month)
         {
-            Connection = connection;
-            Timeframe = timeframe;
-            InstrumentName = instrumentName;
-            _chunkIndex = chunkIndex;
+            _connection = connection;
+            _timeframe = timeframe;
+            _instrumentName = instrumentName;
+            _year = year;
+            _month = month;
         }
 
         public string Value()
         {
-            var fileName = $"{Connection.ToString().ToLower()}_{Timeframe.ToString().ToLower()}_{InstrumentName.GetFullName().ToLower()}";
-
-            if (_chunkIndex > 0)
-            {
-                fileName += $"_chunk_{_chunkIndex}";
-            }
-
-            return fileName;
+            return $"{_connection.ToString().ToLower()}_{_timeframe.ToString().ToLower()}" +
+                   $"_{_instrumentName.GetFullName().ToLower()}" +
+                   $"_{_year}_{_month}";
         }
     }
 }

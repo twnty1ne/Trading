@@ -33,7 +33,7 @@ namespace Trading.Api
 
             services
                 .AddSingleton<IExchange, Exchange.Exchange>()
-                .Configure<Exchange.Options>(x => x.ConnectionType = ConnectionEnum.Bybit);
+                .Configure<Exchange.Options>(x => x.ConnectionType = ConnectionEnum.Binance);
 
             services
                 .AddSingleton<IBot, Bot.Bot>()

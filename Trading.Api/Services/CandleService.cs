@@ -10,20 +10,23 @@ using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Shared.Resolvers;
 using System.Diagnostics;
+using System.Text;
+using ExcelMapper;
 using Trading.Shared.Ranges;
 using Trading.Exchange.Connections.Storage;
+using Trading.Exchange.Storage;
 
 namespace Trading.Api.Services
 {
     public class CandleService : ICandleService
     {
         private readonly string _path = Path.Combine(Directory.GetCurrentDirectory(), "Services", "Candles");
-        private readonly int _excelMaximumRows = 1000000;
-        
+
         private IResolver<ConnectionEnum, IConnection> _connectionResolver;
 
         public CandleService()
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             _connectionResolver = new ConnectionResolver(new BinanceCredentialsProvider());
         }
 
@@ -48,21 +51,20 @@ namespace Trading.Api.Services
             foreach (var item in instrumentTimeframeZip)
             {
                 var allCandles = await connection.GetFuturesCandlesAsync(item.Instrument, item.Timeframe, range);
-
-                var chunks = allCandles
-                    .Select((x, i) => new { Index = i, Value = x })
-                    .GroupBy(x => x.Index / _excelMaximumRows)
-                    .ToList();
                 
-                var fileChunkLoadingTasks = chunks.Select(chunk =>
+                var groupedByMonthYear = allCandles
+                    .GroupBy(x => new { x.OpenTime.Year, x.OpenTime.Month });
+                
+                var fileLoadingTasks = groupedByMonthYear.Select(x =>
                 {
-                    var chunkIndex = chunk.Key;
-                    var chunkCandles = chunk.Select(v => v.Value).ToList();
-                    return LoadToFile(new CandlesFileName(connection.Type, item.Timeframe, item.Instrument, chunkIndex), 
-                        chunkCandles);
+                    var year = x.Key.Year;
+                    var month = x.Key.Month;
+
+                    return LoadToFile(new CandlesFileName(connection.Type, item.Timeframe, item.Instrument, year, month), 
+                        x);
                 });
                 
-                await Task.WhenAll(fileChunkLoadingTasks);
+                await Task.WhenAll(fileLoadingTasks);
             }
         }
 

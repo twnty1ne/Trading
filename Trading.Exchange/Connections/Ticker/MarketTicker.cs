@@ -14,7 +14,7 @@ namespace Trading.Exchange.Connections.Ticker
         private DateTime _startDate;
         private Task _task = new Task(() => throw new Exception());
         private long _accumalutedTicks;
-        private long _spanForTick = TimeSpan.FromSeconds(100).Ticks;
+        private long _spanForTick = TimeSpan.FromSeconds(20).Ticks;
         private EventHandler<IMarketTick> _onTick;
         private object _lock = new object();
         private CancellationTokenSource _tokenSource;

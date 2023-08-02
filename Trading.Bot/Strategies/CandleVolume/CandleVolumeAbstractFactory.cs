@@ -44,6 +44,11 @@ namespace Trading.Bot.Strategies.CandleVolume
                 new InstrumentName("SOL", "USDT"),
                 new InstrumentName("LTC", "USDT"),
                 new InstrumentName("BNB", "USDT"),
+                new InstrumentName("ETC", "USDT"),
+                new InstrumentName("UNI", "USDT"),
+                new InstrumentName("LINK", "USDT"),
+                new InstrumentName("NEAR", "USDT"),
+                new InstrumentName("ATOM", "USDT"),
             };
 
         public IReadOnlyCollection<Timeframes> SupportedTimeframes 

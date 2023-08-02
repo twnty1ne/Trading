@@ -120,7 +120,7 @@ namespace Trading.Connections.Bybit
                 range = new Range<DateTime>(info.FirstCandleDate, range.To);
             }
 
-            _storage.TryGetCandles(name, Type, timeframe, out var storageCandles);
+            _storage.TryGetCandles(name, Type, timeframe, out var storageCandles, range);
 
             storageCandles = storageCandles.Where(x => range.Contains(x.OpenTime)).ToList();
 

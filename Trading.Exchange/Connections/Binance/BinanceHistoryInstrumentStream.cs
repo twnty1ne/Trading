@@ -26,7 +26,7 @@ namespace Trading.Exchange.Connections.Binance
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _ticker = ticker ?? throw new ArgumentNullException(nameof(ticker));
             _prices = new List<decimal>();
-            _stream = GetTimeframeStream(Timeframes.FiveMinutes);
+            _stream = GetTimeframeStream(Timeframes.OneMinute);
             _stream.OnCandleOpened += HandleCandleOpened;
             _ticker.OnTick += HandleTick;
         }
@@ -41,9 +41,9 @@ namespace Trading.Exchange.Connections.Binance
         private void HandleCandleOpened(object sender, ICandle candle) 
         {
             if (candle.Close > candle.Open) 
-                _prices = new List<decimal> { candle.Open, candle.High, candle.Low };
-            if (candle.Close <= candle.Open) 
                 _prices = new List<decimal> { candle.Open, candle.Low, candle.High };
+            if (candle.Close <= candle.Open) 
+                _prices = new List<decimal> { candle.Open, candle.High, candle.Low };
         }
 
         private void HandleTick(object sender, IMarketTick tick) 
