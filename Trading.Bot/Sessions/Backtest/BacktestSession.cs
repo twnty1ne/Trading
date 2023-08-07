@@ -15,8 +15,7 @@ namespace Trading.Bot.Sessions.Backtest
             _ = exchange ?? throw new ArgumentNullException(nameof(exchange));
             _factory = new BacktestSessionAbstractFactory(exchange, strategy);
             _session = new TradingSession(_factory);
-            _replay = _factory.Market.GetReplay(new DateTime(20, 01, 1), 
-                new DateTime(2023, 04, 30));
+            _replay = _factory.Market.GetReplay();
         }
 
         public event EventHandler<ISessionBuffer> OnStopped;

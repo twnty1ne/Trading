@@ -33,12 +33,12 @@ namespace Trading.Bot.Sessions
 
             _stateMachine
                 .Configure(SessionStates.Started)
-                .OnEntry(() => HandleStarded())
+                .OnEntry(HandleStarded)
                 .Permit(SessionTriggers.Stop, SessionStates.Stopped);
 
             _stateMachine
                 .Configure(SessionStates.Stopped)
-                .OnEntry(() => HandleStopped());
+                .OnEntry(HandleStopped);
         }
 
         public event EventHandler<ISessionBuffer> OnStopped;

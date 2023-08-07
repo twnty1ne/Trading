@@ -4282,6 +4282,222 @@
     <None Update="Connections\Storage\Candles\binance_oneminute_xrpusdt_2023_4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_adausdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_adausdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_adausdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_atomusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_atomusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_atomusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_bnbusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_bnbusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_bnbusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_btcusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_btcusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_btcusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_etcusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_etcusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_etcusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_ethusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_ethusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_ethusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_linkusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_linkusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_linkusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_ltcusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_ltcusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_ltcusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_nearusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_nearusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_nearusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_solusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_solusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_solusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_uniusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_uniusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_uniusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_xrpusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_xrpusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_onehour_xrpusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_adausdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_adausdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_adausdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_atomusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_atomusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_atomusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_bnbusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_bnbusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_bnbusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_btcusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_btcusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_btcusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_etcusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_etcusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_etcusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_ethusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_ethusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_ethusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_linkusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_linkusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_linkusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_ltcusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_ltcusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_ltcusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_nearusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_nearusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_nearusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_solusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_solusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_solusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_uniusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_uniusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_uniusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_xrpusdt_2023_5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_xrpusdt_2023_6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Connections\Storage\Candles\binance_oneminute_xrpusdt_2023_7">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

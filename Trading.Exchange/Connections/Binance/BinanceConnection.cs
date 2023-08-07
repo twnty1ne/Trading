@@ -1,14 +1,12 @@
-﻿using Binance.Net.Clients;
-using Binance.Net.Enums;
-using Binance.Net.Interfaces;
-using Binance.Net.Interfaces.Clients;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Binance.Net.Clients;
+using Binance.Net.Enums;
+using Binance.Net.Interfaces;
+using Binance.Net.Interfaces.Clients;
 using Trading.Exchange.Authentification;
-using Trading.Exchange.Connections;
-using Trading.Exchange.Connections.Binance;
 using Trading.Exchange.Connections.Binance.Extentions;
 using Trading.Exchange.Connections.Storage;
 using Trading.Exchange.Connections.Ticker;
@@ -19,7 +17,7 @@ using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
 using Trading.Exchange.Storage;
 using Trading.Shared.Ranges;
 
-namespace Trading.Connections.Binance
+namespace Trading.Exchange.Connections.Binance
 {
     public sealed class BinanceConnection : BaseConnection
     {
@@ -49,8 +47,7 @@ namespace Trading.Connections.Binance
                 return candles;
             }
 
-            KlineInterval convertedTimeframe;
-            var successfullyConverted = timeframe.TryConvertToBinanceTimeframe(out convertedTimeframe);
+            var successfullyConverted = timeframe.TryConvertToBinanceTimeframe(out var convertedTimeframe);
 
             if (!successfullyConverted) throw new ArgumentException("Invalid timeframe");
 
@@ -117,13 +114,12 @@ namespace Trading.Connections.Binance
                 range = new Range<DateTime>(info.FirstCandleDate, range.To);
             }
 
-            _storage.TryGetCandles(name, Type, timeframe, out var storageCandles, range);
+            var candlesLoaded = _storage.TryGetCandles(name, Type, timeframe, out var storageCandles, range);
 
             storageCandles = storageCandles.Where(x => range.Contains(x.OpenTime));
+            
 
-            var candleRange = new CandlesRange(storageCandles, timeframe);
-
-            if (candleRange.FullFilled(range))
+            if (candlesLoaded)
             {
                 candles = storageCandles.ToList().AsReadOnly();
                 return true;

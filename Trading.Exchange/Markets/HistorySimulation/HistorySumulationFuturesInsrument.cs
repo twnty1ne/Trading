@@ -4,6 +4,7 @@ using Trading.Exchange.Connections.Ticker;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
+using Trading.Shared.Ranges;
 
 namespace Trading.Exchange.Markets.HistorySimulation
 {
@@ -13,7 +14,8 @@ namespace Trading.Exchange.Markets.HistorySimulation
         private readonly IFuturesInstrument _instrument;
         private readonly VirtualBalance _balance;
 
-        public HistorySimulationFuturesInstrument(IInstrumentName name, IConnection connection, IMarketTicker ticker, VirtualBalance balance)
+        public HistorySimulationFuturesInstrument(IInstrumentName name, IConnection connection, IMarketTicker ticker,
+            VirtualBalance balance)
         {
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
             _balance = balance ?? throw new ArgumentNullException(nameof(balance));

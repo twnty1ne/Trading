@@ -50,7 +50,7 @@ namespace Trading.Exchange.Storage
                 var fileNames = monthsBetween
                     .Select(x => new CandlesFileName(connection, timeframe, name, x.Year, x.Month));
 
-                 candles = fileNames.SelectMany(ReadFile);
+                 candles = fileNames.SelectMany(ReadFile).ToList();
                  return true;
             }
             catch (Exception ex)

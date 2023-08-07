@@ -8,5 +8,7 @@ namespace Trading.Exchange
     public class Options
     {
         public ConnectionEnum ConnectionType { get; set; }
+        public RealtimeOptions RealtimeOptions { get; set; }
+        public HistorySimulationOptions HistorySimulationOptions { get; set; }
     }
 }

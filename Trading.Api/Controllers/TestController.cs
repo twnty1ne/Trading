@@ -14,8 +14,8 @@ using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using Trading.Exchange.Connections.Bybit;
 using Trading.Shared.Ranges;
-using Trading.Connections.Bybit;
 using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Builder;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
 

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,12 +8,12 @@ using Trading.Api.Services;
 using Trading.Bot;
 using Trading.Bot.Sessions;
 using Trading.Bot.Strategies;
-using Trading.Connections.Binance;
 using Trading.Exchange;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
 using Trading.Report.Core;
 using Trading.Report.DAL;
+using Trading.Shared.Ranges;
 
 namespace Trading.Api
 {
@@ -33,7 +34,20 @@ namespace Trading.Api
 
             services
                 .AddSingleton<IExchange, Exchange.Exchange>()
-                .Configure<Exchange.Options>(x => x.ConnectionType = ConnectionEnum.Binance);
+                .Configure<Exchange.Options>(x =>
+                {
+                    x.ConnectionType = ConnectionEnum.Binance;
+                    x.HistorySimulationOptions = new HistorySimulationOptions
+                    {
+                        SimulationRange = new Range<DateTime>(new DateTime(2019, 09, 07), 
+                            new DateTime(2023, 08, 1), BoundariesComparation.LeftIncluding)  
+                    };
+                    
+                    x.RealtimeOptions = new RealtimeOptions
+                    {
+                        CandleBuffer = TimeSpan.FromDays(3)
+                    };
+                });
 
             services
                 .AddSingleton<IBot, Bot.Bot>()

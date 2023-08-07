@@ -8,15 +8,11 @@ namespace Trading.Exchange.Markets.Core.Replay
     internal class Replay : IReplay
     {
         private readonly IMarketTicker _ticker;
-        private readonly DateTime _from;
-        private readonly DateTime _to;
         private readonly StateMachine<ReplayStates, ReplayTriggers> _stateMachine;
 
-        public Replay(IMarketTicker ticker, DateTime from, DateTime to)
+        public Replay(IMarketTicker ticker)
         {
             _ticker = ticker ?? throw new ArgumentNullException(nameof(ticker));
-            _from = from;
-            _to = to;
 
             _stateMachine = new StateMachine<ReplayStates, ReplayTriggers>(ReplayStates.WaitingForStart);
 
@@ -50,7 +46,7 @@ namespace Trading.Exchange.Markets.Core.Replay
         private void HandleStarted()
         {
             _ticker.OnTick += HandleTick;
-            _ticker.Start(_from);
+            _ticker.Start();
             OnStarted?.Invoke(this, EventArgs.Empty);
         }
 
@@ -64,14 +60,14 @@ namespace Trading.Exchange.Markets.Core.Replay
 
         private void HandleTick(object sender, IMarketTick tick)
         {
-            if (tick.Date >= _to)
+            if (tick.Date >= _ticker.TicksRange.To)
             {
                 OnDone?.Invoke(this, EventArgs.Empty);
                 Stop();
                 return;
             }
             
-            Debug.WriteLine($"Started: {_from}, Current: {tick.Date}");
+            Debug.WriteLine($"Started: {_ticker.TicksRange.From}, Current: {tick.Date}");
         }
     }
 }
