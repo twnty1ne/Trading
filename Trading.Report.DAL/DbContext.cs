@@ -21,7 +21,7 @@ namespace Trading.Report.DAL
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                @"Server=DESKTOP-HFEPFQ9\SQLEXPRESS;Database=Session;Trusted_Connection=True");
+                @"Server=DESKTOP-HFEPFQ9;Database=Session;Trusted_Connection=True; TrustServerCertificate=True;");
 
         }
 
