@@ -1,19 +1,26 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+#nullable disable
+
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace Trading.Report.DAL.Migrations
 {
+    /// <inheritdoc />
     public partial class InitialMigration : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "Instruments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -24,25 +31,25 @@ namespace Trading.Report.DAL.Migrations
                 name: "Positions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TakeProfit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    EntryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EntryPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    StopLoss = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    InstrumentId = table.Column<int>(type: "int", nullable: false),
-                    State = table.Column<int>(type: "int", nullable: false),
-                    CurrentPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Leverage = table.Column<int>(type: "int", nullable: false),
-                    IMR = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Side = table.Column<int>(type: "int", nullable: false),
-                    Size = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    InitialMargin = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UnrealizedPnL = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    RealizedPnl = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ROE = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TakeProfit = table.Column<decimal>(type: "numeric", nullable: false),
+                    EntryDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EntryPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    StopLoss = table.Column<decimal>(type: "numeric", nullable: false),
+                    InstrumentId = table.Column<int>(type: "integer", nullable: false),
+                    State = table.Column<int>(type: "integer", nullable: false),
+                    CurrentPrice = table.Column<decimal>(type: "numeric", nullable: false),
+                    Leverage = table.Column<int>(type: "integer", nullable: false),
+                    IMR = table.Column<decimal>(type: "numeric", nullable: false),
+                    Side = table.Column<int>(type: "integer", nullable: false),
+                    Size = table.Column<decimal>(type: "numeric", nullable: false),
+                    InitialMargin = table.Column<decimal>(type: "numeric", nullable: false),
+                    UnrealizedPnL = table.Column<decimal>(type: "numeric", nullable: false),
+                    RealizedPnl = table.Column<decimal>(type: "numeric", nullable: false),
+                    ROE = table.Column<decimal>(type: "numeric", nullable: false),
                     EntryDateTicks = table.Column<long>(type: "bigint", nullable: false),
-                    EntryDateStringValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    EntryDateStringValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,8 +60,8 @@ namespace Trading.Report.DAL.Migrations
                 name: "Sessions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 },
                 constraints: table =>
                 {
@@ -65,10 +72,10 @@ namespace Trading.Report.DAL.Migrations
                 name: "Strategies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Type = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,10 +86,10 @@ namespace Trading.Report.DAL.Migrations
                 name: "Timeframes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Type = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,12 +100,12 @@ namespace Trading.Report.DAL.Migrations
                 name: "Trades",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TimeframeId = table.Column<int>(type: "int", nullable: false),
-                    StrategyId = table.Column<int>(type: "int", nullable: false),
-                    PositionId = table.Column<int>(type: "int", nullable: false),
-                    SessionId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TimeframeId = table.Column<int>(type: "integer", nullable: false),
+                    StrategyId = table.Column<int>(type: "integer", nullable: false),
+                    PositionId = table.Column<int>(type: "integer", nullable: false),
+                    SessionId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -113,8 +120,7 @@ namespace Trading.Report.DAL.Migrations
                         name: "FK_Trades_Sessions_SessionId",
                         column: x => x.SessionId,
                         principalTable: "Sessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Trades_Strategies_StrategyId",
                         column: x => x.StrategyId,
@@ -178,6 +184,7 @@ namespace Trading.Report.DAL.Migrations
                 column: "TimeframeId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

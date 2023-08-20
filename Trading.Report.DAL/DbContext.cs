@@ -4,10 +4,11 @@ using Trading.Report.Core;
 
 namespace Trading.Report.DAL
 {
-    public class SessionContext : DbContext
+    public sealed class SessionContext : DbContext
     {
         public SessionContext()
         {
+            Database.EnsureCreated();
             Database.Migrate();
         }
 
@@ -20,9 +21,8 @@ namespace Trading.Report.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                @"Server=DESKTOP-HFEPFQ9\SQLEXPRESS;Database=Session;Trusted_Connection=True");
-
+            optionsBuilder.UseNpgsql(
+                @"Server=postgres_db;Port=5432;User id=postgres;password=123;database=Sessions");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
