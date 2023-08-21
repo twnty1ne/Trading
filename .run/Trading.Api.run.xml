@@ -1,7 +1,8 @@
 ﻿<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Trading.Api" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+  <configuration default="false" name="Trading.Api" type="docker-deploy" factoryName="docker-compose.yml" singleton="false" server-name="Docker">
     <deployment type="docker-compose.yml">
       <settings>
+        <option name="buildKitEnabledForCompose" value="true" />
         <option name="envFilePath" value="" />
         <option name="commandLineOptions" value="--build" />
         <option name="services">
@@ -10,10 +11,9 @@
           </list>
         </option>
         <option name="sourceFilePath" value="docker-compose.yml" />
-        <option name="upForceRecreate" value="true" />
       </settings>
     </deployment>
-    <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
+    <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="false" isSslEnabled="false" />
     <method v="2">
       <option name="LaunchBrowser.Before.Run" url="http://localhost:5000/index.html" />
     </method>
