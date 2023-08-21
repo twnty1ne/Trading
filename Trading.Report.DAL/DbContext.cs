@@ -26,7 +26,7 @@ namespace Trading.Report.DAL
         {
             
             optionsBuilder.UseNpgsql(
-                @"Server=postgres_db;Port=5432;User id=postgres;password=123;database=Sessions")
+                @"Server=localhost;Port=6432;User id=postgres;password=123;database=Sessions")
                 .UseLazyLoadingProxies();
         }
 

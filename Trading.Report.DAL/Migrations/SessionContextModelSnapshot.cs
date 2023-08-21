@@ -18,6 +18,9 @@ namespace Trading.Report.DAL.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -109,10 +112,11 @@ namespace Trading.Report.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CloseDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("CurrentPrice")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<DateTime>("EntryDate")
                         .HasColumnType("timestamp with time zone");
@@ -124,13 +128,16 @@ namespace Trading.Report.DAL.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("EntryPrice")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("IMR")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("InitialMargin")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<int>("InstrumentId")
                         .HasColumnType("integer");
@@ -139,28 +146,34 @@ namespace Trading.Report.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<decimal>("ROE")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("RealizedPnl")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<int>("Side")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("Size")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<int>("State")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("StopLoss")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("TakeProfit")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("UnrealizedPnL")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.HasKey("Id");
 
@@ -173,18 +186,19 @@ namespace Trading.Report.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("PositionId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
+                        .HasColumnType("numeric(18,6)");
 
                     b.HasKey("Id");
 
@@ -327,32 +341,38 @@ namespace Trading.Report.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Close")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<DateTime>("CloseTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("High")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("Low")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("Open")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<DateTime>("OpenTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("TradeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("Volume")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.HasKey("Id");
 
@@ -413,7 +433,7 @@ namespace Trading.Report.DAL.Migrations
             modelBuilder.Entity("Trading.Report.Core.TradeCandle", b =>
                 {
                     b.HasOne("Trading.Report.Core.Trade", "Trade")
-                        .WithMany()
+                        .WithMany("Candles")
                         .HasForeignKey("TradeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -429,6 +449,11 @@ namespace Trading.Report.DAL.Migrations
             modelBuilder.Entity("Trading.Report.Core.Session", b =>
                 {
                     b.Navigation("Trades");
+                });
+
+            modelBuilder.Entity("Trading.Report.Core.Trade", b =>
+                {
+                    b.Navigation("Candles");
                 });
 #pragma warning restore 612, 618
         }
