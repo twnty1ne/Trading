@@ -6,11 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.10" />
-=======
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.10" />
->>>>>>> a6e78da (TRAD-48 add trade candles saving)
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.10" />
   </ItemGroup>
 
