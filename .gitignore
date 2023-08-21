@@ -10,7 +10,6 @@ nupkg/
 
 # Rider
 .idea
-.run
 
 # User-specific files
 *.suo
