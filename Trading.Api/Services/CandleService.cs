@@ -11,10 +11,8 @@ using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Shared.Resolvers;
 using System.Diagnostics;
 using System.Text;
-using ExcelMapper;
 using Trading.Shared.Ranges;
 using Trading.Exchange.Connections.Storage;
-using Trading.Exchange.Storage;
 
 namespace Trading.Api.Services
 {

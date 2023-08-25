@@ -4,7 +4,8 @@ namespace Trading.Exchange.Markets.Core.Instruments.Candles
 {
     internal class Candle : ICandle
     {
-        public Candle(decimal open, decimal close, decimal high, decimal low, decimal volume, DateTime openTime, DateTime closeTime)
+        public Candle(decimal open, decimal close, decimal high, decimal low, decimal volume, DateTime openTime,
+            DateTime closeTime)
         {
             Open = open;
             Close = close;
