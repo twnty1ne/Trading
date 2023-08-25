@@ -44,9 +44,15 @@ namespace Trading.Exchange.Connections.Binance
         {
             if (TryGetFromStorage(name, timeframe, range, out var candles)) 
             {
+                Console.WriteLine($"Got candles from storage for timeframe : {timeframe} instrument { name.GetFullName() }");
+                Console.WriteLine($"from {range.From} to : {range.To}");
                 return candles;
             }
 
+            
+            Console.WriteLine($"Couldn't get candles from storage for timeframe : {timeframe} instrument { name.GetFullName() }");
+            Console.WriteLine($"Couldn't from {range.From} to : {range.To}");
+            
             var successfullyConverted = timeframe.TryConvertToBinanceTimeframe(out var convertedTimeframe);
 
             if (!successfullyConverted) throw new ArgumentException("Invalid timeframe");
