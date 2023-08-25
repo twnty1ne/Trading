@@ -69,7 +69,7 @@ namespace Trading.Exchange.Connections.Ticker
         {
             var startDate = TicksRange.From;
             var normalizedStartDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, startDate.Hour, 
-                0, 0);
+                0, 0, DateTimeKind.Utc);
 
             var ticks = (TicksRange.To - normalizedStartDate).Ticks / _spanForTick + 1;
 

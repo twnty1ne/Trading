@@ -10,7 +10,6 @@ namespace Trading.Report.DAL
         public SessionContext()
         {
             Database.EnsureCreated();
-            Database.Migrate();
         }
 
         public DbSet<Session> Sessions { get; set; }
@@ -26,7 +25,7 @@ namespace Trading.Report.DAL
         {
             
             optionsBuilder.UseNpgsql(
-                @"Server=localhost;Port=6432;User id=postgres;password=123;database=Sessions")
+                @"Server=postgres_db;Port=5432;User id=postgres;password=123;database=Sessions")
                 .UseLazyLoadingProxies();
         }
 
