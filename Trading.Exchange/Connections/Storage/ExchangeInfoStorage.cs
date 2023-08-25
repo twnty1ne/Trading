@@ -1,30 +1,32 @@
-﻿using ExcelMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Trading.Exchange.Connections;
-using Trading.Exchange.Connections.Storage;
+using Ganss.Excel;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Shared.Ranges;
 using Trading.Shared.Ranges.Extensions;
 
-namespace Trading.Exchange.Storage
+namespace Trading.Exchange.Connections.Storage
 {
     internal class ExchangeInfoStorage : IExchangeInfoStorage
     {
-        private class PocoCandle 
+        private record PocoCandle 
         {
             public decimal Open { get; set; }
             public decimal Close { get; set; }
             public decimal High { get; set; }
             public decimal Low { get; set; }
-            public DateTime OpenTime { get; set; }
-            public DateTime CloseTime { get; set; }
+            public string OpenTime { get; set; }
+            public string CloseTime { get; set; }
+            
+            public DateTime OpenTimeDate => DateTime.ParseExact(OpenTime, "dd.MM.yyyy H:mm:ss", CultureInfo.InvariantCulture); 
+            public DateTime CloseTimeDate => DateTime.ParseExact(CloseTime, "dd.MM.yyyy H:mm:ss", CultureInfo.InvariantCulture); 
             public decimal Volume { get; set; }
         }
 
@@ -69,12 +71,10 @@ namespace Trading.Exchange.Storage
                     info = null;
                     return false;
                 }
-
-                using var stream = File.OpenRead(_instrumentsPath);
-                using var importer = new ExcelImporter(stream);
-
-                var sheet = importer.ReadSheet();
-                var infos = sheet.ReadRows<InstrumentInfo>();
+                
+                var mapper = new ExcelMapper(_instrumentsPath);
+                
+                var infos = mapper.Fetch<InstrumentInfo>();
 
                 var instrumentInfo = infos.FirstOrDefault(x => x.Name == name.GetFullName() && x.Connection == connection);
 
@@ -97,14 +97,14 @@ namespace Trading.Exchange.Storage
         private IEnumerable<Candle> ReadFile(CandlesFileName name)
         {
             var filePath = Path.Combine(_candlesPath, name.Value());
+            var excelMapper = new ExcelMapper(filePath);
             
-            using var stream = File.OpenRead(filePath);
-            using var importer = new ExcelImporter(stream);
+            excelMapper.Ignore<PocoCandle>(x => x.OpenTimeDate);
+            excelMapper.Ignore<PocoCandle>(x => x.CloseTimeDate);
+            
+            var pocoCandles = excelMapper.Fetch<PocoCandle>();
 
-            var sheet = importer.ReadSheet();
-            var pocoCandles = sheet.ReadRows<PocoCandle>();
-
-            return pocoCandles.Select(x => new Candle(x.Open, x.Close, x.High, x.Low, x.Volume, x.OpenTime, x.CloseTime))
+            return pocoCandles.Select(x => new Candle(x.Open, x.Close, x.High, x.Low, x.Volume, x.OpenTimeDate, x.CloseTimeDate))
                 .OrderBy(x => x.OpenTime)
                 .ToList();
         }
