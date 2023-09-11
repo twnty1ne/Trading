@@ -13,7 +13,7 @@
         <option name="sourceFilePath" value="docker-compose.yml" />
       </settings>
     </deployment>
-    <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="false" isSslEnabled="false" />
+    <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
     <method v="2">
       <option name="LaunchBrowser.Before.Run" url="http://localhost:5000/index.html" />
     </method>
