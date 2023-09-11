@@ -10,6 +10,7 @@
     <ProjectReference Include="..\Trading.Analytics.Core\Trading.Researching.Core.csproj" />
     <ProjectReference Include="..\Trading.Bot\Trading.Bot.csproj" />
     <ProjectReference Include="..\Trading.Exchange\Trading.Exchange.csproj" />
+    <ProjectReference Include="..\Trading.MlClient\Trading.MlClient.csproj" />
     <ProjectReference Include="..\Trading.Report.Core\Trading.Report.Core.csproj" />
     <ProjectReference Include="..\Trading.Report.DAL\Trading.Report.DAL.csproj" />
   </ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Telegram.Bot;
@@ -14,10 +15,16 @@ using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using RestSharp;
 using Trading.Exchange.Connections.Bybit;
 using Trading.Shared.Ranges;
 using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Builder;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
+using Trading.MlClient;
+using Trading.MlClient.Resources.Models.InsideChannelLong;
+using Trading.MlClient.Resources.Models.InsideChannelShort;
+using Trading.MlClient.Resources.Models.OutsideChannel;
+
 
 namespace Trading.Api.Controllers
 {
@@ -28,11 +35,13 @@ namespace Trading.Api.Controllers
         private readonly IExchange _exchange;
         private readonly IBot _bot;
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly IMlClient _mlClient;
 
-        public TestController(IExchange exchange, IBot bot, IServiceScopeFactory scopeFactory)
+        public TestController(/*IExchange exchange, IBot bot, */IServiceScopeFactory scopeFactory, IMlClient mlClient)
         {
-            _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
-            _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+            // _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
+            // _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+            _mlClient = mlClient;
             _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
         }
 
@@ -295,6 +304,42 @@ namespace Trading.Api.Controllers
             var builder = new DecisionTreeBuilder<CandleVolumeStrategyContext>();
             var doc = XElement.Load("CandleVolumeDecisionTree.xml");
             var tree = builder.FromXml(doc);
+        }
+        
+        
+        [HttpGet("12")]
+        public async Task<IActionResult> TestMethod12()
+        {
+            var insideShortFeatures = new List<(InsideChannelShortFeatures Type, decimal Value)>
+            {
+                (InsideChannelShortFeatures.DayTime, 12m),
+                (InsideChannelShortFeatures.EquilibriumDistance, 0.6m),
+                (InsideChannelShortFeatures.PdSize, 0.02m),
+            };
+            
+            var insideShortPredict = await _mlClient.InsideShortModelResource.PredictAsync(insideShortFeatures);
+            
+            
+            var insideLongFeatures = new List<(InsideChannelLongFeatures Type, decimal Value)>
+            {
+                (InsideChannelLongFeatures.DayTime, 12m),
+                (InsideChannelLongFeatures.EquilibriumDistance, 0.06m),
+                (InsideChannelLongFeatures.PdSize, 0.002m),
+            };
+
+
+            var insideLongPredict = await _mlClient.InsideLongModelResource.PredictAsync(insideLongFeatures);
+            
+            
+            var outsideFeatures = new List<(OutsideChannelFeatures Type, decimal Value)>
+            {
+                (OutsideChannelFeatures.PdSize, 12m),
+                (OutsideChannelFeatures.TakeProfitChannelExtension, 0.02m),
+            };
+            
+            var outsidePredict = await _mlClient.OutsideModelResource.PredictAsync(outsideFeatures);
+
+            return Ok(new { insideShortPredict, insideLongPredict, outsidePredict });
         }
     }
 }

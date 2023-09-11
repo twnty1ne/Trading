@@ -5,6 +5,6 @@ namespace Trading.Exchange
 {
     public class HistorySimulationOptions
     {
-        public IRange<DateTime> SimulationRange { get; set; }
+        public IRange<DateTime> SimulationRange { get; init; }
     }
 }

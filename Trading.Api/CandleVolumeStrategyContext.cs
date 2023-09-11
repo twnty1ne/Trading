@@ -21,5 +21,11 @@ namespace Trading.Api
         [Feature("short", FeatureType.Bool)]
         public bool Short { get; }
         
+        [Feature("take_profit_channel_extension", FeatureType.Continuous)]
+        public bool TakeProfitChannelExtention { get; }
+        
+        [Feature("equlibrium_distance", FeatureType.Bool)]
+        public bool EqulibriumDistance { get; }
+        
     }
 }

@@ -11,6 +11,7 @@ using Trading.Bot.Strategies;
 using Trading.Exchange;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
+using Trading.MlClient;
 using Trading.Report.Core;
 using Trading.Report.DAL;
 using Trading.Shared.Ranges;
@@ -55,6 +56,14 @@ namespace Trading.Api
                 {
                     x.Session = Sessions.BackTest;
                     x.Strategy = Strategies.CandleVolume;
+                });
+
+            services
+                .AddTransient<IMlClient, MlClient.MlClient>()
+                .Configure<MlClient.Options.ClientOptions>(x =>
+                {
+                    x.Host = "trading_ml";
+                    x.Port = 5005;
                 });
 
             services.AddTransient<ICredentialsProvider, BinanceCredentialsProvider>();
