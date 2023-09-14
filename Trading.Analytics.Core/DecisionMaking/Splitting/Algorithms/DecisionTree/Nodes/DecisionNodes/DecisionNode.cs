@@ -1,15 +1,19 @@
-﻿namespace Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.DecisionNodes
-{
-    public class DecisionNode<TItem> : INode<TItem>
-    {
-        private readonly Decision _decision;
+﻿using System;
 
-        internal DecisionNode(Decision decision)
+namespace Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.DecisionNodes
+{
+    public class DecisionNode<TItem, TMark> : INode<TItem, TMark>
+        where TItem : class
+        where TMark : Enum
+    {
+        private readonly TMark _decision;
+
+        internal DecisionNode(TMark decision)
         {
             _decision = decision;
         }
 
-        public Decision Decide(TItem item)
+        public TMark Decide(TItem item)
         {
             return _decision;
         }

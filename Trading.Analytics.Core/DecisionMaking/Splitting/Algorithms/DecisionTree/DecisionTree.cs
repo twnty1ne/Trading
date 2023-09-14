@@ -4,16 +4,18 @@ using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.
 
 namespace Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree
 {
-    public class DecisionTree<TItem> : IDecisionTree<TItem>
+    public class DecisionTree<TItem, TMark> : IDecisionTree<TItem, TMark> 
+        where TItem : class
+        where TMark : Enum
     {
-        private readonly QuestionNode<TItem> _questionNode;
+        private readonly QuestionNode<TItem, TMark> _questionNode;
 
-        public DecisionTree(QuestionNode<TItem> questionNode)
+        public DecisionTree(QuestionNode<TItem, TMark> questionNode)
         {
             _questionNode = questionNode ?? throw new ArgumentNullException(nameof(questionNode));
         }
 
-        public Decision Decide(TItem item)
+        public TMark Decide(TItem item)
         {
             if (item is null)
                 throw new ArgumentNullException();

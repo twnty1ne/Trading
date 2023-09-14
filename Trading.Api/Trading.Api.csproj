@@ -47,6 +47,9 @@
 
   <ItemGroup>
     <None Remove="Services\Candles\**" />
+    <None Update="CandleVolumeDecisionTree.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 

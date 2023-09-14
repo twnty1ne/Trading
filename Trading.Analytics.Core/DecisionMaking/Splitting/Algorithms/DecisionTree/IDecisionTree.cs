@@ -1,9 +1,12 @@
-﻿using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.DecisionNodes;
+﻿using System;
+using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.DecisionNodes;
 
 namespace Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree
 {
-    public interface IDecisionTree<TItem>
+    public interface IDecisionTree<TItem, TMark>
+        where TItem : class
+        where TMark : Enum
     {
-        Decision Decide(TItem item);
+        TMark Decide(TItem item);
     }
 }

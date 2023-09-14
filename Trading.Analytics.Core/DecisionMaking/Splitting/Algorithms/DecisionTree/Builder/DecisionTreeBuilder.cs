@@ -6,27 +6,30 @@ using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.
 using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.DecisionNodes;
 using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.QuestionNodes;
 using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.QuestionNodes.Questions;
+using Trading.Shared.Common.Extensions;
 
 namespace Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Builder
 {
-    public class DecisionTreeBuilder<TItem> : IDecisionTreeBuilder<TItem> where TItem : class
+    public class DecisionTreeBuilder<TItem, TMark> : IDecisionTreeBuilder<TItem, TMark> 
+        where TItem : class 
+        where TMark : Enum 
     {
-        public DecisionTree<TItem> FromXml(XElement document)
+        public DecisionTree<TItem, TMark> FromXml(XElement document)
         {
             var xmlTree = document.Elements().ToList().First();
             var rootQuestion = BuildQuestionNode(xmlTree);
-            return new DecisionTree<TItem>(rootQuestion);
+            return new DecisionTree<TItem, TMark>(rootQuestion);
         }
 
-        private QuestionNode<TItem> BuildQuestionNode(XElement splitNodeXml)
+        private QuestionNode<TItem, TMark> BuildQuestionNode(XElement splitNodeXml)
         {
             var question = BuildQuestion(splitNodeXml.Elements().First(x => x.Name == "question"));
             var positiveNode = BuildAnswerNode(splitNodeXml.Elements().First(x => x.Name == "positiveNode"));
             var negativeNode = BuildAnswerNode(splitNodeXml.Elements().First(x => x.Name == "negativeNode"));
-            return new QuestionNode<TItem>(positiveNode, negativeNode, question);
+            return new QuestionNode<TItem, TMark>(positiveNode, negativeNode, question);
         }
 
-        private INode<TItem> BuildAnswerNode(XElement element)
+        private INode<TItem, TMark> BuildAnswerNode(XElement element)
         {
             var nodeElement = element.Elements().First();
             
@@ -35,11 +38,12 @@ namespace Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionT
                 : BuildDecisionNode(nodeElement);
         }
 
-        private INode<TItem> BuildDecisionNode(XElement element)
+        private INode<TItem, TMark> BuildDecisionNode(XElement element)
         {
-            var decision = element.Name == "positiveDecision" ? Decision.Positive : Decision.Negative;
-            return new DecisionNode<TItem>(decision);
-        }
+            var decisionNodeValue = element.Attributes().First(x => x.Name == "value").Value;
+            var decision = (TMark)Enum.Parse(typeof(TMark), decisionNodeValue.ToPascalCase());
+            return new DecisionNode<TItem, TMark>(decision);
+        } 
         
         private IQuestion<TItem> BuildQuestion(XElement questionXml)
         {

@@ -7,15 +7,15 @@
             <splitNode>
                 <question feature_type='continuous' feature="pd_size" split_point="0.03" split_sign="EqualsOrLess"/>
                 <positiveNode>
-                    <positiveDecision/>
+                    <decisionNode value="inside_channel_short"/>
                 </positiveNode>
                 <negativeNode>
-                    <negativeDecision/>
+                    <decisionNode value="inside_channel_long"/>
                 </negativeNode>
             </splitNode>
         </positiveNode>
         <negativeNode>
-            <negativeDecision/>
+            <decisionNode value="outside_channel"/>
         </negativeNode>
     </splitNode>
 </DecisionTree>

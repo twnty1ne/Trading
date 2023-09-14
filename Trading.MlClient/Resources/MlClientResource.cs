@@ -1,15 +1,10 @@
 ﻿using RestSharp;
+using Trading.Shared.Common.Extensions;
 
 namespace Trading.MlClient.Resources;
 
 public abstract class MlClientResource : IMlClientResource
 {
-    private static string ToSnakeCase(string str)
-    {
-        return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToLower();
-    }
-    
-    
     private readonly RestClient _client;
     private readonly string _resource;
 
@@ -27,7 +22,7 @@ public abstract class MlClientResource : IMlClientResource
 
         foreach (var parameter in parameters)
         {
-            var innerParameter = new QueryParameter(ToSnakeCase(parameter.Name), parameter.Value.ToString());
+            var innerParameter = new QueryParameter(parameter.Name.ToSnakeCase(), parameter.Value.ToString());
             request.AddParameter(innerParameter);
         }
 

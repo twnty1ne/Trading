@@ -13,9 +13,7 @@ using Trading.Report.Core;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
-using RestSharp;
 using Trading.Exchange.Connections.Bybit;
 using Trading.Shared.Ranges;
 using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Builder;
@@ -24,14 +22,25 @@ using Trading.MlClient;
 using Trading.MlClient.Resources.Models.InsideChannelLong;
 using Trading.MlClient.Resources.Models.InsideChannelShort;
 using Trading.MlClient.Resources.Models.OutsideChannel;
+using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.DecisionNodes;
 
 
 namespace Trading.Api.Controllers
 {
+    
+
     [ApiController]
     [Route("test")]
     public class TestController : ControllerBase
     {
+        private enum SignalClassification 
+        {
+            OutsideChannel = 1,
+            InsideChannelShort = 2,
+            InsideChannelLong = 3
+        }
+        
+        
         private readonly IExchange _exchange;
         private readonly IBot _bot;
         private readonly IServiceScopeFactory _scopeFactory;
@@ -293,7 +302,8 @@ namespace Trading.Api.Controllers
                 new DateTime(2023, 04, 25, 20, 59, 59));
 
             var candles = await connection
-                .GetFuturesCandlesAsync(new InstrumentName("LTC", "USDT"), Timeframes.OneHour, range);
+                .GetFuturesCandlesAsync(new InstrumentName("LTC", "USDT"), 
+                    Timeframes.OneHour, range);
 
             return Ok(candles);
         }
@@ -301,9 +311,10 @@ namespace Trading.Api.Controllers
         [HttpGet("11")]
         public void TestMethod11()
         {
-            var builder = new DecisionTreeBuilder<CandleVolumeStrategyContext>();
+            var builder = new DecisionTreeBuilder<CandleVolumeStrategyContext, SignalClassification>();
             var doc = XElement.Load("CandleVolumeDecisionTree.xml");
             var tree = builder.FromXml(doc);
+            var i = 0;
         }
         
         
