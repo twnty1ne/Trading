@@ -10,11 +10,11 @@ namespace Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionT
         }
 
         protected override IEnumerable<Type> AllowedPropertyTypes => 
-            new List<Type> { typeof(bool), typeof(decimal) };
+            new List<Type> { typeof(int), typeof(decimal) };
 
         protected override decimal Cast(object featureValue)
         {
-            throw new System.NotImplementedException();
+            return (decimal)featureValue;
         }
     }
 }

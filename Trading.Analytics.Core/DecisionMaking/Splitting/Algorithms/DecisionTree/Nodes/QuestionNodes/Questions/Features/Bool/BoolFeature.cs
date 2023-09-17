@@ -14,7 +14,7 @@ namespace Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionT
 
         protected override bool Cast(object featureValue)
         {
-            throw new System.NotImplementedException();
+            return (bool)featureValue;
         }
     }
 }

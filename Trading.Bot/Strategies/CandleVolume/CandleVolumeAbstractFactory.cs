@@ -4,6 +4,7 @@ using Trading.Analysis.Extentions;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
+using Trading.MlClient;
 using Trady.Analysis;
 using Trady.Analysis.Extension;
 using Trady.Core.Infrastructure;
@@ -12,28 +13,29 @@ namespace Trading.Bot.Strategies.CandleVolume
 {
     internal class CandleVolumeAbstractFactory : IStrategyAbstractFactory
     {
-        public Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> SignalSelector
+        private readonly IMlClient _mlClient;
+
+        public CandleVolumeAbstractFactory(IMlClient mlClient)
         {
-            get => (x, y, z, t, p) => new CandleVolumeSignal(x, y, z, t, p);
+            _mlClient = mlClient ?? throw new ArgumentNullException(nameof(mlClient));
         }
 
-        public Predicate<IIndexedOhlcv> SellRule 
-        {
-            get => Rule
+        public Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> SignalSelector 
+            => (x, y, z, t, p) => new CandleVolumeSignal(x, y, z, t, p);
+
+        public Predicate<IIndexedOhlcv> SellRule =>
+            Rule
                 .Create(x => x.IsDojiBar())
                 .And(x => x.IsBreakingLowestVolume(2))
                 .And(x => x.IsBreakingHighestHigh(1))
                 .And(x => !x.IsBreakingLowestLow(1));
-        }
 
-        public Predicate<IIndexedOhlcv> BuyRule
-        {
-            get => Rule
+        public Predicate<IIndexedOhlcv> BuyRule =>
+            Rule
                 .Create(x => x.IsDojiBar())
                 .And(x => x.IsBreakingLowestVolume(2))
                 .And(x => x.IsBreakingLowestLow(1))
                 .And(x => !x.IsBreakingHighestHigh(1));
-        }
 
         public IReadOnlyCollection<IInstrumentName> SupportedInstruments  => new List<IInstrumentName>
             {
@@ -51,14 +53,14 @@ namespace Trading.Bot.Strategies.CandleVolume
                 new InstrumentName("ATOM", "USDT"),
             };
 
-        public IReadOnlyCollection<Timeframes> SupportedTimeframes 
-        {
-            get => new List<Timeframes>
+        public IReadOnlyCollection<Timeframes> SupportedTimeframes =>
+            new List<Timeframes>
             {
                 Timeframes.OneHour,
             };
-        }
 
-        public Strategies Strategy => Strategies.CandleVolume; 
+        public Strategies Strategy => Strategies.CandleVolume;
+
+        public ISignalsFilter Filter => new CandleVolumeStrategyFilterAdapter(_mlClient);
     }
 }

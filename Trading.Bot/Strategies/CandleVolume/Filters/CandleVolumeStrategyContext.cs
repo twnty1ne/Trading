@@ -1,31 +1,24 @@
 ﻿using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.QuestionNodes.Questions;
 using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.QuestionNodes.Questions.Features.Attributes;
 
-namespace Trading.Api
+namespace Trading.Bot.Strategies.CandleVolume.Filters
 {
     public class CandleVolumeStrategyContext
     {
-        public CandleVolumeStrategyContext(decimal pdSize, decimal dayTime, bool @short)
-        {
-            PdSize = pdSize;
-            DayTime = dayTime;
-            Short = @short;
-        }
-
         [Feature("pd_size", FeatureType.Continuous)]
-        public decimal PdSize { get; }
+        public decimal PdSize { get; set; }
         
         [Feature("day_time", FeatureType.Continuous)]
-        public decimal DayTime { get; }
+        public int DayTime { get; set; }
         
         [Feature("short", FeatureType.Bool)]
-        public bool Short { get; }
+        public bool Short { get; set; }
         
         [Feature("take_profit_channel_extension", FeatureType.Continuous)]
-        public bool TakeProfitChannelExtention { get; }
+        public decimal TakeProfitChannelExtension { get; set; }
         
-        [Feature("equlibrium_distance", FeatureType.Bool)]
-        public bool EqulibriumDistance { get; }
+        [Feature("equilibrium_distance", FeatureType.Bool)]
+        public decimal EquilibriumDistance { get; set; }
         
     }
 }

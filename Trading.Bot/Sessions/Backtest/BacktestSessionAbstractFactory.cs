@@ -5,6 +5,7 @@ using Trading.Exchange.Connections.Ticker;
 using Trading.Exchange.Markets.Core;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.HistorySimulation;
+using Trading.MlClient;
 using Trading.Shared.Resolvers;
 
 namespace Trading.Bot.Sessions.Backtest
@@ -15,11 +16,11 @@ namespace Trading.Bot.Sessions.Backtest
         private readonly Strategies.Strategies _strategy;
         private readonly IResolver<Strategies.Strategies, IStrategy> _strategyResolver;
 
-        public BacktestSessionAbstractFactory(IExchange exchange, Strategies.Strategies strategy)
+        public BacktestSessionAbstractFactory(IExchange exchange, Strategies.Strategies strategy, IMlClient mlClient)
         {
             _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
             _strategy = strategy;
-            _strategyResolver = new StrategyResolver(Market);
+            _strategyResolver = new StrategyResolver(Market, mlClient);
         }
 
         public IStrategy Strategy { get => _strategyResolver.Resolve(_strategy); } 

@@ -19,6 +19,7 @@ namespace Trading.Bot.Strategies
         private readonly IReadOnlyCollection<IInstrumentName> _supportedInstruments;
         private readonly Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> _signalSelector;
         private readonly Strategies _strategy;
+        private readonly ISignalsFilter _filter;
 
         internal Strategy(IStrategyAbstractFactory factory, IMarket<IFuturesInstrument> market)
         {
@@ -31,6 +32,7 @@ namespace Trading.Bot.Strategies
             _signalSelector = factory.SignalSelector;
             _strategy = factory.Strategy;
             _instrumentStrategyScopes = CreateScopes();
+            _filter = factory.Filter;
             Init();
         }
 
@@ -39,7 +41,8 @@ namespace Trading.Bot.Strategies
         private IReadOnlyCollection<IInstrumentStrategyScope> CreateScopes()
         {
             return _supportedInstruments
-                .Select(x => new InstrumentStrategyScope(_market.GetInstrument(x), _supportedTimeFrames, _buyRule, _sellRule, _signalSelector, _strategy))
+                .Select(x => new InstrumentStrategyScope(_market.GetInstrument(x), _supportedTimeFrames, 
+                    _buyRule, _sellRule, _signalSelector, _strategy))
                 .ToList();
         }
 
@@ -53,6 +56,9 @@ namespace Trading.Bot.Strategies
 
         private void HandleSignalFired(object sender, ISignal signal) 
         {
+            if(!_filter.Passes(signal))
+                return;
+            
             OnSignalFired?.Invoke(this, signal);
         }
     }

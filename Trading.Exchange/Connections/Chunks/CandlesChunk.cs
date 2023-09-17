@@ -104,7 +104,7 @@ namespace Trading.Exchange.Connections.Chunks
             var allCandles = _intersectionCandles.Concat(candles);
             _intersectionCandles.Clear();
 
-            _candleBuffer = allCandles.ToDictionary(x => x.CloseTime.Ticks + TimeSpan.FromSeconds(1).Ticks);
+            _candleBuffer = allCandles.ToDictionary(x => x.CloseTime.Ticks + TimeSpan.FromMilliseconds(1).Ticks);
             
             Debug.WriteLine($"Chunk for {_name.GetFullName()} {_timeframe.ToString()} has been loaded");
 

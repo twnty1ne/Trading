@@ -14,6 +14,7 @@ using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Trading.Bot.Strategies.CandleVolume.Filters;
 using Trading.Exchange.Connections.Bybit;
 using Trading.Shared.Ranges;
 using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Builder;
@@ -46,10 +47,10 @@ namespace Trading.Api.Controllers
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly IMlClient _mlClient;
 
-        public TestController(/*IExchange exchange, IBot bot, */IServiceScopeFactory scopeFactory, IMlClient mlClient)
+        public TestController(IBot bot, IServiceScopeFactory scopeFactory, IMlClient mlClient)
         {
             // _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
-            // _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+            _bot = bot ?? throw new ArgumentNullException(nameof(bot));
             _mlClient = mlClient;
             _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
         }

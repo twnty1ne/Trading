@@ -2,6 +2,7 @@
 using System;
 using Trading.Bot.Sessions;
 using Trading.Exchange;
+using Trading.MlClient;
 using Trading.Shared.Resolvers;
 
 namespace Trading.Bot
@@ -13,11 +14,11 @@ namespace Trading.Bot
         private readonly IResolver<Sessions.Sessions, ITradingSession> _resolver;
         private readonly IOptions<Options> _options;
 
-        public Bot(IExchange exchange, IOptions<Options> options)
+        public Bot(IExchange exchange, IOptions<Options> options, IMlClient mlClient)
         {
             _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
             _options = options ?? throw new ArgumentNullException(nameof(options));
-            _resolver = new SessionResolver(_exchange, options.Value.Strategy);
+            _resolver = new SessionResolver(_exchange, options.Value.Strategy, mlClient);
             Session = _resolver.Resolve(_options.Value.Session);
         }
 

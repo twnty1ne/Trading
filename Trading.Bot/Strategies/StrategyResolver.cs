@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Trading.Bot.Strategies.CandleVolume;
 using Trading.Exchange.Markets.Core;
 using Trading.Exchange.Markets.Core.Instruments;
+using Trading.MlClient;
 using Trading.Shared.Resolvers;
 
 namespace Trading.Bot.Strategies
@@ -11,10 +12,12 @@ namespace Trading.Bot.Strategies
     {
         private readonly IResolver<Strategies, IStrategy> _resolver;
         private readonly IMarket<IFuturesInstrument> _market;
-        public StrategyResolver(IMarket<IFuturesInstrument> market)
+        private readonly IMlClient _mlClient;
+        public StrategyResolver(IMarket<IFuturesInstrument> market, IMlClient mlClient)
         {
             _market = market ?? throw new ArgumentNullException(nameof(market));
             _resolver = new Resolver<Strategies, IStrategy>(GenerateDictionary());
+            _mlClient = mlClient ?? throw new ArgumentNullException(nameof(mlClient));
         }
 
         public IStrategy Resolve(Strategies type)
@@ -31,7 +34,7 @@ namespace Trading.Bot.Strategies
         {
             return new Dictionary<Strategies, Func<IStrategy>>
             {
-                { Strategies.CandleVolume, () => new CandleVolumeStrategy(_market)},
+                { Strategies.CandleVolume, () => new CandleVolumeStrategy(_market, _mlClient)},
             };
         }
     }

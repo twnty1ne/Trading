@@ -40,8 +40,8 @@ namespace Trading.Api
                     x.ConnectionType = ConnectionEnum.Binance;
                     x.HistorySimulationOptions = new HistorySimulationOptions
                     {
-                        SimulationRange = new Range<DateTime>(new DateTime(2019, 09, 07), 
-                            new DateTime(2023, 08, 1), BoundariesComparation.LeftIncluding)  
+                        SimulationRange = new Range<DateTime>(new DateTime(2023, 07, 01), 
+                            new DateTime(2023, 07, 3), BoundariesComparation.LeftIncluding)  
                     };
                     
                     x.RealtimeOptions = new RealtimeOptions

@@ -1,6 +1,7 @@
 ﻿using System;
 using Trading.Exchange;
 using Trading.Exchange.Markets.Core.Replay;
+using Trading.MlClient;
 
 namespace Trading.Bot.Sessions.Backtest
 {
@@ -10,10 +11,10 @@ namespace Trading.Bot.Sessions.Backtest
         private readonly BacktestSessionAbstractFactory _factory;
         private readonly IReplay _replay;
 
-        public BacktestSession(IExchange exchange, Strategies.Strategies strategy)
+        public BacktestSession(IExchange exchange, Strategies.Strategies strategy, IMlClient mlClient)
         {
             _ = exchange ?? throw new ArgumentNullException(nameof(exchange));
-            _factory = new BacktestSessionAbstractFactory(exchange, strategy);
+            _factory = new BacktestSessionAbstractFactory(exchange, strategy, mlClient);
             _session = new TradingSession(_factory);
             _replay = _factory.Market.GetReplay();
         }

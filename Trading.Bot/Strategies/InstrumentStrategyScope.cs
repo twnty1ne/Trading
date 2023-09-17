@@ -21,7 +21,9 @@ namespace Trading.Bot.Strategies
         private readonly Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> _signalSelector;
 
         public InstrumentStrategyScope(IFuturesInstrument instrument, IReadOnlyCollection<Timeframes> timeframes, 
-            Predicate<IIndexedOhlcv> buyRule, Predicate<IIndexedOhlcv> sellRule, Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> entrySelector, Strategies strategy)
+            Predicate<IIndexedOhlcv> buyRule, Predicate<IIndexedOhlcv> sellRule, 
+            Func<IIndexedOhlcv, PositionSides, IInstrumentName, Timeframes, Strategies, ISignal> entrySelector, 
+            Strategies strategy)
         {
             _instrument = instrument ?? throw new ArgumentNullException(nameof(instrument));
             _buyRule = buyRule ?? throw new ArgumentNullException(nameof(buyRule));
@@ -47,7 +49,9 @@ namespace Trading.Bot.Strategies
         {
             var timeframe = (ITimeframe)sender;
            
-            using var analyzeContext = new AnalyzeContext(candles.Select(x => new Candle(new DateTimeOffset(x.OpenTime), x.Open, x.High, x.Low, x.Close, x.Volume)));
+            using var analyzeContext = new AnalyzeContext(candles.Select(x 
+                => new Candle(new DateTimeOffset(x.OpenTime), x.Open, x.High, x.Low, x.Close, x.Volume)));
+            
             var shortEntryCandles = new SimpleRuleExecutor(analyzeContext, _sellRule).Execute(candles.Count() - 1);
             var longEntryCandles = new SimpleRuleExecutor(analyzeContext, _buyRule).Execute(candles.Count() - 1);
             
