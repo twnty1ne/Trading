@@ -37,7 +37,8 @@ public class CandleVolumeMlFilterResolver : IResolver<CandleVolumeSignalClassifi
         {
             { CandleVolumeSignalClassification.OutsideChannel, () => new OutsideChannelMlFilter(_mlClient) },
             { CandleVolumeSignalClassification.InsideChannelLong, () => new InsideChannelLongMlFilter(_mlClient) },
-            { CandleVolumeSignalClassification.InsideChannelShort, () => new InsideChannelShortMlFilter(_mlClient) }
+            { CandleVolumeSignalClassification.InsideChannelShort, () => new InsideChannelShortMlFilter(_mlClient) },
+            { CandleVolumeSignalClassification.Unspecified, () => new NonPassableFilter<CandleVolumeStrategyContext>() }
         };
     }
 }

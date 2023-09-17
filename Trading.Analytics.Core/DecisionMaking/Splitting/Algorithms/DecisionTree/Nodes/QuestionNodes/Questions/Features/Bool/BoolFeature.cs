@@ -14,7 +14,7 @@ namespace Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionT
 
         protected override bool Cast(object featureValue)
         {
-            return (bool)featureValue;
+            return Convert.ToBoolean(featureValue);
         }
     }
 }

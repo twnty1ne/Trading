@@ -2,12 +2,20 @@
 
 <DecisionTree strategy="candle_volume">
     <splitNode>
-        <question feature_type='bool' feature="short"/>
+        <question feature_type='continuous' feature="take_profit_channel_extension" split_point="0.00" split_sign="EqualsOrLess"/>
         <positiveNode>
             <splitNode>
-                <question feature_type='continuous' feature="pd_size" split_point="0.03" split_sign="EqualsOrLess"/>
+                <question feature_type='bool' feature="short"/>
                 <positiveNode>
-                    <decisionNode value="inside_channel_short"/>
+                    <splitNode>
+                        <question feature_type='continuous' feature="day_time" split_point="18" split_sign="EqualsOrLess"/>
+                        <positiveNode>
+                            <decisionNode value="inside_channel_short"/>
+                        </positiveNode>
+                        <negativeNode>
+                            <decisionNode value="unspecified"/>
+                        </negativeNode>
+                    </splitNode>
                 </positiveNode>
                 <negativeNode>
                     <decisionNode value="inside_channel_long"/>
@@ -15,7 +23,15 @@
             </splitNode>
         </positiveNode>
         <negativeNode>
-            <decisionNode value="outside_channel"/>
+            <splitNode>
+                <question feature_type='continuous' feature="day_time" split_point="18" split_sign="EqualsOrLess"/>
+                <positiveNode>
+                    <decisionNode value="outside_channel"/>
+                </positiveNode>
+                <negativeNode>
+                    <decisionNode value="unspecified"/>
+                </negativeNode>
+            </splitNode>
         </negativeNode>
     </splitNode>
 </DecisionTree>

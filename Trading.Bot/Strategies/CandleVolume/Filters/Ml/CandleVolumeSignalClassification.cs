@@ -4,5 +4,6 @@ public enum CandleVolumeSignalClassification
 {
     InsideChannelShort = 1,
     InsideChannelLong = 2,
-    OutsideChannel = 3
+    OutsideChannel = 3,
+    Unspecified = 4
 }

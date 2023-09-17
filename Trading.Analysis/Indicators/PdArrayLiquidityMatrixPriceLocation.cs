@@ -8,11 +8,12 @@ using System.Linq;
 
 namespace Trading.Analysis.Indicators
 {
-    public class PDArrayLiqudityMatrixPriceLocation : AnalyzableBase<IOhlcv, decimal, FibonacciRange, AnalyzableTick<FibonacciRange>>
+    public class PdArrayLiquidityMatrixPriceLocation : AnalyzableBase<IOhlcv, decimal, FibonacciRange, AnalyzableTick<FibonacciRange>>
     {
         private PDArrayLiquidityMatrixByIndex _pdArrayLiquidityMatrixByIndex;
 
-        public PDArrayLiqudityMatrixPriceLocation(IEnumerable<IOhlcv> inputs, Func<IOhlcv, decimal> inputMapper) : base(inputs, inputMapper)
+        public PdArrayLiquidityMatrixPriceLocation(IEnumerable<IOhlcv> inputs, Func<IOhlcv, decimal> inputMapper) 
+            : base(inputs, inputMapper)
         {
             _pdArrayLiquidityMatrixByIndex = new PDArrayLiquidityMatrixByIndex(inputs);
         }

@@ -14,7 +14,7 @@ namespace Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionT
 
         protected override decimal Cast(object featureValue)
         {
-            return (decimal)featureValue;
+            return Convert.ToDecimal(featureValue);
         }
     }
 }

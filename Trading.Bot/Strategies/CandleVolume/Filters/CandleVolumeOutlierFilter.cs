@@ -6,6 +6,6 @@ public class CandleVolumeOutlierFilter : Filter<CandleVolumeStrategyContext>
 {
     public override bool Passes(CandleVolumeStrategyContext signal)
     {
-        return true;
+        return signal.PdSize <= 0.07m;
     }
 }
