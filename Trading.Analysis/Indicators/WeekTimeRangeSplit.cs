@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using Trady.Analysis;
 using Trady.Analysis.Infrastructure;
 using Trady.Core.Infrastructure;
@@ -11,7 +10,8 @@ namespace Trading.Analysis.Indicators;
 
 public class WeekTimeRangeSplit : AnalyzableBase<IOhlcv, IOhlcv, IEnumerable<IOhlcv>, AnalyzableTick<IEnumerable<IOhlcv>>>
 {
-    public WeekTimeRangeSplit(IEnumerable<IOhlcv> inputs) : base(inputs, x => x)
+    public WeekTimeRangeSplit(IEnumerable<IOhlcv> inputs) 
+        : base(inputs, x => x)
     {
     }
 

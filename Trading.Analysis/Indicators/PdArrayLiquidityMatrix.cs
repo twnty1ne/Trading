@@ -6,14 +6,14 @@ using Trading.Shared.Ranges;
 
 namespace Trading.Analysis.Indicators
 {
-    public class PDArrayLiquidityMatrix
+    public class PdArrayLiquidityMatrix
     {
         private readonly IEnumerable<IOhlcv> _candles;
 
-        internal PDArrayLiquidityMatrix(IEnumerable<IOhlcv> candles, int index)
+        public PdArrayLiquidityMatrix(IEnumerable<IOhlcv> candles, int index)
         {
-            _candles = new WeekTimeRangeSplit(candles)[index].Tick;
-            Grid = new FibonacciGrid(new Range<decimal>(_candles.Max(x => x.High), _candles.Min(x => x.Low)));
+            _candles = new DayTimeRangeSplit(candles)[index].Tick;
+            Grid = new FibonacciGrid(new Range<decimal>(_candles.Min(x => x.Low), _candles.Max(x => x.High)));
         }
 
         public FibonacciGrid Grid { get; }
