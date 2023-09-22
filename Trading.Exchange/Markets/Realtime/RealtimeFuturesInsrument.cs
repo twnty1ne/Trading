@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Trading.Exchange.Connections;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
@@ -26,16 +27,21 @@ namespace Trading.Exchange.Markets.Realtime
         public event EventHandler<IPriceTick> OnPriceUpdated;
         public event EventHandler<IPosition> OnPositionOpened;
 
+        public void SetPositionEntry(PositionSides side,
+            int leverage,
+            decimal stopLoss,
+            IEnumerable<(decimal Price, decimal Volume)> takeProfits,
+            decimal size,
+            Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public ITimeframe GetTimeframe(Timeframes type)
         {
             return _instrument.GetTimeframe(type);
         }
-
-        public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size, Guid id)
-        {
-            _instrument.SetPositionEntry(side, leverage, stopLoss, takeProfit, size, id);
-        }
-
+        
         private void HandlePriceUpdated(object sender, IPriceTick tick)
         {
             OnPriceUpdated?.Invoke(sender, tick);

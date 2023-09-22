@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Trading.Exchange.Connections;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
@@ -28,13 +29,11 @@ namespace Trading.Exchange.Markets.Core.Instruments
         public IInstrumentName Name { get; }
 
         public decimal Price { get; private set; }
-
-
+        
         public ITimeframe GetTimeframe(Timeframes.Timeframes type)
         {
             return _resolver.Resolve(type);
-        } 
-
+        }
 
         private void HandlePriceUpdated(object sender, IPriceTick tick)
         {
@@ -43,9 +42,17 @@ namespace Trading.Exchange.Markets.Core.Instruments
             OnPriceUpdated?.Invoke(this, tick);
         }
 
-        public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size, Guid id)
+        public void SetPositionEntry(PositionSides side,
+            int leverage,
+            decimal stopLoss,
+            IEnumerable<(decimal Price, decimal Volume)> takeProfits,
+            decimal size,
+            Guid id)
         {
-            OnPositionOpened?.Invoke(this, new VirtualPosition(takeProfit, Price, stopLoss, Name, _stream, side, leverage, size, _currentDate, id));
+            var position = new VirtualPosition(takeProfits, Price, stopLoss, Name, _stream, side, leverage, size,
+                _currentDate, id);
+            
+            OnPositionOpened?.Invoke(this, position);
         }
     }
 }

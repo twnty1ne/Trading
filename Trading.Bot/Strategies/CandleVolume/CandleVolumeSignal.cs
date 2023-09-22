@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
@@ -10,32 +11,38 @@ namespace Trading.Bot.Strategies.CandleVolume
     {
         private readonly ISignal _signal;
 
-        public CandleVolumeSignal(IIndexedOhlcv ic, PositionSides position, IInstrumentName instrumentName, Timeframes timeframe, Strategies strategy)
+        public CandleVolumeSignal(IIndexedOhlcv ic,
+            PositionSides position,
+            IInstrumentName instrumentName,
+            Timeframes timeframe,
+            Strategies strategy)
         {
-            _signal = new Signal(ic, position, instrumentName, new CandleVolumeRiskManagment(), 0.0001m, timeframe, strategy);
+            _signal = new Signal(ic, position, instrumentName, 
+                new CandleVolumeRiskManagement(), 0.0001m, timeframe, strategy);
         }
 
         public IInstrumentName InstrumentName { get => _signal.InstrumentName; }
 
-        public decimal TakeProfit { get => _signal.TakeProfit; }
+        public IEnumerable<(decimal Price, decimal Volume)> TakeProfits 
+            => _signal.TakeProfits;
 
-        public int Index { get => _signal.Index; }
+        public int Index => _signal.Index;
 
-        public decimal Price { get => _signal.Price; }
+        public decimal Price => _signal.Price;
 
-        public decimal StopLoss { get => _signal.StopLoss; }
+        public decimal StopLoss => _signal.StopLoss;
 
-        public DateTimeOffset Date { get => _signal.Date.UtcDateTime; }
+        public DateTimeOffset Date => _signal.Date.UtcDateTime;
 
-        public PositionSides Side { get => _signal.Side; }
+        public PositionSides Side => _signal.Side;
 
-        public decimal RiskPercent { get => _signal.RiskPercent; }
+        public decimal RiskPercent => _signal.RiskPercent;
 
-        public Timeframes Timeframe { get => _signal.Timeframe; }
+        public Timeframes Timeframe => _signal.Timeframe;
 
-        public Strategies Strategy { get => _signal.Strategy; }
-        public IIndexedOhlcv Candle { get => _signal.Candle; }
+        public Strategies Strategy => _signal.Strategy;
+        public IIndexedOhlcv Candle => _signal.Candle;
 
-        public Guid Id { get => _signal.Id; }
+        public Guid Id => _signal.Id;
     }
 }

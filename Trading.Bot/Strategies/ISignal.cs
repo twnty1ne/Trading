@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
@@ -10,7 +11,7 @@ namespace Trading.Bot.Strategies
     {
         Guid Id { get; }
         IInstrumentName InstrumentName { get; }
-        decimal TakeProfit { get; }
+        IEnumerable<(decimal Price, decimal Volume)> TakeProfits { get; }
         int Index { get; }
         decimal Price { get; }
         decimal StopLoss { get; }

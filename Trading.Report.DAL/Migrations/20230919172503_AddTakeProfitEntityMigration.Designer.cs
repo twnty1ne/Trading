@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Trading.Report.DAL;
@@ -11,9 +12,11 @@ using Trading.Report.DAL;
 namespace Trading.Report.DAL.Migrations
 {
     [DbContext(typeof(SessionContext))]
-    partial class SessionContextModelSnapshot : ModelSnapshot
+    [Migration("20230919172503_AddTakeProfitEntityMigration")]
+    partial class AddTakeProfitEntityMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,9 +155,6 @@ namespace Trading.Report.DAL.Migrations
                     b.Property<decimal>("RealizedPnl")
                         .HasPrecision(18, 6)
                         .HasColumnType("numeric(18,6)");
-
-                    b.Property<int>("Result")
-                        .HasColumnType("integer");
 
                     b.Property<int>("Side")
                         .HasColumnType("integer");

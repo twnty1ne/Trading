@@ -9,7 +9,7 @@ namespace Trading.Report.DAL
     {
         public SessionContext()
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
 
         public DbSet<Session> Sessions { get; set; }
@@ -20,10 +20,10 @@ namespace Trading.Report.DAL
         public DbSet<Trade> Trades { get; set; }
         public DbSet<TradeCandle> TradeCandles { get; set; }
         public DbSet<PositionPriceTick> PositionPriceTicks { get; set; }
+        public DbSet<TakeProfit> TakeProfits { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
             optionsBuilder.UseNpgsql(
                 @"Server=postgres_db;Port=5432;User id=postgres;password=123;database=Sessions")
                 .UseLazyLoadingProxies();

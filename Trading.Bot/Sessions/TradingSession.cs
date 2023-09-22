@@ -90,7 +90,7 @@ namespace Trading.Bot.Sessions
 
                 _buffer.Add(signal);
 
-                instrument.SetPositionEntry(signal.Side, 30, signal.StopLoss, signal.TakeProfit, volume, signal.Id);
+                instrument.SetPositionEntry(signal.Side, 30, signal.StopLoss, signal.TakeProfits, volume, signal.Id);
             }
             catch 
             {

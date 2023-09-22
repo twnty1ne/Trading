@@ -7,7 +7,6 @@ namespace Trading.Report.Core
 {
     public class Position : Entity
     {
-        public decimal TakeProfit { get; set; }
         public DateTime EntryDate { get; set;  }
         public DateTime CloseDate { get; set; }
         public decimal EntryPrice { get; set; }
@@ -15,6 +14,7 @@ namespace Trading.Report.Core
         public virtual Instrument Instrument { get; set; }
         public int InstrumentId { get; set; }
         public PositionStates State { get; set; }
+        public PositionResult Result { get; set; }
         public decimal CurrentPrice { get; set; }
         public int Leverage { get; set; }
         public decimal IMR { get; set; }
@@ -27,5 +27,6 @@ namespace Trading.Report.Core
         public long EntryDateTicks { get; set; }
         public string EntryDateStringValue { get; set; }
         public virtual ICollection<PositionPriceTick> Ticks { get; set; }
+        public virtual ICollection<TakeProfit> TakeProfits { get; set; }
     }
 }

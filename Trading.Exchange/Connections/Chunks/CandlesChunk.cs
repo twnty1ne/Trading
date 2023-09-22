@@ -19,14 +19,14 @@ namespace Trading.Exchange.Connections.Chunks
         private readonly Timeframes _timeframe;                                                                                           
         private readonly long _timeframeTicks;                                                                                            
         private readonly IMarketTicker _ticker;
-        private readonly List<ICandle> _intersectionCandles = new List<ICandle>();
+        private readonly List<ICandle> _intersectionCandles = new();
         private Dictionary<long, ICandle> _candleBuffer;                                                                                  
         private IReadOnlyCollection<ICandle> _closedCandles = new List<ICandle>();                                                                              
         private readonly IConnection _connection;
         private readonly ChunkSizes _chunkSize;
         private readonly object _lock = new object();
         private readonly StateMachine<CandlesChunkStates, CandlesChunkTriggers> _stateMachine = 
-            new StateMachine<CandlesChunkStates, CandlesChunkTriggers>(CandlesChunkStates.WaitingForLoad, FiringMode.Immediate);
+            new(CandlesChunkStates.WaitingForLoad, FiringMode.Immediate);
 
         public event EventHandler<IEnumerable<ICandle>> OnChunkDone;                                                                              
         public event EventHandler<IReadOnlyCollection<ICandle>> OnCandleClosed;                                                           
@@ -104,7 +104,7 @@ namespace Trading.Exchange.Connections.Chunks
             var allCandles = _intersectionCandles.Concat(candles);
             _intersectionCandles.Clear();
 
-            _candleBuffer = allCandles.ToDictionary(x => x.CloseTime.Ticks + TimeSpan.FromMilliseconds(1).Ticks);
+            _candleBuffer = allCandles.ToDictionary(x => x.CloseTime.Ticks + TimeSpan.FromSeconds(1).Ticks);
             
             Debug.WriteLine($"Chunk for {_name.GetFullName()} {_timeframe.ToString()} has been loaded");
 

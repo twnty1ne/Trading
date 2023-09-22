@@ -34,7 +34,9 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
         public decimal TakeProfit => throw new NotImplementedException();
         public DateTime CloseDate => throw new NotImplementedException();
         public decimal EntryPrice => throw new NotImplementedException();
+        public PositionResult Result => throw new NotImplementedException();
         public decimal StopLoss => throw new NotImplementedException();
+        public IEnumerable<(decimal Price, decimal Volume)> TakeProfits => throw new NotImplementedException();
         public DateTime EntryDate => throw new NotImplementedException();
         public Guid Id => throw new NotImplementedException();
     }

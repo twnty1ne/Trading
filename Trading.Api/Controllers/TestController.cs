@@ -23,13 +23,9 @@ using Trading.MlClient;
 using Trading.MlClient.Resources.Models.InsideChannelLong;
 using Trading.MlClient.Resources.Models.InsideChannelShort;
 using Trading.MlClient.Resources.Models.OutsideChannel;
-using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Nodes.DecisionNodes;
-
 
 namespace Trading.Api.Controllers
 {
-    
-
     [ApiController]
     [Route("test")]
     public class TestController : ControllerBase
@@ -224,35 +220,40 @@ namespace Trading.Api.Controllers
 
                     var session = new Session
                     {
-                        Trades = y.Trades.Select(x => new Trade
+                        Trades = y.Trades.Select(trade => new Trade
                         {
-                            StrategyId = strategies.First(y => y.Type == x.Strategy).Id,
-                            TimeframeId = timeframes.First(y => y.Type == x.Timeframe).Id,
+                            StrategyId = strategies.First(strategy => strategy.Type == trade.Strategy).Id,
+                            TimeframeId = timeframes.First(timeframe => timeframe.Type == trade.Timeframe).Id,
                             Position = new Position 
                             {
-                                IMR = x.Position.IMR,
-                                TakeProfit = x.Position.TakeProfit,
-                                Side = x.Position.Side,
-                                Leverage = x.Position.Leverage,
-                                State = x.Position.State,
-                                ROE = x.Position.ROE,
-                                RealizedPnl = x.Position.RealizedPnl,
-                                Size = x.Position.Size,
-                                EntryPrice = x.Position.EntryPrice,
-                                InitialMargin = x.Position.InitialMargin,
-                                StopLoss = x.Position.StopLoss,
-                                EntryDate = x.Position.EntryDate,
-                                CloseDate = x.Position.CloseDate,
-                                InstrumentId = instruments.First(y => y.Name == x.Position.InstrumentName.GetFullName()).Id,
-                                EntryDateTicks = x.Position.EntryDate.Ticks,
-                                EntryDateStringValue = x.Position.EntryDate.ToString("G"),
-                                Ticks = x.Position.Ticks.Select(z => new PositionPriceTick
+                                IMR = trade.Position.IMR,
+                                TakeProfits = trade.Position.TakeProfits.Select(takeProfit => new TakeProfit
+                                {
+                                    Price = takeProfit.Price,
+                                    Volume = takeProfit.Volume
+                                }).ToList(),
+                                Side = trade.Position.Side,
+                                Leverage = trade.Position.Leverage,
+                                State = trade.Position.State,
+                                Result = trade.Position.Result,
+                                ROE = trade.Position.ROE,
+                                RealizedPnl = trade.Position.RealizedPnl,
+                                Size = trade.Position.Size,
+                                EntryPrice = trade.Position.EntryPrice,
+                                InitialMargin = trade.Position.InitialMargin,
+                                StopLoss = trade.Position.StopLoss,
+                                EntryDate = trade.Position.EntryDate,
+                                CloseDate = trade.Position.CloseDate,
+                                InstrumentId = instruments.First(y => y.Name == trade.Position.InstrumentName.GetFullName()).Id,
+                                EntryDateTicks = trade.Position.EntryDate.Ticks,
+                                EntryDateStringValue = trade.Position.EntryDate.ToString("G"),
+                                Ticks = trade.Position.Ticks.Select(z => new PositionPriceTick
                                 {
                                     DateTime = z.DateTime,
                                     Price = z.Price
                                 }).ToList()
                             },
-                            Candles = x.Signal.Candle.BackingList.TakeLast(300).Select(z => new TradeCandle
+                            Candles = trade.Signal.Candle.BackingList.TakeLast(300).Select(z => new TradeCandle
                             {
                                 Close = z.Close,
                                 Open = z.Open,
@@ -260,7 +261,7 @@ namespace Trading.Api.Controllers
                                 Low = z.Low,
                                 Volume = z.Volume,
                                 OpenTime = z.DateTime.UtcDateTime,
-                                CloseTime = z.DateTime.UtcDateTime.Add(x.Timeframe.GetTimeframeTimeSpan())
+                                CloseTime = z.DateTime.UtcDateTime.Add(trade.Timeframe.GetTimeframeTimeSpan())
                             }).ToList()
                         }).ToList()
                     };

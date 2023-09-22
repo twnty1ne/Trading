@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Trading.Exchange.Connections;
 using Trading.Exchange.Connections.Ticker;
 using Trading.Exchange.Markets.Core.Instruments;
@@ -53,13 +54,18 @@ namespace Trading.Exchange.Markets.HistorySimulation
             OnPositionOpened?.Invoke(sender, position);
         }
 
-        public void SetPositionEntry(PositionSides side, int leverage, decimal stopLoss, decimal takeProfit, decimal size, Guid id)
+        public void SetPositionEntry(PositionSides side,
+            int leverage,
+            decimal stopLoss,
+            IEnumerable<(decimal Price, decimal Volume)> takeProfits,
+            decimal size,
+            Guid id)
         {
             var v = size * Price / leverage;
 
             _balance.Allocate(v);
 
-            _instrument.SetPositionEntry(side, leverage, stopLoss, takeProfit, size, id);
+            _instrument.SetPositionEntry(side, leverage, stopLoss, takeProfits, size, id);
         }
     }
 }

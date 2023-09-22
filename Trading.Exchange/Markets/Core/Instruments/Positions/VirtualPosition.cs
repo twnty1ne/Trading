@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Trading.Exchange.Connections;
-using Trading.Exchange.Markets.HistorySimulation;
 
 namespace Trading.Exchange.Markets.Core.Instruments.Positions
 {
@@ -12,15 +10,22 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
     {
         private readonly IInstrumentStream _stream;
         private readonly StateMachine<PositionStates, PositionTriggers> _stateMachine;
-        private readonly List<IPriceTick> _ticks = new List<IPriceTick>();
-        private (decimal volume, decimal price) _realizedVolume;
+        private readonly List<IPriceTick> _ticks = new();
+        private readonly List<(decimal Volume, decimal Price)> _realizedVolumes = new();
         private decimal _unRealizedVolume;
-        
-        public VirtualPosition(decimal takeProfit, decimal entryPrice, decimal stopLoss, IInstrumentName instrumentName, IInstrumentStream stream, PositionSides side, 
+        private readonly List<(decimal Price, decimal Volume)> _unTriggeredTakeProfits;
+
+        public VirtualPosition(IEnumerable<(decimal Price, decimal Volume)> takeProfits,
+            decimal entryPrice,
+            decimal stopLoss,
+            IInstrumentName instrumentName,
+            IInstrumentStream stream,
+            PositionSides side, 
             int leverage, decimal size, DateTime entryDate, Guid id)
         {
             Id = id;
-            TakeProfit = takeProfit;
+            TakeProfits = takeProfits;
+            _unTriggeredTakeProfits = TakeProfits.ToList();
             EntryPrice = entryPrice;
             EntryDate = entryDate;
             CurrentPrice = entryPrice;
@@ -31,60 +36,68 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
             Leverage = leverage;
             Size = size;
             _unRealizedVolume = size;
-            _realizedVolume = (0m, 0m);
             _stream.OnPriceUpdated += HandlePriceUpdated;
             _stateMachine = new StateMachine<PositionStates, PositionTriggers>(PositionStates.InProgress);
 
+
             _stateMachine
                 .Configure(PositionStates.InProgress)
-                .Permit(PositionTriggers.CloseByStopLoss, PositionStates.ClosedByStopLoss)
-                .Permit(PositionTriggers.CloseByTakeProfit, PositionStates.ClosedByTakeProfit);
+                .Permit(PositionTriggers.Close, PositionStates.Closed);
 
             _stateMachine
-                .Configure(PositionStates.ClosedByStopLoss)
-                .OnEntry(() => RealizeVolume(StopLoss))
-                .Ignore(PositionTriggers.CloseByStopLoss)
-                .Ignore(PositionTriggers.CloseByTakeProfit);
+                .Configure(PositionStates.Closed)
+                .OnEntryFrom(PositionTriggers.Close, HandleClose)
+                .Ignore(PositionTriggers.Close);
 
-            _stateMachine
-                .Configure(PositionStates.ClosedByTakeProfit)
-                .OnEntry(() => RealizeVolume(TakeProfit))
-                .Ignore(PositionTriggers.CloseByStopLoss)
-                .Ignore(PositionTriggers.CloseByTakeProfit);
         }
 
-        public decimal TakeProfit { get; }
+        public IEnumerable<(decimal Price, decimal Volume)> TakeProfits { get; }
         public decimal EntryPrice { get; }
+
+        public PositionResult Result => SpecifyResult();
         public decimal StopLoss { get; }
         public IInstrumentName InstrumentName { get; }
         public decimal CurrentPrice { get; private set; }
         public int Leverage { get; }
-        public decimal IMR { get => 1m / Leverage; } 
-        public PositionStates State { get => _stateMachine.State; }
+        public decimal IMR => 1m / Leverage;
+        public PositionStates State => _stateMachine.State;
         public PositionSides Side { get; }
         public decimal Size { get; }
-        public decimal InitialMargin { get => Size * EntryPrice * IMR; }
-        public decimal UnrealizedPnL { get => (CurrentPrice - EntryPrice) * _unRealizedVolume * (int)Side; }
-        public decimal RealizedPnl { get => ((_realizedVolume.price * _realizedVolume.volume) - (_realizedVolume.volume * EntryPrice)) * (int)Side; }
-        public decimal ROE { get => RealizedPnl / InitialMargin; }
-        public IEnumerable<IPriceTick> Ticks { get => _ticks; }
+        public decimal InitialMargin => Size * EntryPrice * IMR;
+        public decimal UnrealizedPnL => (CurrentPrice - EntryPrice) * _unRealizedVolume * (int)Side;
+
+        public decimal RealizedPnl => CalculateRealizedPnL();
+        public decimal ROE => RealizedPnl / InitialMargin;
+        public IEnumerable<IPriceTick> Ticks => _ticks;
         public DateTime CloseDate { get; private set; }
         public DateTime EntryDate { get; }
         public Guid Id { get; }
 
         public event EventHandler OnClosed;
 
-
         private void HandlePriceUpdated(object sender, IPriceTick priceTick) 
         {
             CurrentPrice = priceTick.Price;
             _ticks.Add(priceTick);
-            
-            if(HitStopLoss()) _stateMachine.FireAsync(PositionTriggers.CloseByStopLoss).Wait();
-            if(HitTakeProfit()) _stateMachine.FireAsync(PositionTriggers.CloseByTakeProfit).Wait();
+
+            if (HitStopLoss())
+            {
+                RealizeVolume(StopLoss, _unRealizedVolume);
+            }
+
+            if (HitTakeProfit(out var takeProfit))
+            {
+                _unTriggeredTakeProfits.Remove(takeProfit);
+                RealizeVolume(takeProfit.Price, takeProfit.Volume * Size);
+            }
         }
 
         private void Close()
+        {
+           _stateMachine.Fire(PositionTriggers.Close);
+        }
+
+        private void HandleClose()
         {
             CloseDate = _ticks.OrderBy(x => x.DateTime).Last().DateTime;
             
@@ -92,21 +105,53 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
             _stream.OnPriceUpdated -= HandlePriceUpdated;
         }
 
-        private bool HitStopLoss() 
+        private bool HitStopLoss()
         {
-            return (CurrentPrice >= StopLoss && Side == PositionSides.Short) || (CurrentPrice <= StopLoss && Side == PositionSides.Long);
+            return Side == PositionSides.Short 
+                ? CurrentPrice >= StopLoss 
+                : CurrentPrice <= StopLoss;
         }
 
-        private bool HitTakeProfit()
+        private bool HitTakeProfit(out (decimal Price, decimal Volume) hitTakeProfit)
         {
-            return (CurrentPrice <= TakeProfit && Side == PositionSides.Short) || (CurrentPrice >= TakeProfit && Side == PositionSides.Long);
+            var takeProfit = Side == PositionSides.Short 
+                ? _unTriggeredTakeProfits.FirstOrDefault(x => CurrentPrice <= x.Price)  
+                : _unTriggeredTakeProfits.FirstOrDefault(x => CurrentPrice >= x.Price);
+
+            hitTakeProfit = takeProfit;
+
+            return takeProfit != default((decimal, decimal));
+        }
+        
+        private void RealizeVolume(decimal price, decimal volume)
+        {
+            _realizedVolumes.Add((volume, price));
+            _unRealizedVolume -= volume;
+            
+            if(_unRealizedVolume <= decimal.Zero)
+                Close();
         }
 
-        private void RealizeVolume(decimal price) 
+
+        private decimal CalculateRealizedPnL()
         {
-            _realizedVolume = (_unRealizedVolume, price);
-            _unRealizedVolume = 0m;
-            Close();
+            var realizedQuoteVolume = _realizedVolumes.Sum(x => x.Volume * x.Price);
+            var entryQuoteVolume = _realizedVolumes.Sum(x => x.Volume) * EntryPrice;
+            return (realizedQuoteVolume - entryQuoteVolume) * (int)Side;
+        }
+
+        private PositionResult SpecifyResult()
+        {
+            if (State != PositionStates.Closed) 
+                return PositionResult.Unspecified;
+            
+            if (_unTriggeredTakeProfits.Count == 0)
+                return PositionResult.HitAllTakeProfits;
+            
+            if (_unTriggeredTakeProfits.Count < TakeProfits.Count()) 
+                return PositionResult.HitTakeProfitsThenStopLoss;
+            
+            return PositionResult.HitStopLoss;
         }
     }
 }

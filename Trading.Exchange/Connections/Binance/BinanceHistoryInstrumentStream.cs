@@ -26,7 +26,7 @@ namespace Trading.Exchange.Connections.Binance
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _ticker = ticker ?? throw new ArgumentNullException(nameof(ticker));
             _prices = new List<decimal>();
-            _stream = GetTimeframeStream(Timeframes.FiveMinutes);
+            _stream = GetTimeframeStream(Timeframes.OneMinute);
             _stream.OnCandleOpened += HandleCandleOpened;
             _ticker.OnTick += HandleTick;
         }

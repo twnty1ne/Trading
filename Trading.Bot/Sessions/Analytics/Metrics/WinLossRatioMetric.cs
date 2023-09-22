@@ -31,8 +31,8 @@ namespace Trading.Bot.Sessions.Analytics.Metrics
         {
             return x =>
             {
-                var amountOfWinEntries = Convert.ToDecimal(x.Data.Where(x => x.State == PositionStates.ClosedByTakeProfit).Count());
-                var amountOfLossEntries = Convert.ToDecimal(x.Data.Where(x => x.State == PositionStates.ClosedByStopLoss).Count());
+                var amountOfWinEntries = Convert.ToDecimal(x.Data.Count(x => x.Result != PositionResult.Unspecified && x.Result == PositionResult.HitStopLoss));
+                var amountOfLossEntries = Convert.ToDecimal(x.Data.Count(position => position.Result == PositionResult.HitStopLoss));
                 if (amountOfWinEntries == 0) return decimal.Zero;
                 if (amountOfLossEntries == 0) return 1m;
                 return amountOfWinEntries / (amountOfLossEntries + amountOfWinEntries);
