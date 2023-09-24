@@ -76,6 +76,7 @@ namespace Trading.Api
             services.AddTransient<IRepository<Timeframe>, TimeframeRepository>();
 
             services.AddTransient<ICandleService, CandleService>();
+            services.AddTransient<IExcelService, ExcelService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
