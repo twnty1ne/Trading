@@ -1,6 +1,7 @@
 ﻿using System;
 using Trading.Exchange.Markets.Core;
 using Trading.Exchange.Markets.Core.Instruments;
+using Trading.MlClient;
 
 namespace Trading.Bot.Strategies.CandleVolume
 {
@@ -8,9 +9,9 @@ namespace Trading.Bot.Strategies.CandleVolume
     {
         private readonly IStrategy _strategy;
 
-        public CandleVolumeStrategy(IMarket<IFuturesInstrument> market)
+        public CandleVolumeStrategy(IMarket<IFuturesInstrument> market, IMlClient mlClient)
         {
-            _strategy = new Strategy(new CandleVolumeAbstractFactory(), market);
+            _strategy = new Strategy(new CandleVolumeAbstractFactory(mlClient), market);
             _strategy.OnSignalFired += HandleSignalFired;
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Trading.Bot.Strategies;
 using Trading.Exchange;
+using Trading.MlClient;
 
 namespace Trading.Bot.Sessions.Forwardtest
 {
@@ -9,10 +10,10 @@ namespace Trading.Bot.Sessions.Forwardtest
     {
         private readonly ITradingSession _session;
 
-        public ForwardtestSession(IExchange exchange, Strategies.Strategies strategy)
+        public ForwardtestSession(IExchange exchange, Strategies.Strategies strategy, IMlClient mlClient)
         {
             _ = exchange ?? throw new ArgumentNullException(nameof(exchange));
-            _session = new TradingSession(new ForwardtestSessionAbstractFactory(exchange, strategy));
+            _session = new TradingSession(new ForwardtestSessionAbstractFactory(exchange, strategy, mlClient));
         }
 
         public DateTime Date { get => _session.Date; }

@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Trady.Core.Infrastructure;
 
 namespace Trading.Exchange.Markets.Core.Instruments.Candles
 {
     internal class Candle : ICandle
     {
-        public Candle(decimal open, decimal close, decimal high, decimal low, decimal volume, DateTime openTime, DateTime closeTime)
+        public Candle(decimal open, decimal close, decimal high, decimal low, decimal volume, DateTime openTime,
+            DateTime closeTime)
         {
             Open = open;
             Close = close;
             High = high;
             Low = low;
-            OpenTime = openTime;
-            CloseTime = closeTime;
+            OpenTime = new DateTime(openTime.Ticks, DateTimeKind.Utc);
+            CloseTime = new DateTime(closeTime.Ticks, DateTimeKind.Utc);;
             Volume = volume;
         }
 

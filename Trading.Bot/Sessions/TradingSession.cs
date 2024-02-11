@@ -1,7 +1,5 @@
 ﻿using Stateless;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Trading.Bot.Strategies;
 using Trading.Exchange.Markets.Core;
@@ -35,12 +33,12 @@ namespace Trading.Bot.Sessions
 
             _stateMachine
                 .Configure(SessionStates.Started)
-                .OnEntry(() => HandleStarded())
+                .OnEntry(HandleStarded)
                 .Permit(SessionTriggers.Stop, SessionStates.Stopped);
 
             _stateMachine
                 .Configure(SessionStates.Stopped)
-                .OnEntry(() => HandleStopped());
+                .OnEntry(HandleStopped);
         }
 
         public event EventHandler<ISessionBuffer> OnStopped;
@@ -81,14 +79,18 @@ namespace Trading.Bot.Sessions
                 _signalFiredHandler?.Invoke(signal);
 
                 var instrument = _market.GetInstrument(signal.InstrumentName);
-                if (!_buffer.Signals.Any(x => x.InstrumentName == signal.InstrumentName)) instrument.OnPositionOpened += HandlePositionOpened;
 
+                if (!_buffer.Signals.Any(x => x.InstrumentName == signal.InstrumentName))
+                {
+                    instrument.OnPositionOpened += HandlePositionOpened;
+                }
+                
                 var price = instrument.Price;
                 var volume = (_market.Balance.NetVolume * signal.RiskPercent) / Math.Abs(price - signal.StopLoss);
 
                 _buffer.Add(signal);
 
-                instrument.SetPositionEntry(signal.Side, 30, signal.StopLoss, signal.TakeProfit, volume, signal.Id);
+                instrument.SetPositionEntry(signal.Side, 30, signal.StopLoss, signal.TakeProfits, volume, signal.Id);
             }
             catch 
             {

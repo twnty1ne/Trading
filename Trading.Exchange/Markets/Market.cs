@@ -1,8 +1,10 @@
-﻿using Trading.Exchange.Connections;
+﻿using System;
+using Trading.Exchange.Connections;
 using Trading.Exchange.Markets.Core;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.HistorySimulation;
 using Trading.Exchange.Markets.Realtime;
+using Trading.Shared.Ranges;
 
 namespace Trading.Exchange.Markets
 {
@@ -12,10 +14,10 @@ namespace Trading.Exchange.Markets
 
         public HistorySimulationFuturesUsdtMarket HistorySimulationFuturesUsdt { get; }
 
-        public Market(IConnection connection)
+        public Market(IConnection connection, IRange<DateTime> historyRange, TimeSpan realtimeBuffer)
         {
-            HistorySimulationFuturesUsdt = new HistorySimulationFuturesUsdtMarket(connection);
-            RealtimeFuturesUsdt = new RealtimeFuturesUsdtMarket(connection);
+            HistorySimulationFuturesUsdt = new HistorySimulationFuturesUsdtMarket(connection, historyRange);
+            RealtimeFuturesUsdt = new RealtimeFuturesUsdtMarket(connection, realtimeBuffer);
         }
     }
 }

@@ -9,6 +9,12 @@
     <Compile Remove="bin\**" />
     <EmbeddedResource Remove="bin\**" />
     <None Remove="bin\**" />
+    <None Update="Sessions\Filters\CandleVolume\Ml\CandleVolumeDecisionTree.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Strategies\CandleVolume\Filters\Ml\CandleVolumeDecisionTree.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Trading.Analysis\Trading.Analysis.csproj" />
     <ProjectReference Include="..\Trading.Exchange\Trading.Exchange.csproj" />
+    <ProjectReference Include="..\Trading.MlClient\Trading.MlClient.csproj" />
   </ItemGroup>
 
 </Project>

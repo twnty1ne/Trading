@@ -10,6 +10,7 @@ namespace Trading.Report.DAL
     {
         Task AddAsync(TEntity entity);
         Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<TEntity> GetByIdAsync(int id);
         void Add(TEntity entity);
         IEnumerable<TEntity> GetAll();
         Task SaveChangesAsync();

@@ -18,7 +18,7 @@ namespace Trading.Analysis.Indicators
 
         protected override IEnumerable<FibonacciRange> ComputeByIndexImpl(IReadOnlyList<IOhlcv> mappedInputs, int index)
         {
-            return new PDArrayLiquidityMatrix(mappedInputs, index).Grid;
+            return new PdArrayLiquidityMatrix(mappedInputs, index).Grid;
         }
     }
 }

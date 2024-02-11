@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Trading.Bot.Strategies.Filters;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
@@ -15,5 +16,6 @@ namespace Trading.Bot.Strategies
         IReadOnlyCollection<IInstrumentName> SupportedInstruments { get; }
         IReadOnlyCollection<Timeframes> SupportedTimeframes { get; }
         Strategies Strategy { get; }
+        ISignalsFilter Filter { get; }
     }
 }

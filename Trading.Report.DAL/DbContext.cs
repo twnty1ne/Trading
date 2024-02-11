@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using Trading.DAL.Extentions;
 using Trading.Report.Core;
 
 namespace Trading.Report.DAL
@@ -8,7 +9,6 @@ namespace Trading.Report.DAL
     {
         public SessionContext()
         {
-            Database.EnsureCreated();
             Database.Migrate();
         }
 
@@ -18,15 +18,21 @@ namespace Trading.Report.DAL
         public DbSet<Timeframe> Timeframes { get; set; }
         public DbSet<Strategy> Strategies { get; set; }
         public DbSet<Trade> Trades { get; set; }
+        public DbSet<TradeCandle> TradeCandles { get; set; }
+        public DbSet<PositionPriceTick> PositionPriceTicks { get; set; }
+        public DbSet<TakeProfit> TakeProfits { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(
-                @"Server=postgres_db;Port=5432;User id=postgres;password=123;database=Sessions");
+                @"Server=postgres_db;Port=5432;User id=postgres;password=123;database=Sessions")
+                .UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.SetDecimalPrecision(18, 6);
+            
             builder
                 .Entity<Instrument>()
                 .HasData(new List<Instrument>()
@@ -45,10 +51,54 @@ namespace Trading.Report.DAL
                     {
                         Id = 3,
                         Name = "XRPUSDT"
-                    }
+                    },
+                    new Instrument
+                    {
+                        Id = 4,
+                        Name = "ADAUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 5,
+                        Name = "SOLUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 6,
+                        Name = "LTCUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 7,
+                        Name = "UNIUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 8,
+                        Name = "LINKUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 9,
+                        Name = "ATOMUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 10,
+                        Name = "NEARUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 11,
+                        Name = "ETCUSDT"
+                    },
+                    new Instrument
+                    {
+                        Id = 12,
+                        Name = "BTCUSDT"
+                    },
                 });
-
-
+            
             builder
                 .Entity<Timeframe>()
                 .HasData(new List<Timeframe>()
@@ -111,6 +161,5 @@ namespace Trading.Report.DAL
                .Entity<Position>()
                .Property(b => b.EntryDateStringValue).UsePropertyAccessMode(PropertyAccessMode.Field);
         }
-
     }
 }

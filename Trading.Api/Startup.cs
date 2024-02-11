@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,12 +8,13 @@ using Trading.Api.Services;
 using Trading.Bot;
 using Trading.Bot.Sessions;
 using Trading.Bot.Strategies;
-using Trading.Connections.Binance;
 using Trading.Exchange;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
+using Trading.MlClient;
 using Trading.Report.Core;
 using Trading.Report.DAL;
+using Trading.Shared.Ranges;
 
 namespace Trading.Api
 {
@@ -33,7 +35,20 @@ namespace Trading.Api
 
             services
                 .AddSingleton<IExchange, Exchange.Exchange>()
-                .Configure<Exchange.Options>(x => x.ConnectionType = ConnectionEnum.Bybit);
+                .Configure<Exchange.Options>(x =>
+                {
+                    x.ConnectionType = ConnectionEnum.Binance;
+                    x.HistorySimulationOptions = new HistorySimulationOptions
+                    {
+                        SimulationRange = new Range<DateTime>(new DateTime(2019, 09, 01), 
+                            new DateTime(2023, 06, 01), BoundariesComparation.LeftIncluding)  
+                    };
+                    
+                    x.RealtimeOptions = new RealtimeOptions
+                    {
+                        CandleBuffer = TimeSpan.FromDays(3)
+                    };
+                });
 
             services
                 .AddSingleton<IBot, Bot.Bot>()
@@ -43,15 +58,25 @@ namespace Trading.Api
                     x.Strategy = Strategies.CandleVolume;
                 });
 
+            services
+                .AddTransient<IMlClient, MlClient.MlClient>()
+                .Configure<MlClient.Options.ClientOptions>(x =>
+                {
+                    x.Host = "trading_ml";
+                    x.Port = 5005;
+                });
+
             services.AddTransient<ICredentialsProvider, BinanceCredentialsProvider>();
 
             services.AddDbContext<SessionContext>(ServiceLifetime.Scoped);
             services.AddTransient<IRepository<Session>, SessionRepository>();
+            services.AddTransient<IRepository<Trade>, TradeRepository>();
             services.AddTransient<IRepository<Instrument>, InstrumentRepository>();
             services.AddTransient<IRepository<Strategy>, StrategyRepository>();
             services.AddTransient<IRepository<Timeframe>, TimeframeRepository>();
 
             services.AddTransient<ICandleService, CandleService>();
+            services.AddTransient<IExcelService, ExcelService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -68,8 +93,7 @@ namespace Trading.Api
                 });
 
             }
-
-
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

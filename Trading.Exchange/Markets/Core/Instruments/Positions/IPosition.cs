@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,9 +9,11 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
     {
         event EventHandler OnClosed;
         Guid Id { get; }
-        decimal TakeProfit { get; }
+        IEnumerable<(decimal Price, decimal Volume)> TakeProfits { get; }
         DateTime EntryDate { get; }
+        DateTime CloseDate { get; }
         decimal EntryPrice { get; }
+        PositionResult Result { get; }
         decimal StopLoss { get; }
         IInstrumentName InstrumentName { get; }
         PositionStates State { get; }
@@ -23,5 +26,6 @@ namespace Trading.Exchange.Markets.Core.Instruments.Positions
         decimal UnrealizedPnL { get; }
         decimal RealizedPnl { get; }
         decimal ROE { get; }
+        IEnumerable<IPriceTick> Ticks { get; }
     }
 }

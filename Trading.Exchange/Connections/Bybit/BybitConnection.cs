@@ -1,13 +1,11 @@
-﻿using Bybit.Net.Clients;
-using Bybit.Net.Interfaces.Clients;
-using Bybit.Net.Objects.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bybit.Net.Clients;
+using Bybit.Net.Interfaces.Clients;
+using Bybit.Net.Objects.Models;
 using Trading.Exchange.Authentification;
-using Trading.Exchange.Connections;
-using Trading.Exchange.Connections.Bybit;
 using Trading.Exchange.Connections.Bybit.Extentions;
 using Trading.Exchange.Connections.Storage;
 using Trading.Exchange.Connections.Ticker;
@@ -15,10 +13,9 @@ using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
-using Trading.Exchange.Storage;
 using Trading.Shared.Ranges;
 
-namespace Trading.Connections.Bybit
+namespace Trading.Exchange.Connections.Bybit
 {
     public sealed class BybitConnection : BaseConnection
     {
@@ -120,7 +117,7 @@ namespace Trading.Connections.Bybit
                 range = new Range<DateTime>(info.FirstCandleDate, range.To);
             }
 
-            _storage.TryGetCandles(name, Type, timeframe, out var storageCandles);
+            _storage.TryGetCandles(name, Type, timeframe, out var storageCandles, range);
 
             storageCandles = storageCandles.Where(x => range.Contains(x.OpenTime)).ToList();
 

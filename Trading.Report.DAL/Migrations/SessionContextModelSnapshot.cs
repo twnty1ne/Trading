@@ -18,6 +18,9 @@ namespace Trading.Report.DAL.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -52,6 +55,51 @@ namespace Trading.Report.DAL.Migrations
                         {
                             Id = 3,
                             Name = "XRPUSDT"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "ADAUSDT"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "SOLUSDT"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "LTCUSDT"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "UNIUSDT"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "LINKUSDT"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "ATOMUSDT"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "NEARUSDT"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "ETCUSDT"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "BTCUSDT"
                         });
                 });
 
@@ -63,8 +111,12 @@ namespace Trading.Report.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CloseDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<decimal>("CurrentPrice")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<DateTime>("EntryDate")
                         .HasColumnType("timestamp with time zone");
@@ -76,13 +128,16 @@ namespace Trading.Report.DAL.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("EntryPrice")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("IMR")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("InitialMargin")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<int>("InstrumentId")
                         .HasColumnType("integer");
@@ -91,32 +146,64 @@ namespace Trading.Report.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<decimal>("ROE")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("RealizedPnl")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
+
+                    b.Property<int>("Result")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Side")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("Size")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<int>("State")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("StopLoss")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("TakeProfit")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.Property<decimal>("UnrealizedPnL")
-                        .HasColumnType("numeric");
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("InstrumentId");
+
                     b.ToTable("Positions");
+                });
+
+            modelBuilder.Entity("Trading.Report.Core.PositionPriceTick", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("PositionId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("PositionPriceTicks");
                 });
 
             modelBuilder.Entity("Trading.Report.Core.Session", b =>
@@ -157,6 +244,32 @@ namespace Trading.Report.DAL.Migrations
                             Name = "Candle Volume",
                             Type = 1
                         });
+                });
+
+            modelBuilder.Entity("Trading.Report.Core.TakeProfit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("PositionId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
+
+                    b.Property<decimal>("Volume")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("TakeProfits");
                 });
 
             modelBuilder.Entity("Trading.Report.Core.Timeframe", b =>
@@ -249,6 +362,75 @@ namespace Trading.Report.DAL.Migrations
                     b.ToTable("Trades");
                 });
 
+            modelBuilder.Entity("Trading.Report.Core.TradeCandle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Close")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
+
+                    b.Property<DateTime>("CloseTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("High")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
+
+                    b.Property<decimal>("Low")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
+
+                    b.Property<decimal>("Open")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
+
+                    b.Property<DateTime>("OpenTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("TradeId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Volume")
+                        .HasPrecision(18, 6)
+                        .HasColumnType("numeric(18,6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TradeId");
+
+                    b.ToTable("TradeCandles");
+                });
+
+            modelBuilder.Entity("Trading.Report.Core.Position", b =>
+                {
+                    b.HasOne("Trading.Report.Core.Instrument", "Instrument")
+                        .WithMany()
+                        .HasForeignKey("InstrumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Instrument");
+                });
+
+            modelBuilder.Entity("Trading.Report.Core.PositionPriceTick", b =>
+                {
+                    b.HasOne("Trading.Report.Core.Position", null)
+                        .WithMany("Ticks")
+                        .HasForeignKey("PositionId");
+                });
+
+            modelBuilder.Entity("Trading.Report.Core.TakeProfit", b =>
+                {
+                    b.HasOne("Trading.Report.Core.Position", null)
+                        .WithMany("TakeProfits")
+                        .HasForeignKey("PositionId");
+                });
+
             modelBuilder.Entity("Trading.Report.Core.Trade", b =>
                 {
                     b.HasOne("Trading.Report.Core.Position", "Position")
@@ -280,9 +462,32 @@ namespace Trading.Report.DAL.Migrations
                     b.Navigation("Timeframe");
                 });
 
+            modelBuilder.Entity("Trading.Report.Core.TradeCandle", b =>
+                {
+                    b.HasOne("Trading.Report.Core.Trade", "Trade")
+                        .WithMany("Candles")
+                        .HasForeignKey("TradeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trade");
+                });
+
+            modelBuilder.Entity("Trading.Report.Core.Position", b =>
+                {
+                    b.Navigation("TakeProfits");
+
+                    b.Navigation("Ticks");
+                });
+
             modelBuilder.Entity("Trading.Report.Core.Session", b =>
                 {
                     b.Navigation("Trades");
+                });
+
+            modelBuilder.Entity("Trading.Report.Core.Trade", b =>
+                {
+                    b.Navigation("Candles");
                 });
 #pragma warning restore 612, 618
         }

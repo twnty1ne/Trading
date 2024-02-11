@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Trading.Connections.Binance;
-using Trading.Connections.Bybit;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections;
+using Trading.Exchange.Connections.Binance;
+using Trading.Exchange.Connections.Bybit;
 using Trading.Shared.Resolvers;
 
 namespace Trading.Exchange.Connections

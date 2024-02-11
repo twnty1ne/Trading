@@ -11,14 +11,12 @@ namespace Trading.Exchange.Markets.Realtime
         private readonly IConnection _connection;
         private readonly IMarket<IFuturesInstrument> _market;
 
-        public RealtimeFuturesUsdtMarket(IConnection connection)
+        public RealtimeFuturesUsdtMarket(IConnection connection, TimeSpan buffer)
         {
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
             _market = new FuturesUsdtMarket(x => new RealtimeFuturesInstrument(x, _connection));
         }
-
-        public IMarketTicker Ticker { get; }
-
+        
         public IBalance Balance => throw new NotImplementedException();
 
         public IFuturesInstrument GetInstrument(IInstrumentName name)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Telegram.Bot;
@@ -11,11 +12,17 @@ using Trading.Exchange;
 using Trading.Report.Core;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
-using Trading.Connections.Binance;
 using System.Threading.Tasks;
-using System.Diagnostics;
+using System.Xml.Linq;
+using Trading.Bot.Strategies.CandleVolume.Filters;
+using Trading.Exchange.Connections.Bybit;
 using Trading.Shared.Ranges;
-using Trading.Connections.Bybit;
+using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Builder;
+using Trading.Exchange.Markets.Core.Instruments.Timeframes.Extentions;
+using Trading.MlClient;
+using Trading.MlClient.Resources.Models.InsideChannelLong;
+using Trading.MlClient.Resources.Models.InsideChannelShort;
+using Trading.MlClient.Resources.Models.OutsideChannel;
 
 namespace Trading.Api.Controllers
 {
@@ -23,15 +30,26 @@ namespace Trading.Api.Controllers
     [Route("test")]
     public class TestController : ControllerBase
     {
+        private enum SignalClassification 
+        {
+            OutsideChannel = 1,
+            InsideChannelShort = 2,
+            InsideChannelLong = 3
+        }
+        
+        
         private readonly IExchange _exchange;
         private readonly IBot _bot;
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly IMlClient _mlClient;
 
-        public TestController(/*IExchange exchange, IBot bot,*/ IServiceScopeFactory scopeFactory)
+        public TestController(IBot bot, IServiceScopeFactory scopeFactory, IMlClient mlClient)
         {
+            // _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
+            _bot = bot ?? throw new ArgumentNullException(nameof(bot));
+            _mlClient = mlClient;
             _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
         }
-
 
         [HttpGet("1")]
         public IActionResult TestMethod1()
@@ -185,7 +203,6 @@ namespace Trading.Api.Controllers
         [HttpGet("8")]
         public IActionResult TestMethod8()
         {
-            
             _bot.Session.OnStopped += (x, y) =>
             {
                 using (var scope = _scopeFactory.CreateScope())
@@ -201,38 +218,62 @@ namespace Trading.Api.Controllers
                     var strategies = strategyRepository.GetAll();
                     var timeframes = timeframeRepository.GetAll();
 
-                    var session = new Session();
-                    session.Trades = y.Trades.Select(x => new Trade
+                    var session = new Session
                     {
-                        StrategyId = strategies.First(y => y.Type == x.Strategy).Id,
-                        TimeframeId = timeframes.First(y => y.Type == x.Timeframe).Id,
-                        Position = new Position 
+                        Trades = y.Trades.Select(trade => new Trade
                         {
-                            IMR = x.Position.IMR,
-                            TakeProfit = x.Position.TakeProfit,
-                            Side = x.Position.Side,
-                            Leverage = x.Position.Leverage,
-                            State = x.Position.State,
-                            ROE = x.Position.ROE,
-                            RealizedPnl = x.Position.RealizedPnl,
-                            Size = x.Position.Size,
-                            EntryPrice = x.Position.EntryPrice,
-                            InitialMargin = x.Position.InitialMargin,
-                            StopLoss = x.Position.StopLoss,
-                            EntryDate = x.Position.EntryDate,
-                            InstrumentId = instruments.First(y => y.Name == x.Position.InstrumentName.GetFullName()).Id,
-                            EntryDateTicks = x.Position.EntryDate.Ticks,
-                            EntryDateStringValue = x.Position.EntryDate.ToString("G"),
-                        },
-                        
-                    }).ToList();
+                            StrategyId = strategies.First(strategy => strategy.Type == trade.Strategy).Id,
+                            TimeframeId = timeframes.First(timeframe => timeframe.Type == trade.Timeframe).Id,
+                            Position = new Position 
+                            {
+                                IMR = trade.Position.IMR,
+                                TakeProfits = trade.Position.TakeProfits.Select(takeProfit => new TakeProfit
+                                {
+                                    Price = takeProfit.Price,
+                                    Volume = takeProfit.Volume
+                                }).ToList(),
+                                Side = trade.Position.Side,
+                                Leverage = trade.Position.Leverage,
+                                State = trade.Position.State,
+                                Result = trade.Position.Result,
+                                ROE = trade.Position.ROE,
+                                RealizedPnl = trade.Position.RealizedPnl,
+                                Size = trade.Position.Size,
+                                EntryPrice = trade.Position.EntryPrice,
+                                InitialMargin = trade.Position.InitialMargin,
+                                StopLoss = trade.Position.StopLoss,
+                                EntryDate = trade.Position.EntryDate,
+                                CloseDate = trade.Position.CloseDate,
+                                InstrumentId = instruments.First(y => y.Name == trade.Position.InstrumentName.GetFullName()).Id,
+                                EntryDateTicks = trade.Position.EntryDate.Ticks,
+                                EntryDateStringValue = trade.Position.EntryDate.ToString("G"),
+                                Ticks = trade.Position.Ticks.Select(z => new PositionPriceTick
+                                {
+                                    DateTime = z.DateTime,
+                                    Price = z.Price
+                                }).ToList()
+                            },
+                            Candles = trade.Signal.Candle.BackingList.TakeLast(300).Select(z => new TradeCandle
+                            {
+                                Close = z.Close,
+                                Open = z.Open,
+                                High = z.High,
+                                Low = z.Low,
+                                Volume = z.Volume,
+                                OpenTime = z.DateTime.UtcDateTime,
+                                CloseTime = z.DateTime.UtcDateTime.Add(trade.Timeframe.GetTimeframeTimeSpan())
+                            }).ToList()
+                        }).ToList()
+                    };
 
-
+                    Console.WriteLine("Adding");
+                    
                     sessionRepository.Add(session);
                     sessionRepository.SaveChanges();
                 } 
                 
             };
+            
             _bot.Session.Start();
             return Ok();
         }
@@ -259,12 +300,59 @@ namespace Trading.Api.Controllers
         {
             var connection = new BybitConnection(new BinanceCredentialsProvider());
 
-            var range = new Range<DateTime>(new DateTime(2023, 04, 14, 07, 00, 00), new DateTime(2023, 04, 25, 20, 59, 59));
+            var range = new Range<DateTime>(new DateTime(2023, 04, 14, 07, 00, 00), 
+                new DateTime(2023, 04, 25, 20, 59, 59));
 
             var candles = await connection
-                .GetFuturesCandlesAsync(new InstrumentName("LTC", "USDT"), Timeframes.OneHour, range);
+                .GetFuturesCandlesAsync(new InstrumentName("LTC", "USDT"), 
+                    Timeframes.OneHour, range);
 
             return Ok(candles);
+        }
+        
+        [HttpGet("11")]
+        public void TestMethod11()
+        {
+            var builder = new DecisionTreeBuilder<CandleVolumeStrategyContext, SignalClassification>();
+            var doc = XElement.Load("CandleVolumeDecisionTree.xml");
+            var tree = builder.FromXml(doc);
+            var i = 0;
+        }
+        
+        
+        [HttpGet("12")]
+        public async Task<IActionResult> TestMethod12()
+        {
+            var insideShortFeatures = new List<(InsideChannelShortFeatures Type, decimal Value)>
+            {
+                (InsideChannelShortFeatures.DayTime, 12m),
+                (InsideChannelShortFeatures.EquilibriumDistance, 0.6m),
+                (InsideChannelShortFeatures.PdSize, 0.02m),
+            };
+            
+            var insideShortPredict = await _mlClient.InsideShortModelResource.PredictAsync(insideShortFeatures);
+            
+            
+            var insideLongFeatures = new List<(InsideChannelLongFeatures Type, decimal Value)>
+            {
+                (InsideChannelLongFeatures.DayTime, 12m),
+                (InsideChannelLongFeatures.EquilibriumDistance, 0.06m),
+                (InsideChannelLongFeatures.PdSize, 0.002m),
+            };
+
+
+            var insideLongPredict = await _mlClient.InsideLongModelResource.PredictAsync(insideLongFeatures);
+            
+            
+            var outsideFeatures = new List<(OutsideChannelFeatures Type, decimal Value)>
+            {
+                (OutsideChannelFeatures.PdSize, 12m),
+                (OutsideChannelFeatures.TakeProfitChannelExtension, 0.02m),
+            };
+            
+            var outsidePredict = await _mlClient.OutsideModelResource.PredictAsync(outsideFeatures);
+
+            return Ok(new { insideShortPredict, insideLongPredict, outsidePredict });
         }
     }
 }

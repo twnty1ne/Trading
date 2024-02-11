@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Trading.Bot.Strategies;
 using Trading.Exchange.Markets.Core.Instruments.Positions;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
@@ -15,6 +13,7 @@ namespace Trading.Bot.Sessions
             _ = signal ?? throw new ArgumentNullException(nameof(signal));
             Timeframe = signal.Timeframe;
             Strategy = signal.Strategy;
+            Signal = signal;
         }
 
         public Timeframes Timeframe { get; }
@@ -22,5 +21,7 @@ namespace Trading.Bot.Sessions
         public IPosition Position { get; }
 
         public Strategies.Strategies Strategy { get; }
+
+        public ISignal Signal { get; }
     }
 }

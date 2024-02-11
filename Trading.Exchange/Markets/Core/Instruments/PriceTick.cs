@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Trading.Exchange.Markets.Core.Instruments
 {
-    public class PriceTick : IPriceTick
+    internal class PriceTick : IPriceTick
     {
         public PriceTick(decimal price, DateTime dateTime)
         {

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading.Core", "Trading.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading.DAL", "Trading.DAL\Trading.DAL.csproj", "{75D78586-D8FA-4BEA-A687-EB9F2A2E16A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading.MlClient", "Trading.MlClient\Trading.MlClient.csproj", "{8FA3CA78-F10E-4731-A792-A409B5A7F019}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{75D78586-D8FA-4BEA-A687-EB9F2A2E16A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75D78586-D8FA-4BEA-A687-EB9F2A2E16A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75D78586-D8FA-4BEA-A687-EB9F2A2E16A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FA3CA78-F10E-4731-A792-A409B5A7F019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FA3CA78-F10E-4731-A792-A409B5A7F019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FA3CA78-F10E-4731-A792-A409B5A7F019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FA3CA78-F10E-4731-A792-A409B5A7F019}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

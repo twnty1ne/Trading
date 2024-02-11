@@ -18,6 +18,10 @@ services:
       - trading-backend
     depends_on:
       - postgres_db
+      - trading_ml
+    volumes:
+      - api-runtime-files:/app/data/runtime_files
+    restart: always
 
   postgres_db:
     container_name: postgres
@@ -25,13 +29,24 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
-      POSTGRES_DB: sessions
+      POSTGRES_DB: Sessions
     ports:
       - "6432:5432"
     networks:
       - trading-backend
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    restart: always
+  
+  trading_ml:
+    container_name: Trading.Ml.Api
+    image: twnty1ne/trading.ml:1.0.0
+    ports:
+      - ":5005"
+    networks:
+      - trading-backend
+    restart: always
 
 volumes:
   postgres-data:
+  api-runtime-files:

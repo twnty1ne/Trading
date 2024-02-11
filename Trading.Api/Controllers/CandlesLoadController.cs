@@ -6,6 +6,7 @@ using Trading.Api.Services;
 using Trading.Exchange.Connections;
 using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
+using Trading.Shared.Ranges;
 
 namespace Trading.Api.Controllers
 {
@@ -25,19 +26,30 @@ namespace Trading.Api.Controllers
         {
             var instruments = new List<IInstrumentName>
             {
+                new InstrumentName("ETH", "USDT"),
+                new InstrumentName("BTC", "USDT"),
+                new InstrumentName("XRP", "USDT"),
+                new InstrumentName("ADA", "USDT"),
+                new InstrumentName("SOL", "USDT"),
                 new InstrumentName("LTC", "USDT"),
+                new InstrumentName("BNB", "USDT"),
+                new InstrumentName("ETC", "USDT"),
+                new InstrumentName("UNI", "USDT"),
+                new InstrumentName("LINK", "USDT"),
+                new InstrumentName("NEAR", "USDT"),
+                new InstrumentName("ATOM", "USDT"),
             };
-            var range = new Shared.Ranges.Range<DateTime>(new DateTime(2023, 04, 01), new DateTime(2023, 04, 20));
+            var range = new Range<DateTime>(new DateTime(2023, 04, 01), 
+                new DateTime(2023, 08, 1), BoundariesComparation.LeftIncluding);
 
             var brokers = new List<ConnectionEnum>
             {
                 ConnectionEnum.Binance,
-                ConnectionEnum.Bybit
             };
 
             var timeframes = new List<Timeframes>
             {
-                Timeframes.FiveMinutes,
+                Timeframes.OneMinute,
                 Timeframes.OneHour
             };
 

@@ -10,6 +10,7 @@ using Trading.Exchange.Markets.Core.Instruments.Candles;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Shared.Resolvers;
 using System.Diagnostics;
+using System.Text;
 using Trading.Shared.Ranges;
 using Trading.Exchange.Connections.Storage;
 
@@ -18,11 +19,12 @@ namespace Trading.Api.Services
     public class CandleService : ICandleService
     {
         private readonly string _path = Path.Combine(Directory.GetCurrentDirectory(), "Services", "Candles");
-        
+
         private IResolver<ConnectionEnum, IConnection> _connectionResolver;
 
         public CandleService()
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             _connectionResolver = new ConnectionResolver(new BinanceCredentialsProvider());
         }
 
@@ -39,14 +41,28 @@ namespace Trading.Api.Services
         private async Task LoadCandlesFromBrokerAsync(IConnection connection,
             IEnumerable<Timeframes> timeframes,
             IEnumerable<IInstrumentName> instruments,
-            IRange<DateTime> range) 
+            IRange<DateTime> range)
         {
-            var instrumentTimeframeZip = instruments.SelectMany(Instrument => timeframes.Select(Timeframe => (Instrument, Timeframe)));
+            var instrumentTimeframeZip =
+                instruments.SelectMany(Instrument => timeframes.Select(Timeframe => (Instrument, Timeframe)));
 
             foreach (var item in instrumentTimeframeZip)
             {
-                var c = await connection.GetFuturesCandlesAsync(item.Instrument, item.Timeframe, range);
-                await LoadToFile(new CandlesFileName(connection.Type, item.Timeframe, item.Instrument), c);
+                var allCandles = await connection.GetFuturesCandlesAsync(item.Instrument, item.Timeframe, range);
+                
+                var groupedByMonthYear = allCandles
+                    .GroupBy(x => new { x.OpenTime.Year, x.OpenTime.Month });
+                
+                var fileLoadingTasks = groupedByMonthYear.Select(x =>
+                {
+                    var year = x.Key.Year;
+                    var month = x.Key.Month;
+
+                    return LoadToFile(new CandlesFileName(connection.Type, item.Timeframe, item.Instrument, year, month), 
+                        x);
+                });
+                
+                await Task.WhenAll(fileLoadingTasks);
             }
         }
 

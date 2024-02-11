@@ -8,6 +8,7 @@ namespace Trading.Shared.Ranges
     {
         T From { get; }
         T To { get; }
+        BoundariesComparation BoundariesComparation { get; }
         bool Contains(T value);
     }
 }

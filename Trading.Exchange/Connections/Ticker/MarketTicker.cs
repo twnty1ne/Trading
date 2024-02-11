@@ -1,45 +1,47 @@
 ﻿using Stateless;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
+using Trading.Shared.Ranges;
 
 namespace Trading.Exchange.Connections.Ticker
 {
     public class MarketTicker : IMarketTicker
     {
         private readonly StateMachine<TickerStates, TickerTriggers> _stateMachine;
-        private readonly StateMachine<TickerStates, TickerTriggers>.TriggerWithParameters<DateTime> _startTrigger;
 
-        private DateTime _startDate;
+        private readonly long _spanForTick = TimeSpan.FromSeconds(20).Ticks;
+        
         private Task _task = new Task(() => throw new Exception());
-        private long _accumalutedTicks;
-        private long _spanForTick = TimeSpan.FromSeconds(100).Ticks;
+        private long _accumulatedTicks;
+        
         private EventHandler<IMarketTick> _onTick;
         private object _lock = new object();
         private CancellationTokenSource _tokenSource;
 
-        public MarketTicker()
+        public MarketTicker(IRange<DateTime> ticksRange)
         {
+            TicksRange = ticksRange ?? throw new ArgumentNullException(nameof(ticksRange));
             _tokenSource = new CancellationTokenSource();
             _stateMachine = new StateMachine<TickerStates, TickerTriggers>(TickerStates.WaitingForStart);
-            _startTrigger = _stateMachine.SetTriggerParameters<DateTime>(TickerTriggers.Start);
 
             _stateMachine
                 .Configure(TickerStates.WaitingForStart)
                 .Permit(TickerTriggers.Start, TickerStates.Started)
-                .OnEntryFrom(TickerTriggers.Reset, HandleReset);
+                .OnEntryFrom(TickerTriggers.Reset, HandleReset)
+                .Ignore(TickerTriggers.Reset);
 
             _stateMachine
                 .Configure(TickerStates.Started)
-                .OnEntryFrom(_startTrigger, HandleStarded)
+                .OnEntryFrom(TickerTriggers.Start, HandleStarted)
                 .Permit(TickerTriggers.Reset, TickerStates.WaitingForStart);
         }
 
         public event EventHandler OnStopped;
         public event EventHandler OnReset;
+
+        public IRange<DateTime> TicksRange { get;}
 
         public event EventHandler<IMarketTick> OnTick
         {
@@ -53,9 +55,9 @@ namespace Trading.Exchange.Connections.Ticker
             }
         }
 
-        public void Start(DateTime from)
+        public void Start()
         {
-            _stateMachine.Fire(_startTrigger, from);
+            _stateMachine.Fire(TickerTriggers.Start);
         }
 
         public void Reset()
@@ -63,21 +65,23 @@ namespace Trading.Exchange.Connections.Ticker
             _stateMachine.Fire(TickerTriggers.Reset);
         }
 
-        private void HandleStarded(DateTime date)
+        private void HandleStarted()
         {
-            _startDate = new DateTime(date.Year, date.Month, date.Day, date.Hour, 0, 0);
+            var startDate = TicksRange.From;
+            var normalizedStartDate = new DateTime(startDate.Year, startDate.Month, startDate.Day, startDate.Hour, 
+                0, 0, DateTimeKind.Utc);
 
-            var ticks = (DateTime.UtcNow - _startDate).Ticks / _spanForTick + 1;
+            var ticks = (TicksRange.To - normalizedStartDate).Ticks / _spanForTick + 1;
 
             _task = Task.Run(() =>
             {
-                while (ticks >= _accumalutedTicks && !_tokenSource.IsCancellationRequested)
+                while (ticks >= _accumulatedTicks && !_tokenSource.IsCancellationRequested)
                 {
                     lock (_lock)
                     {
-                        var tickDate = _startDate.AddTicks(_accumalutedTicks * _spanForTick);
+                        var tickDate = normalizedStartDate.AddTicks(_accumulatedTicks * _spanForTick);
                         _onTick?.Invoke(this, new MarketTick(tickDate));
-                        _accumalutedTicks++;
+                        _accumulatedTicks++;
                     }
                 }
             });
@@ -96,7 +100,7 @@ namespace Trading.Exchange.Connections.Ticker
                 _tokenSource.Dispose();
                 _tokenSource = new CancellationTokenSource();
                 OnReset?.Invoke(this, EventArgs.Empty);
-                _accumalutedTicks = 0;
+                _accumulatedTicks = 0;
             }
         }
     }
