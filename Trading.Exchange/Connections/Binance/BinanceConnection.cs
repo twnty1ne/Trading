@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Binance.Net.Clients;
 using Binance.Net.Enums;
 using Binance.Net.Interfaces;
 using Binance.Net.Interfaces.Clients;
+using Binance.Net.Objects;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections.Binance.Extentions;
 using Trading.Exchange.Connections.Storage;
@@ -26,6 +28,7 @@ namespace Trading.Exchange.Connections.Binance
 
         public BinanceConnection(ICredentialsProvider credentialProvider) : base(credentialProvider, ConnectionEnum.Binance)
         {
+            _client.SetApiCredentials(new BinanceApiCredentials(Credentials.PublicKey, Credentials.SecretKey));
         }
 
         public override ConnectionEnum Type => ConnectionEnum.Binance;

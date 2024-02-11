@@ -12,7 +12,7 @@ namespace Trading.Exchange.Authentification
             SecretKey = secretKey ?? throw new ArgumentNullException(nameof(secretKey));
         }
 
-        public string PublicKey { get; private set; }
-        public string SecretKey { get; private set; }
+        public string PublicKey { get; }
+        public string SecretKey { get; }
     }
 }

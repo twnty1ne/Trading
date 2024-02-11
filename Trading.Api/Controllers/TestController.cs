@@ -14,7 +14,9 @@ using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Trading.Api.CredentialsProvider;
 using Trading.Bot.Strategies.CandleVolume.Filters;
+using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections.Bybit;
 using Trading.Shared.Ranges;
 using Trading.Researching.Core.DecisionMaking.Splitting.Algorithms.DecisionTree.Builder;
@@ -42,12 +44,15 @@ namespace Trading.Api.Controllers
         private readonly IBot _bot;
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly IMlClient _mlClient;
+        private readonly ICredentialsProvider _credentialsProvider;
 
-        public TestController(IBot bot, IServiceScopeFactory scopeFactory, IMlClient mlClient)
+        public TestController(IBot bot, IServiceScopeFactory scopeFactory, IMlClient mlClient, 
+            ICredentialsProvider credentialsProvider)
         {
             // _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
             _bot = bot ?? throw new ArgumentNullException(nameof(bot));
             _mlClient = mlClient;
+            _credentialsProvider = credentialsProvider;
             _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
         }
 
@@ -298,7 +303,7 @@ namespace Trading.Api.Controllers
         [HttpGet("10")]
         public async Task<IActionResult> TestMethod10()
         {
-            var connection = new BybitConnection(new BinanceCredentialsProvider());
+            var connection = new BybitConnection(new ExchangeCredentialsProvider(null));
 
             var range = new Range<DateTime>(new DateTime(2023, 04, 14, 07, 00, 00), 
                 new DateTime(2023, 04, 25, 20, 59, 59));
