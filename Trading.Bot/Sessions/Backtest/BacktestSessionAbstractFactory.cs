@@ -23,13 +23,13 @@ namespace Trading.Bot.Sessions.Backtest
             _strategyResolver = new StrategyResolver(Market, mlClient);
         }
 
-        public IStrategy Strategy { get => _strategyResolver.Resolve(_strategy); } 
+        public IStrategy Strategy => _strategyResolver.Resolve(_strategy);
 
-        IMarket<IFuturesInstrument> ISessionAbstractFactory.Market { get => Market; }
+        IMarket<IFuturesInstrument> ISessionAbstractFactory.Market => Market;
 
-        public HistorySimulationFuturesUsdtMarket Market { get => _exchange.Market.HistorySimulationFuturesUsdt; }
+        public HistorySimulationFuturesUsdtMarket Market => _exchange.Market.HistorySimulationFuturesUsdt;
 
-        public Action<ISignal> SignalFiredHandler { get => (x) => { }; }
+        public Action<ISignal> SignalFiredHandler => (x) => { };
     }
 
 }

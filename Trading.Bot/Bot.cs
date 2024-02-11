@@ -24,10 +24,7 @@ namespace Trading.Bot
 
         public ITradingSession Session
         {
-            get
-            {
-                return _session;
-            }
+            get => _session;
 
             private set
             {
