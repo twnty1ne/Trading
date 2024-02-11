@@ -12,6 +12,7 @@ using Trading.Shared.Resolvers;
 using System.Diagnostics;
 using System.Text;
 using Trading.Api.CredentialsProvider;
+using Trading.Exchange.Authentification;
 using Trading.Shared.Ranges;
 using Trading.Exchange.Connections.Storage;
 
@@ -22,11 +23,13 @@ namespace Trading.Api.Services
         private readonly string _path = Path.Combine(Directory.GetCurrentDirectory(), "Services", "Candles");
 
         private IResolver<ConnectionEnum, IConnection> _connectionResolver;
+        private readonly ICredentialsProvider _credentialsProvider;
 
-        public CandleService()
+        public CandleService(ICredentialsProvider credentialsProvider)
         {
+            _credentialsProvider = credentialsProvider;
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            _connectionResolver = new ConnectionResolver(new ExchangeCredentialsProvider(null));
+            _connectionResolver = new ConnectionResolver(_credentialsProvider);
         }
 
         public async Task LoadCandlesToFileAsync(CandlesLoadRequest request)
