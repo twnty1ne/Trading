@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Trading.Api.CredentialsProvider;
 using Trading.Api.Services;
 using Trading.Bot;
 using Trading.Bot.Sessions;
@@ -16,94 +17,100 @@ using Trading.Report.Core;
 using Trading.Report.DAL;
 using Trading.Shared.Ranges;
 
-namespace Trading.Api
+namespace Trading.Api;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        Configuration = configuration;
+    }
 
-        public IConfiguration Configuration { get; }
+    private IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-            services.AddSwaggerGen();
-            services.AddControllers();
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers();
+        services.AddSwaggerGen();
+        services.AddControllers();
 
-            services
-                .AddSingleton<IExchange, Exchange.Exchange>()
-                .Configure<Exchange.Options>(x =>
+        services
+            .AddSingleton<IExchange, Exchange.Exchange>()
+            .Configure<Exchange.Options>(x =>
+            {
+                x.ConnectionType = Enum.Parse<ConnectionEnum>(Configuration["Exchange"]);
+                x.HistorySimulationOptions = new HistorySimulationOptions
                 {
-                    x.ConnectionType = ConnectionEnum.Binance;
-                    x.HistorySimulationOptions = new HistorySimulationOptions
-                    {
-                        SimulationRange = new Range<DateTime>(new DateTime(2019, 09, 01), 
-                            new DateTime(2023, 06, 01), BoundariesComparation.LeftIncluding)  
-                    };
+                    SimulationRange = new Range<DateTime>(new DateTime(2023, 05, 01), 
+                        new DateTime(2023, 06, 01), BoundariesComparation.LeftIncluding)  
+                };
                     
-                    x.RealtimeOptions = new RealtimeOptions
-                    {
-                        CandleBuffer = TimeSpan.FromDays(3)
-                    };
-                });
-
-            services
-                .AddSingleton<IBot, Bot.Bot>()
-                .Configure<Bot.Options>(x => 
+                x.RealtimeOptions = new RealtimeOptions
                 {
-                    x.Session = Sessions.BackTest;
-                    x.Strategy = Strategies.CandleVolume;
-                });
-
-            services
-                .AddTransient<IMlClient, MlClient.MlClient>()
-                .Configure<MlClient.Options.ClientOptions>(x =>
-                {
-                    x.Host = "trading_ml";
-                    x.Port = 5005;
-                });
-
-            services.AddTransient<ICredentialsProvider, BinanceCredentialsProvider>();
-
-            services.AddDbContext<SessionContext>(ServiceLifetime.Scoped);
-            services.AddTransient<IRepository<Session>, SessionRepository>();
-            services.AddTransient<IRepository<Trade>, TradeRepository>();
-            services.AddTransient<IRepository<Instrument>, InstrumentRepository>();
-            services.AddTransient<IRepository<Strategy>, StrategyRepository>();
-            services.AddTransient<IRepository<Timeframe>, TimeframeRepository>();
-
-            services.AddTransient<ICandleService, CandleService>();
-            services.AddTransient<IExcelService, ExcelService>();
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI();
-                app.UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                    options.RoutePrefix = string.Empty;
-                });
-
-            }
-            
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
+                    CandleBuffer = TimeSpan.FromDays(3)
+                };
             });
+
+        services
+            .AddSingleton<IBot, Bot.Bot>()
+            .Configure<Bot.Options>(x => 
+            {
+                x.Session = Sessions.BackTest;
+                x.Strategy = Strategies.CandleVolume;
+            });
+            
+            
+        services
+            .AddTransient<IMlClient, MlClient.MlClient>()
+            .Configure<MlClient.Options.ClientOptions>(x =>
+            {
+                x.Host = "trading_ml";
+                x.Port = 5005;
+            });
+            
+        services
+            .AddTransient<ICredentialsProvider, ExchangeCredentialsProvider>()
+            .Configure<ExchangeCredentials>(x =>
+            {
+                x.PublicKey = Configuration[$"ExchangeCredentials:{Configuration["Exchange"]}:Public"];
+                x.SecretKey = Configuration[$"ExchangeCredentials:{Configuration["Exchange"]}:Secret"];
+            });
+            
+        services.AddDbContext<SessionContext>(ServiceLifetime.Scoped);
+        services.AddTransient<IRepository<Session>, SessionRepository>();
+        services.AddTransient<IRepository<Trade>, TradeRepository>();
+        services.AddTransient<IRepository<Instrument>, InstrumentRepository>();
+        services.AddTransient<IRepository<Strategy>, StrategyRepository>();
+        services.AddTransient<IRepository<Timeframe>, TimeframeRepository>();
+
+        services.AddTransient<ICandleService, CandleService>();
+        services.AddTransient<IExcelService, ExcelService>();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                options.RoutePrefix = string.Empty;
+            });
+
         }
+            
+        app.UseHttpsRedirection();
+
+        app.UseRouting();
+
+        app.UseAuthorization();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
     }
 }

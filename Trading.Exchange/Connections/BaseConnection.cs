@@ -13,12 +13,11 @@ namespace Trading.Exchange.Connections
     public abstract class BaseConnection : IConnection
     {
         protected readonly ICredentials Credentials;
-        private readonly ICredentialsProvider _credentialsProvider;
 
         protected BaseConnection(ICredentialsProvider credentialProvider, ConnectionEnum type)
         {
-            _credentialsProvider = credentialProvider ?? throw new ArgumentNullException(nameof(credentialProvider));
-            Credentials = _credentialsProvider.GetCredentials();
+            _ = credentialProvider ?? throw new ArgumentNullException(nameof(credentialProvider));
+            Credentials = credentialProvider.GetCredentials();
         }
 
         public abstract ConnectionEnum Type { get; } 
@@ -27,5 +26,6 @@ namespace Trading.Exchange.Connections
         public abstract Task<IReadOnlyCollection<ICandle>> GetFuturesCandlesAsync(IInstrumentName name, Timeframes timeframe, IRange<DateTime> range);
         public abstract IInstrumentStream GetHistoryInstrumentStream(IInstrumentName name, IMarketTicker ticker);
         public abstract IInstrumentStream GetInstrumentStream(IInstrumentName name);
+        
     }
 }

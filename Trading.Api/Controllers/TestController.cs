@@ -14,6 +14,7 @@ using Trading.Exchange.Markets.Core.Instruments;
 using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Trading.Api.CredentialsProvider;
 using Trading.Bot.Strategies.CandleVolume.Filters;
 using Trading.Exchange.Connections.Bybit;
 using Trading.Shared.Ranges;
@@ -298,7 +299,7 @@ namespace Trading.Api.Controllers
         [HttpGet("10")]
         public async Task<IActionResult> TestMethod10()
         {
-            var connection = new BybitConnection(new BinanceCredentialsProvider());
+            var connection = new BybitConnection(new ExchangeCredentialsProvider(null));
 
             var range = new Range<DateTime>(new DateTime(2023, 04, 14, 07, 00, 00), 
                 new DateTime(2023, 04, 25, 20, 59, 59));

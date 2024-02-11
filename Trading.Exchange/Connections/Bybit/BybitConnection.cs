@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Threading.Tasks;
 using Bybit.Net.Clients;
 using Bybit.Net.Interfaces.Clients;
 using Bybit.Net.Objects.Models;
+using CryptoExchange.Net.Authentication;
 using Trading.Exchange.Authentification;
 using Trading.Exchange.Connections.Bybit.Extentions;
 using Trading.Exchange.Connections.Storage;
@@ -25,6 +27,7 @@ namespace Trading.Exchange.Connections.Bybit
 
         public BybitConnection(ICredentialsProvider credentialProvider) : base(credentialProvider, ConnectionEnum.Bybit)
         {
+            _client.SetApiCredentials(new ApiCredentials(Credentials.PublicKey, Credentials.SecretKey));
         }
 
         public override ConnectionEnum Type => ConnectionEnum.Bybit;

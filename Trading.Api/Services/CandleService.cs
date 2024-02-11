@@ -11,6 +11,7 @@ using Trading.Exchange.Markets.Core.Instruments.Timeframes;
 using Trading.Shared.Resolvers;
 using System.Diagnostics;
 using System.Text;
+using Trading.Api.CredentialsProvider;
 using Trading.Shared.Ranges;
 using Trading.Exchange.Connections.Storage;
 
@@ -25,7 +26,7 @@ namespace Trading.Api.Services
         public CandleService()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            _connectionResolver = new ConnectionResolver(new BinanceCredentialsProvider());
+            _connectionResolver = new ConnectionResolver(new ExchangeCredentialsProvider(null));
         }
 
         public async Task LoadCandlesToFileAsync(CandlesLoadRequest request)
